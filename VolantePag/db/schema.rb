@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180314144959) do
+ActiveRecord::Schema.define(version: 20170106144358) do
 
   create_table "Accion_Personal", primary_key: "Codigo", force: :cascade do |t|
     t.integer    "ap_CodCompania",          limit: 4
@@ -70,22 +70,10 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar    "CuentaBancoAnt",          limit: 20
     t.varchar    "CuentaBancoAct",          limit: 20
     t.integer    "AutorizadaAutoServ",      limit: 1,                                   default: 0
-    t.integer    "CodCompaniaSolic",        limit: 4
-    t.integer    "CodNivelBeneficioActual", limit: 4
-    t.integer    "CodNivelBeneficioProp",   limit: 4
-    t.datetime   "FechaFinContratoActual"
-    t.datetime   "FechaFinContratoProp"
   end
 
   add_index "Accion_Personal", ["CodSolicPor"], name: "IX_Accion_Personal_1"
   add_index "Accion_Personal", ["ap_CodCompania", "Codigo_Empleado"], name: "IX_Accion_Personal"
-
-  create_table "Accion_RespuestaPreg", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Secuencia",   limit: 4,   null: false
-    t.integer "CodAccion",   limit: 4,   null: false
-    t.integer "CodPregunta", limit: 4,   null: false
-    t.varchar "Respuesta",   limit: 255, null: false
-  end
 
   create_table "Acciones_Cartas", id: false, force: :cascade do |t|
     t.integer "Codigo",            limit: 4,  null: false
@@ -105,11 +93,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Linea",             limit: 4,  null: false
     t.varchar "Descripcion_Linea", limit: 80
     t.integer "Justificacion",     limit: 1
-  end
-
-  create_table "Acciones_DatosEmpModf", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",       limit: 100, null: false
-    t.varchar "DescripcionIngles", limit: 100, null: false
   end
 
   create_table "Acciones_EmpAut", id: false, force: :cascade do |t|
@@ -179,37 +162,13 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Acciones_FirmasAut", ["afu_CodCompania", "Cod_Accion"], name: "IX_Acciones_FirmasAut"
 
-  create_table "Acciones_LabelFirmas", id: false, force: :cascade do |t|
-    t.integer "CodCompania",   limit: 4,  null: false
-    t.integer "Orden",         limit: 2,  null: false
-    t.varchar "Codigo",        limit: 50
-    t.varchar "Descripcion",   limit: 50, null: false
-    t.varchar "DescripcionEN", limit: 50
-  end
-
   create_table "Acciones_Motivos", primary_key: "Codigo", force: :cascade do |t|
     t.varchar "Descripcion",    limit: 100, null: false
     t.integer "Cod_TipoAccion", limit: 4
-    t.integer "amCodCompania",  limit: 4
   end
 
   create_table "Areas_Economicas", primary_key: "Codigo", force: :cascade do |t|
     t.varchar "Descripcion", limit: 100, null: false
-  end
-
-  create_table "Asistencia_FormatosArc", primary_key: "Secuencia", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 100, null: false
-    t.varchar "Formato",       limit: 1,   null: false
-    t.integer "SeparadoComa",  limit: 1,   null: false
-    t.integer "SeparadoTab",   limit: 1,   null: false
-    t.integer "ColumnaCodigo", limit: 1,   null: false
-    t.integer "ColumnaCedula", limit: 1,   null: false
-    t.integer "ColumnaFecha",  limit: 1,   null: false
-    t.integer "ColumnaFecha2", limit: 1
-    t.integer "ColumnaFecha3", limit: 1
-    t.varchar "FormatoFecha",  limit: 12,  null: false
-    t.varchar "NombreArchivo", limit: 100, null: false
-    t.varchar "RutaArchivo",   limit: 255, null: false
   end
 
   create_table "Aumentos_Salarios", id: false, force: :cascade do |t|
@@ -276,46 +235,20 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.datetime   "FechaLeido"
   end
 
-  create_table "AutorizacionesConceptos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion", limit: 50, null: false
-  end
-
-  create_table "Autorizaciones_Req", id: false, force: :cascade do |t|
-    t.integer "CodRequerimiento", limit: 4
-    t.integer "CodCompania",      limit: 4
-    t.integer "CodEmpleado",      limit: 4
-  end
-
   create_table "Autorizaciones_Solicitudes", primary_key: "Cod_Registro", force: :cascade do |t|
-    t.integer  "Orden",               limit: 2,                                        null: false
-    t.char     "Concepto",            limit: 1,                                        null: false
-    t.integer  "Cod_Compania",        limit: 4,                                        null: false
-    t.integer  "Cod_Empleado",        limit: 4,                                        null: false
-    t.integer  "Cod_EmpAut",          limit: 4,                                        null: false
-    t.integer  "Autorizado",          limit: 1,                            default: 0, null: false
-    t.datetime "FechaAutoriz",                                                         null: false
-    t.varchar  "Comentario",          limit: 500
-    t.integer  "Secuencia",           limit: 4
-    t.integer  "Rechazada",           limit: 1
-    t.varchar  "EstatusAut",          limit: 2
-    t.money    "InsertadoMensajeria",             precision: 19, scale: 4
-    t.varchar  "TipoUsuAut",          limit: 1
+    t.integer  "Orden",        limit: 2,               null: false
+    t.char     "Concepto",     limit: 1,               null: false
+    t.integer  "Cod_Compania", limit: 4,               null: false
+    t.integer  "Cod_Empleado", limit: 4,               null: false
+    t.integer  "Cod_EmpAut",   limit: 4,               null: false
+    t.integer  "Autorizado",   limit: 1,   default: 0, null: false
+    t.datetime "FechaAutoriz",                         null: false
+    t.varchar  "Comentario",   limit: 500
+    t.integer  "Secuencia",    limit: 4
+    t.integer  "Rechazada",    limit: 1
   end
 
   add_index "Autorizaciones_Solicitudes", ["Cod_Registro", "Cod_EmpAut", "Concepto"], name: "IX_Autorizaciones_Solicitudes", unique: true
-
-  create_table "Autorizaciones_SolicitudesTemp", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer  "Cod_Registro", limit: 4,   null: false
-    t.integer  "Orden",        limit: 2,   null: false
-    t.char     "Concepto",     limit: 1,   null: false
-    t.integer  "Cod_Compania", limit: 4,   null: false
-    t.integer  "Cod_Empleado", limit: 4,   null: false
-    t.integer  "Cod_EmpAut",   limit: 4,   null: false
-    t.integer  "Autorizado",   limit: 1,   null: false
-    t.datetime "FechaAutoriz",             null: false
-    t.varchar  "Comentario",   limit: 500
-    t.integer  "Rechazada",    limit: 1
-  end
 
   create_table "Avance_Sueldo", primary_key: "Codigo", force: :cascade do |t|
     t.integer  "Tipo_Nomina", limit: 4
@@ -360,23 +293,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer  "Mes_ISR",             limit: 1
   end
 
-  create_table "BonificacionTemp", primary_key: "Codigo", force: :cascade do |t|
-    t.integer  "Tipo_Nomina",         limit: 4,                                       null: false
-    t.integer  "Compania",            limit: 4,                                       null: false
-    t.integer  "Ano_Correspondiente", limit: 2,                                       null: false
-    t.datetime "Fecha_Procesamiento",                                                 null: false
-    t.money    "Total_Bonificacion",             precision: 19, scale: 4
-    t.money    "Total_Descuentos",               precision: 19, scale: 4
-    t.money    "Total_Neto",                     precision: 19, scale: 4
-    t.integer  "Ano_Cont",            limit: 4
-    t.integer  "Periodo_Cont",        limit: 1
-    t.integer  "Transferida",         limit: 1,                           default: 0
-    t.integer  "NoTransfMod",         limit: 4,                           default: 0
-    t.integer  "NoAsientoCG",         limit: 4,                           default: 0
-    t.varchar  "Usuario",             limit: 30,                                      null: false
-    t.integer  "Mes_ISR",             limit: 1
-  end
-
   create_table "Bonificacion_Emp", id: false, force: :cascade do |t|
     t.integer "Codigo_Bonificacion", limit: 4,                          null: false
     t.integer "bem_CodCompania",     limit: 4
@@ -393,32 +309,10 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money   "ISR_PendCompensar",             precision: 19, scale: 4
     t.money   "ISR_Compensado",                precision: 19, scale: 4
     t.varchar "boMoneda",            limit: 5
-    t.money   "boValorMonedaExt",              precision: 19, scale: 4
-    t.money   "boTasaCambio",                  precision: 19, scale: 4
   end
 
   add_index "Bonificacion_Emp", ["Codigo_Bonificacion", "Codigo_Empleado"], name: "Personal_Nomina_AltCumb_dbo_Bonificacion_Emp id_Bonificacion_Emp_1", unique: true
   add_index "Bonificacion_Emp", ["Codigo_Bonificacion", "Codigo_Empleado"], name: "Personal_Nomina_dbo_Bonificacion_Emp id_Bonificacion_Emp_1", unique: true
-
-  create_table "Bonificacion_EmpTemp", id: false, force: :cascade do |t|
-    t.integer "Codigo_Bonificacion", limit: 4,                          null: false
-    t.integer "bem_CodCompania",     limit: 4
-    t.integer "Codigo_Empleado",     limit: 4,                          null: false
-    t.integer "Cod_Posicion",        limit: 4
-    t.money   "Salario_Base",                  precision: 19, scale: 4, null: false
-    t.money   "Salario_Diario",                precision: 19, scale: 4, null: false
-    t.integer "Dias_Bonificacion",   limit: 4
-    t.integer "Meses",               limit: 1
-    t.varchar "Estatus",             limit: 1,                          null: false
-    t.money   "Valor_Descuentos",              precision: 19, scale: 4
-    t.money   "Valor_Bonificacion",            precision: 19, scale: 4, null: false
-    t.money   "Bonificacion_Neta",             precision: 19, scale: 4
-    t.money   "ISR_PendCompensar",             precision: 19, scale: 4
-    t.money   "ISR_Compensado",                precision: 19, scale: 4
-    t.varchar "boMoneda",            limit: 5
-    t.money   "boValorMonedaExt",              precision: 19, scale: 4
-    t.money   "boTasaCambio",                  precision: 19, scale: 4
-  end
 
   create_table "Borrar", id: false, force: :cascade do |t|
     t.integer "Codigo",      limit: 4
@@ -470,18 +364,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer  "Codigo_Nomina", limit: 4
   end
 
-  create_table "CandidatosContactados", id: false, force: :cascade do |t|
-    t.integer "Codigo",          limit: 4
-    t.integer "CodCompania",     limit: 4
-    t.integer "CodCompaniaCons", limit: 4
-    t.integer "CodSolicitud",    limit: 4
-  end
-
-  create_table "CapNivelesEspecializacion", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo",      limit: 4,   null: false
-    t.varchar "Descripcion", limit: 100, null: false
-  end
-
   create_table "Cap_AreasCursos", primary_key: "Codigo", force: :cascade do |t|
     t.varchar "Descripcion",  limit: 100, null: false
     t.integer "Cod_Compania", limit: 4
@@ -501,15 +383,14 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "Cap_AsignacionCursos", ["Cod_ProgCurso", "Cod_Empleado"], name: "IX_Cap_AsignacionCursos"
 
   create_table "Cap_Cargos_Cursos", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer "Codigo",              limit: 4, null: false
-    t.integer "Cod_Curso",           limit: 4, null: false
-    t.integer "Cod_Cargo",           limit: 4, null: false
-    t.char    "Requerido",           limit: 1
-    t.integer "Chequeado",           limit: 1
-    t.integer "Recurrencia",         limit: 1
-    t.integer "Tiempo",              limit: 2
-    t.char    "Periodicidad",        limit: 1
-    t.integer "MesesEmpActivoDesde", limit: 2
+    t.integer "Codigo",       limit: 4, null: false
+    t.integer "Cod_Curso",    limit: 4, null: false
+    t.integer "Cod_Cargo",    limit: 4, null: false
+    t.char    "Requerido",    limit: 1
+    t.integer "Chequeado",    limit: 1
+    t.integer "Recurrencia",  limit: 1
+    t.integer "Tiempo",       limit: 2
+    t.char    "Periodicidad", limit: 1
   end
 
   create_table "Cap_Competencias_Genericas", id: false, force: :cascade do |t|
@@ -530,17 +411,15 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Cap_Cursos", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer "Codigo",                  limit: 4,   null: false
-    t.varchar "Descripcion",             limit: 100, null: false
-    t.integer "Cod_Area",                limit: 4,   null: false
-    t.varchar "Titulo",                  limit: 100, null: false
-    t.integer "Req_Calif",               limit: 1,   null: false
-    t.float   "Calificacion",                        null: false
-    t.varchar "Comentario",              limit: 255
-    t.varchar "Usuario",                 limit: 30,  null: false
-    t.integer "Cod_GradoAcad",           limit: 4
-    t.integer "CodGrupoCapacit",         limit: 4
-    t.integer "CodNivelEspecializacion", limit: 4
+    t.integer "Codigo",        limit: 4,   null: false
+    t.varchar "Descripcion",   limit: 100, null: false
+    t.integer "Cod_Area",      limit: 4,   null: false
+    t.varchar "Titulo",        limit: 100, null: false
+    t.integer "Req_Calif",     limit: 1,   null: false
+    t.float   "Calificacion",              null: false
+    t.varchar "Comentario",    limit: 255
+    t.varchar "Usuario",       limit: 30,  null: false
+    t.integer "Cod_GradoAcad", limit: 4
   end
 
   create_table "Cap_CursosContenido", primary_key: "Cod_Curso", force: :cascade do |t|
@@ -549,15 +428,14 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Cap_DiasClase", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 50,             null: false
-    t.integer "Lunes",         limit: 1,  default: 0, null: false
-    t.integer "Martes",        limit: 1,  default: 0, null: false
-    t.integer "Miercoles",     limit: 1,  default: 0, null: false
-    t.integer "Jueves",        limit: 1,  default: 0, null: false
-    t.integer "Viernes",       limit: 1,  default: 0, null: false
-    t.integer "Sabado",        limit: 1,  default: 0, null: false
-    t.integer "Domingo",       limit: 1,  default: 0, null: false
-    t.integer "cdCodCompania", limit: 4
+    t.varchar "Descripcion", limit: 50,             null: false
+    t.integer "Lunes",       limit: 1,  default: 0, null: false
+    t.integer "Martes",      limit: 1,  default: 0, null: false
+    t.integer "Miercoles",   limit: 1,  default: 0, null: false
+    t.integer "Jueves",      limit: 1,  default: 0, null: false
+    t.integer "Viernes",     limit: 1,  default: 0, null: false
+    t.integer "Sabado",      limit: 1,  default: 0, null: false
+    t.integer "Domingo",     limit: 1,  default: 0, null: false
   end
 
   create_table "Cap_Facilitadores", primary_key: "Codigo", force: :cascade do |t|
@@ -566,12 +444,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Cod_Empleado", limit: 4
     t.varchar "Titulos",      limit: 255
     t.integer "fCodCompania", limit: 4
-  end
-
-  create_table "Cap_GruposCapacitacion", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo",      limit: 4,   null: false
-    t.varchar "Descripcion", limit: 100, null: false
-    t.char    "Estatus",     limit: 1,   null: false
   end
 
   create_table "Cap_Materiales", primary_key: "Codigo", force: :cascade do |t|
@@ -614,33 +486,32 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Cap_ProgramCursos", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer  "Codigo",            limit: 4,                            null: false
-    t.integer  "Cod_Curso",         limit: 4,                            null: false
-    t.integer  "Cod_Aula",          limit: 4,                            null: false
-    t.float    "Duracion",                                               null: false
-    t.char     "Unid_Duracion",     limit: 1,                            null: false
-    t.integer  "Cod_DiaCurso",      limit: 4,                            null: false
-    t.varchar  "Hora_Inicio",       limit: 12,                           null: false
-    t.integer  "Cant_Horas",        limit: 2,                            null: false
-    t.datetime "Fec_Inicio",                                             null: false
-    t.datetime "Fec_Termino",                                            null: false
-    t.integer  "Max_Integrantes",   limit: 2,                            null: false
-    t.integer  "Estatus",           limit: 1,                            null: false
-    t.char     "Forma_CostoAula",   limit: 1,                            null: false
-    t.money    "Costo_Aula",                    precision: 19, scale: 4, null: false
-    t.money    "Costo_MatInteg",                precision: 19, scale: 4, null: false
-    t.money    "Costo_RefInteg",                precision: 19, scale: 4, null: false
-    t.money    "Costo_OtrosInteg",              precision: 19, scale: 4, null: false
-    t.money    "Costo_TotCurso",                precision: 19, scale: 4
+    t.integer  "Codigo",            limit: 4,                           null: false
+    t.integer  "Cod_Curso",         limit: 4,                           null: false
+    t.integer  "Cod_Aula",          limit: 4,                           null: false
+    t.float    "Duracion",                                              null: false
+    t.char     "Unid_Duracion",     limit: 1,                           null: false
+    t.integer  "Cod_DiaCurso",      limit: 4,                           null: false
+    t.varchar  "Hora_Inicio",       limit: 12,                          null: false
+    t.integer  "Cant_Horas",        limit: 2,                           null: false
+    t.datetime "Fec_Inicio",                                            null: false
+    t.datetime "Fec_Termino",                                           null: false
+    t.integer  "Max_Integrantes",   limit: 2,                           null: false
+    t.integer  "Estatus",           limit: 1,                           null: false
+    t.char     "Forma_CostoAula",   limit: 1,                           null: false
+    t.money    "Costo_Aula",                   precision: 19, scale: 4, null: false
+    t.money    "Costo_MatInteg",               precision: 19, scale: 4, null: false
+    t.money    "Costo_RefInteg",               precision: 19, scale: 4, null: false
+    t.money    "Costo_OtrosInteg",             precision: 19, scale: 4, null: false
+    t.money    "Costo_TotCurso",               precision: 19, scale: 4
     t.integer  "Integrantes_Curso", limit: 2
     t.varchar  "Coordinador",       limit: 60
     t.char     "Forma_CostoFacil",  limit: 1
-    t.money    "Costo_Facilitador",             precision: 19, scale: 4
-    t.money    "Presup_Gastos",                 precision: 19, scale: 4
-    t.money    "Gasto_Final",                   precision: 19, scale: 4
-    t.varchar  "Usuario",           limit: 30,                           null: false
+    t.money    "Costo_Facilitador",            precision: 19, scale: 4
+    t.money    "Presup_Gastos",                precision: 19, scale: 4
+    t.money    "Gasto_Final",                  precision: 19, scale: 4
+    t.varchar  "Usuario",           limit: 30,                          null: false
     t.float    "TotalHorasCurso"
-    t.varchar  "Comentarios",       limit: 255
   end
 
   create_table "Cap_RetiroIntegCursos", primary_key: "Cod_Bacht", force: :cascade do |t|
@@ -717,11 +588,8 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Cartas_Formatos", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.varchar "Nombre_Carta",    limit: 100,                           null: false
+    t.varchar "Nombre_Carta",    limit: 100,  null: false
     t.string  "Contenido_Carta", limit: 4000
-    t.integer "Secuencia",       limit: 4
-    t.money   "CabeceraPagina",               precision: 19, scale: 4
-    t.money   "PiePagina",                    precision: 19, scale: 4
   end
 
   create_table "Cartas_PantallaEjec", primary_key: "CodCompania", force: :cascade do |t|
@@ -732,7 +600,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   create_table "Categoria_Competencias", primary_key: "Codigo", force: :cascade do |t|
     t.varchar "Descripcion_Categoria", limit: 100, null: false
     t.integer "Orden_Form",            limit: 4
-    t.integer "cc_CodCompania",        limit: 4
   end
 
   create_table "Cheques", primary_key: "Codigo", force: :cascade do |t|
@@ -836,13 +703,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer  "CodMunicipio",        limit: 4
     t.integer  "Id",                  limit: 4
     t.string   "Logo",                limit: 4000
-    t.varchar  "CodMoneda",           limit: 5
-    t.integer  "CodIdioma",           limit: 4
-    t.varchar  "DepartamentoRRHH",    limit: 100
-    t.varchar  "NombreAlterno",       limit: 200
-    t.varchar  "FormatoFecha",        limit: 20
-    t.integer  "TieneImagen",         limit: 1
-    t.integer  "IdDbAdm",             limit: 4
   end
 
   create_table "Companias_Galeria", primary_key: "CodCompania", force: :cascade do |t|
@@ -913,169 +773,160 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Configuracion", primary_key: "Codigo_Compania", force: :cascade do |t|
-    t.integer "Imprimir_Nomina_Columnas",            limit: 1
-    t.integer "Imprimir_Nomina_Listado",             limit: 1
-    t.integer "Imprimir_Nomina_Fija",                limit: 1
-    t.integer "Nomina_ImpSubGPag",                   limit: 1
-    t.integer "Vacaciones_Avance_Sueldo",            limit: 1
-    t.integer "Vacaciones_Avance_Bono",              limit: 1
-    t.integer "Vacaciones_Avance_Automatico",        limit: 1
-    t.integer "Vacaciones_Bono_Automatico",          limit: 1
-    t.varchar "Vacaciones_Valor_Periodo1",           limit: 2
-    t.varchar "Vacaciones_Valor_Periodo2",           limit: 2
-    t.integer "Vacaciones_Pagar_Nom_Ant_Vac",        limit: 1
-    t.integer "Vacaciones_Pagar_Nom_Pos_Vac",        limit: 1
-    t.integer "Vacaciones_Desactivar_Salario",       limit: 1
-    t.integer "Vac_Desactivar_Otros_Ing",            limit: 1
-    t.integer "Vac_Desactivar_Horas_Trab",           limit: 1
-    t.integer "Vac_Desactivar_Descuentos",           limit: 1
-    t.integer "Nomina_Grupos",                       limit: 1
-    t.integer "Nomina_Grupos_SubGrupos",             limit: 1
-    t.integer "Nomina_Billetes1000",                 limit: 1
-    t.integer "Nomina_Billetes500",                  limit: 1
-    t.integer "Nomina_Billetes100",                  limit: 1
-    t.integer "Nomina_Orden_Numero",                 limit: 1
-    t.integer "Nomina_Orden_Nombre",                 limit: 1
-    t.integer "Nomina_Orden_Cedula",                 limit: 1
-    t.integer "Nomina_Incluir_Inactivos",            limit: 1
-    t.integer "Nomina_Incluir_NoFijos",              limit: 1
-    t.integer "Nomina_Incluir_Retroactivos",         limit: 1
-    t.integer "Nom_Proce_Nom_Sobregiros",            limit: 1
-    t.integer "Nom_Procesar_Nom_Unica",              limit: 1
-    t.integer "Nom_Incluir_Ing_Negativos",           limit: 1
-    t.integer "Nom_Desabilitar_Des_Exce",            limit: 1
-    t.integer "Nom_Imp_Pag_Completa",                limit: 1
-    t.integer "Nom_Imprimir_Media_Pag",              limit: 1
-    t.integer "Nom_Imprimir_Tercio_Pag",             limit: 1
-    t.integer "Nomina_Excluir_Sobregirados",         limit: 1
-    t.integer "Nom_ISR_Sal_Proyectado",              limit: 1
-    t.integer "Nom_ISR_Ing_Proyectados",             limit: 1
-    t.integer "Nom_Ocultar_Ced",                     limit: 1
-    t.integer "Nom_Ocultar_Cargo",                   limit: 1
-    t.integer "Nom_Ocultar_SalBase",                 limit: 1
-    t.integer "Nom_Ocultar_Cant_Horas",              limit: 1
-    t.integer "Nom_Ocultar_Valor_Horas",             limit: 1
-    t.integer "Nomina_Ocultar_Ingresos",             limit: 1
-    t.integer "Nom_Ocultar_TotIngVar",               limit: 1
-    t.integer "Nom_Ocultar_Descuentos",              limit: 1
-    t.integer "Nomina_Ocultar_ISR",                  limit: 1
-    t.integer "Nomina_Ocultar_SS",                   limit: 1
+    t.integer "Imprimir_Nomina_Columnas",       limit: 1
+    t.integer "Imprimir_Nomina_Listado",        limit: 1
+    t.integer "Imprimir_Nomina_Fija",           limit: 1
+    t.integer "Nomina_ImpSubGPag",              limit: 1
+    t.integer "Vacaciones_Avance_Sueldo",       limit: 1
+    t.integer "Vacaciones_Avance_Bono",         limit: 1
+    t.integer "Vacaciones_Avance_Automatico",   limit: 1
+    t.integer "Vacaciones_Bono_Automatico",     limit: 1
+    t.varchar "Vacaciones_Valor_Periodo1",      limit: 2
+    t.varchar "Vacaciones_Valor_Periodo2",      limit: 2
+    t.integer "Vacaciones_Pagar_Nom_Ant_Vac",   limit: 1
+    t.integer "Vacaciones_Pagar_Nom_Pos_Vac",   limit: 1
+    t.integer "Vacaciones_Desactivar_Salario",  limit: 1
+    t.integer "Vac_Desactivar_Otros_Ing",       limit: 1
+    t.integer "Vac_Desactivar_Horas_Trab",      limit: 1
+    t.integer "Vac_Desactivar_Descuentos",      limit: 1
+    t.integer "Nomina_Grupos",                  limit: 1
+    t.integer "Nomina_Grupos_SubGrupos",        limit: 1
+    t.integer "Nomina_Billetes1000",            limit: 1
+    t.integer "Nomina_Billetes500",             limit: 1
+    t.integer "Nomina_Billetes100",             limit: 1
+    t.integer "Nomina_Orden_Numero",            limit: 1
+    t.integer "Nomina_Orden_Nombre",            limit: 1
+    t.integer "Nomina_Orden_Cedula",            limit: 1
+    t.integer "Nomina_Incluir_Inactivos",       limit: 1
+    t.integer "Nomina_Incluir_NoFijos",         limit: 1
+    t.integer "Nomina_Incluir_Retroactivos",    limit: 1
+    t.integer "Nom_Proce_Nom_Sobregiros",       limit: 1
+    t.integer "Nom_Procesar_Nom_Unica",         limit: 1
+    t.integer "Nom_Incluir_Ing_Negativos",      limit: 1
+    t.integer "Nom_Desabilitar_Des_Exce",       limit: 1
+    t.integer "Nom_Imp_Pag_Completa",           limit: 1
+    t.integer "Nom_Imprimir_Media_Pag",         limit: 1
+    t.integer "Nom_Imprimir_Tercio_Pag",        limit: 1
+    t.integer "Nomina_Excluir_Sobregirados",    limit: 1
+    t.integer "Nom_ISR_Sal_Proyectado",         limit: 1
+    t.integer "Nom_ISR_Ing_Proyectados",        limit: 1
+    t.integer "Nom_Ocultar_Ced",                limit: 1
+    t.integer "Nom_Ocultar_Cargo",              limit: 1
+    t.integer "Nom_Ocultar_SalBase",            limit: 1
+    t.integer "Nom_Ocultar_Cant_Horas",         limit: 1
+    t.integer "Nom_Ocultar_Valor_Horas",        limit: 1
+    t.integer "Nomina_Ocultar_Ingresos",        limit: 1
+    t.integer "Nom_Ocultar_TotIngVar",          limit: 1
+    t.integer "Nom_Ocultar_Descuentos",         limit: 1
+    t.integer "Nomina_Ocultar_ISR",             limit: 1
+    t.integer "Nomina_Ocultar_SS",              limit: 1
     t.real    "Coeficiente_Salario"
-    t.integer "Regalia_Mes_Ultimo_Sueldo",           limit: 1
-    t.integer "Regalia_Ultimo_Sueldo",               limit: 1
-    t.integer "Regalia_Salario_Base",                limit: 1
-    t.integer "Regalia_Acumulado",                   limit: 1
-    t.integer "Regalia_Incluir_Inactivos",           limit: 1
-    t.integer "Regalia_Incluir_NoFijos",             limit: 1
-    t.integer "Regalia_Incluir_Cancelados",          limit: 1
-    t.integer "Regalia_Descontar_ISR",               limit: 1
-    t.integer "Regalia_Meses_Desde",                 limit: 2
-    t.integer "Bonificacion_Acumulado",              limit: 1
-    t.integer "Bon_Salario_Base",                    limit: 1
-    t.integer "Bon_Incluir_Inactivos",               limit: 1
-    t.integer "Bon_Incluir_NoFijos",                 limit: 1
-    t.integer "Bon_Incluir_Cancelados",              limit: 1
-    t.integer "Bon_Descontar_ISR",                   limit: 1
-    t.integer "Bon_Descontar_Infotep",               limit: 1
+    t.integer "Regalia_Mes_Ultimo_Sueldo",      limit: 1
+    t.integer "Regalia_Ultimo_Sueldo",          limit: 1
+    t.integer "Regalia_Salario_Base",           limit: 1
+    t.integer "Regalia_Acumulado",              limit: 1
+    t.integer "Regalia_Incluir_Inactivos",      limit: 1
+    t.integer "Regalia_Incluir_NoFijos",        limit: 1
+    t.integer "Regalia_Incluir_Cancelados",     limit: 1
+    t.integer "Regalia_Descontar_ISR",          limit: 1
+    t.integer "Regalia_Meses_Desde",            limit: 2
+    t.integer "Bonificacion_Acumulado",         limit: 1
+    t.integer "Bon_Salario_Base",               limit: 1
+    t.integer "Bon_Incluir_Inactivos",          limit: 1
+    t.integer "Bon_Incluir_NoFijos",            limit: 1
+    t.integer "Bon_Incluir_Cancelados",         limit: 1
+    t.integer "Bon_Descontar_ISR",              limit: 1
+    t.integer "Bon_Descontar_Infotep",          limit: 1
     t.real    "Bon_Porciento_Infotep"
-    t.integer "Bon_Meses_Desde",                     limit: 2
-    t.integer "Liq_Prea_Sal_Base",                   limit: 1
-    t.integer "Liq_Prea_Sal_Promedio",               limit: 1
-    t.integer "Liq_Ces_Sal_Base",                    limit: 1
-    t.integer "Liq_Ces_Sal_Promedio",                limit: 1
-    t.integer "Liq_Vac_Sal_Base",                    limit: 1
-    t.integer "Liq_Vac_Sal_Prom",                    limit: 1
-    t.integer "Liq_Prea_Sal_Base_Hora",              limit: 1
-    t.integer "Liq_Prea_Sal_Prom_Hora",              limit: 1
-    t.integer "Liq_Ces_Sal_Base_Hora",               limit: 1
-    t.integer "Liq_Ces_Sal_Prom_Hora",               limit: 1
-    t.integer "Liq_Vac_Sal_Base_Hora",               limit: 1
-    t.integer "Liq_Vac_Sal_Prom_Hora",               limit: 1
-    t.varchar "Ruta_Listado_Banco",                  limit: 255
-    t.varchar "Numero_Compania_Lista",               limit: 20
-    t.integer "Retenciones_Tam_Papel",               limit: 1
+    t.integer "Bon_Meses_Desde",                limit: 2
+    t.integer "Liq_Prea_Sal_Base",              limit: 1
+    t.integer "Liq_Prea_Sal_Promedio",          limit: 1
+    t.integer "Liq_Ces_Sal_Base",               limit: 1
+    t.integer "Liq_Ces_Sal_Promedio",           limit: 1
+    t.integer "Liq_Vac_Sal_Base",               limit: 1
+    t.integer "Liq_Vac_Sal_Prom",               limit: 1
+    t.integer "Liq_Prea_Sal_Base_Hora",         limit: 1
+    t.integer "Liq_Prea_Sal_Prom_Hora",         limit: 1
+    t.integer "Liq_Ces_Sal_Base_Hora",          limit: 1
+    t.integer "Liq_Ces_Sal_Prom_Hora",          limit: 1
+    t.integer "Liq_Vac_Sal_Base_Hora",          limit: 1
+    t.integer "Liq_Vac_Sal_Prom_Hora",          limit: 1
+    t.varchar "Ruta_Listado_Banco",             limit: 255
+    t.varchar "Numero_Compania_Lista",          limit: 20
+    t.integer "Retenciones_Tam_Papel",          limit: 1
     t.float   "Porciento_Poliza_Accid"
-    t.money   "Limite_Poliza_Sujeto_Cont",                       precision: 19, scale: 4
-    t.varchar "Ruta_DB",                             limit: 100
-    t.varchar "Servidor",                            limit: 100
-    t.varchar "Nombre_DB",                           limit: 100
-    t.varchar "Ruta_Fotos",                          limit: 100
-    t.integer "Forma_Codigo_Empleado",               limit: 1
+    t.money   "Limite_Poliza_Sujeto_Cont",                  precision: 19, scale: 4
+    t.varchar "Ruta_DB",                        limit: 100
+    t.varchar "Servidor",                       limit: 100
+    t.varchar "Nombre_DB",                      limit: 100
+    t.varchar "Ruta_Fotos",                     limit: 100
+    t.integer "Forma_Codigo_Empleado",          limit: 1
     t.float   "AFP_PorcComp"
     t.float   "AFP_PorcEmp"
-    t.money   "AFP_SalTope",                                     precision: 19, scale: 4
+    t.money   "AFP_SalTope",                                precision: 19, scale: 4
     t.float   "ARS_PorcComp"
     t.float   "ARS_PorcEmp"
-    t.money   "ARS_SalTope",                                     precision: 19, scale: 4
+    t.money   "ARS_SalTope",                                precision: 19, scale: 4
     t.float   "Riesgo_PorcComp"
     t.float   "Riesgo_PorcEmp"
-    t.money   "Riesgo_SalTope",                                  precision: 19, scale: 4
-    t.varchar "Nom_CodEmpDesp",                      limit: 2
-    t.varchar "Causa_LaborHoras",                    limit: 100
-    t.integer "Control_DiasLab",                     limit: 1
-    t.integer "Control_CorteNom",                    limit: 1
-    t.integer "Control_DiasNoLabSal",                limit: 1
-    t.integer "Control_DiasExcPrest",                limit: 1
-    t.integer "Control_DiasLic",                     limit: 1
-    t.integer "DiasNoLabSal_PolHor",                 limit: 1
-    t.integer "Provisiones_Calc",                    limit: 1
-    t.integer "Provisiones_Vac",                     limit: 1
-    t.integer "Provisiones_Preav",                   limit: 1
-    t.integer "Provisiones_Ces",                     limit: 1
-    t.integer "Provisiones_Bon",                     limit: 1
-    t.integer "Provisiones_Reg",                     limit: 1
-    t.varchar "Prov_CuentaGastoVac",                 limit: 20
-    t.varchar "Prov_CuentaGastoBon",                 limit: 20
-    t.varchar "Prov_CuentaGastoReg",                 limit: 20
-    t.char    "Vac_FormaCalcPrest",                  limit: 1
-    t.char    "Vac_FormaCalcVac",                    limit: 1
-    t.char    "BVac_FormaCalcPrest",                 limit: 1
-    t.char    "BVac_FormaCalcVac",                   limit: 1
-    t.varchar "NoDocDespNomina",                     limit: 30
-    t.varchar "Cliente",                             limit: 100
-    t.varchar "FormaConsDiasLab",                    limit: 50
-    t.integer "TransferirCont",                      limit: 1
-    t.integer "Bonif_FormaCalcEmpAno",               limit: 1
-    t.integer "GenerarComprobDisco",                 limit: 1
-    t.varchar "RutaGenerarComprobPago",              limit: 200
-    t.varchar "Banco_NoCuenta",                      limit: 20
-    t.varchar "Banco_Sucursal",                      limit: 20
-    t.varchar "Orden_Nomina",                        limit: 100
-    t.integer "Nomina_IncEmpCero",                   limit: 1
+    t.money   "Riesgo_SalTope",                             precision: 19, scale: 4
+    t.varchar "Nom_CodEmpDesp",                 limit: 2
+    t.varchar "Causa_LaborHoras",               limit: 100
+    t.integer "Control_DiasLab",                limit: 1
+    t.integer "Control_CorteNom",               limit: 1
+    t.integer "Control_DiasNoLabSal",           limit: 1
+    t.integer "Control_DiasExcPrest",           limit: 1
+    t.integer "Control_DiasLic",                limit: 1
+    t.integer "DiasNoLabSal_PolHor",            limit: 1
+    t.integer "Provisiones_Calc",               limit: 1
+    t.integer "Provisiones_Vac",                limit: 1
+    t.integer "Provisiones_Preav",              limit: 1
+    t.integer "Provisiones_Ces",                limit: 1
+    t.integer "Provisiones_Bon",                limit: 1
+    t.integer "Provisiones_Reg",                limit: 1
+    t.varchar "Prov_CuentaGastoVac",            limit: 20
+    t.varchar "Prov_CuentaGastoBon",            limit: 20
+    t.varchar "Prov_CuentaGastoReg",            limit: 20
+    t.char    "Vac_FormaCalcPrest",             limit: 1
+    t.char    "Vac_FormaCalcVac",               limit: 1
+    t.char    "BVac_FormaCalcPrest",            limit: 1
+    t.char    "BVac_FormaCalcVac",              limit: 1
+    t.varchar "NoDocDespNomina",                limit: 30
+    t.varchar "Cliente",                        limit: 100
+    t.varchar "FormaConsDiasLab",               limit: 50
+    t.integer "TransferirCont",                 limit: 1
+    t.integer "Bonif_FormaCalcEmpAno",          limit: 1
+    t.integer "GenerarComprobDisco",            limit: 1
+    t.varchar "RutaGenerarComprobPago",         limit: 200
+    t.varchar "Banco_NoCuenta",                 limit: 20
+    t.varchar "Banco_Sucursal",                 limit: 20
+    t.varchar "Orden_Nomina",                   limit: 100
+    t.integer "Nomina_IncEmpCero",              limit: 1
     t.float   "Infotep_PorcComp"
     t.float   "Infotep_PorcEmp"
-    t.money   "Infotep_SalTope",                                 precision: 19, scale: 4
-    t.integer "Nomina_Transferencia",                limit: 4
-    t.integer "DesconISRCompUnic",                   limit: 4
-    t.integer "CodCompaniaISR",                      limit: 4
-    t.integer "FormatoCompPago",                     limit: 1
+    t.money   "Infotep_SalTope",                            precision: 19, scale: 4
+    t.integer "Nomina_Transferencia",           limit: 4
+    t.integer "DesconISRCompUnic",              limit: 4
+    t.integer "CodCompaniaISR",                 limit: 4
+    t.integer "FormatoCompPago",                limit: 1
     t.float   "Provisiones_Porc"
-    t.integer "Provisiones_Nomina",                  limit: 4
-    t.integer "Provisiones_CalcOtras",               limit: 1
-    t.integer "Vacaciones_PagoMesVac",               limit: 1
-    t.integer "Vacaciones_PeriodoPago",              limit: 1
-    t.integer "IniciarNomEmpApe",                    limit: 1
-    t.integer "PermitirNomEmpMay",                   limit: 1
-    t.integer "Nom_ISR_IngAcumulados",               limit: 1
-    t.varchar "Ruta_ArcUsuarios",                    limit: 255
-    t.money   "SalarioMinCotizTSS",                              precision: 19, scale: 4
-    t.varchar "Observac_DGT2",                       limit: 500
-    t.decimal "CantHorasSem",                                    precision: 18, scale: 0
-    t.decimal "DiasLaborMes",                                    precision: 18, scale: 2
-    t.integer "Vacaciones_Avance_AutomSinRRHH",      limit: 1
-    t.integer "Liq_Ces_SalHoraActual",               limit: 1
-    t.integer "Liq_Prea_SalHoraActual",              limit: 1
-    t.integer "Regalia_Salario_BaseAno",             limit: 1
-    t.integer "SubAgruparEmpNomina",                 limit: 1
-    t.integer "ControlarAsignIngresosPorBenefCargo", limit: 1
-    t.integer "IncluirIngresoPrimaVacaciones",       limit: 1
-    t.integer "IncluirAportesNomina",                limit: 1
-    t.integer "DesplegarAliasComprobante",           limit: 1
-    t.varchar "NombreReporteComprobante",            limit: 100
-    t.decimal "SalarioMinDiario",                                precision: 18, scale: 2
-    t.decimal "SalarioMinAnual",                                 precision: 18, scale: 2
-    t.integer "DescontarTSSEmpExcedenAMitad",        limit: 1
-    t.integer "Vacaciones_CantMesesCalcSalarPromed", limit: 1
+    t.integer "Provisiones_Nomina",             limit: 4
+    t.integer "Provisiones_CalcOtras",          limit: 1
+    t.integer "Vacaciones_PagoMesVac",          limit: 1
+    t.integer "Vacaciones_PeriodoPago",         limit: 1
+    t.integer "IniciarNomEmpApe",               limit: 1
+    t.integer "PermitirNomEmpMay",              limit: 1
+    t.integer "Nom_ISR_IngAcumulados",          limit: 1
+    t.varchar "Ruta_ArcUsuarios",               limit: 255
+    t.money   "SalarioMinCotizTSS",                         precision: 19, scale: 4
+    t.varchar "Observac_DGT2",                  limit: 500
+    t.decimal "CantHorasSem",                               precision: 18, scale: 0
+    t.decimal "DiasLaborMes",                               precision: 18, scale: 2
+    t.integer "Vacaciones_Avance_AutomSinRRHH", limit: 1
+    t.integer "Liq_Ces_SalHoraActual",          limit: 1
+    t.integer "Liq_Prea_SalHoraActual",         limit: 1
+    t.integer "Regalia_Salario_BaseAno",        limit: 1
+    t.integer "SubAgruparEmpNomina",            limit: 1
   end
 
   create_table "Configuracion_ArchAsist", primary_key: "CodCompania", force: :cascade do |t|
@@ -1094,16 +945,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "TipoDB",              limit: 20
     t.integer "GenerarHorasEmpLic",  limit: 1
     t.integer "GenerarAsisSinReloj", limit: 1
-    t.varchar "FormatoDB",           limit: 6
-    t.varchar "UsuarioDB",           limit: 50
-    t.varchar "ClaveUsu",            limit: 50
-  end
-
-  create_table "Configuracion_EmpRRHHAutoriz", id: false, force: :cascade do |t|
-    t.integer "CodCompania",       limit: 4, null: false
-    t.integer "CodEmpleado",       limit: 4, null: false
-    t.integer "OrdenAutorizacion", limit: 4
-    t.integer "EsOblitatorio",     limit: 4
   end
 
   create_table "Configuracion_Eval", id: false, force: :cascade do |t|
@@ -1136,90 +977,52 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.char     "Modulo",      limit: 3
   end
 
-  create_table "Configuracion_NotasFormularios", primary_key: "CodCompania", force: :cascade do |t|
-    t.varchar "ComentariosSolVacac",   limit: 500
-    t.varchar "ComentariosSolVacacEN", limit: 500
-  end
-
-  create_table "Configuracion_OpcionesReclut", primary_key: "CodCompania", force: :cascade do |t|
-    t.varchar "ComentariosPersonales",         limit: 500, null: false
-    t.varchar "ComentariosPuesto",             limit: 500, null: false
-    t.varchar "ComentariosPreparacionAcade",   limit: 500, null: false
-    t.varchar "ComentariosIdiomas",            limit: 500, null: false
-    t.varchar "ComentariosExperienciaLab",     limit: 500, null: false
-    t.varchar "ComentariosCompetTecn",         limit: 500, null: false
-    t.varchar "ComentariosReferencias",        limit: 500, null: false
-    t.varchar "ComentariosDocumentos",         limit: 500, null: false
-    t.varchar "ComentariosDatosAdic",          limit: 500, null: false
-    t.varchar "ComentariosPersonalesEN",       limit: 500, null: false
-    t.varchar "ComentariosPuestoEN",           limit: 500, null: false
-    t.varchar "ComentariosPreparacionAcadeEN", limit: 500, null: false
-    t.varchar "ComentariosIdiomasEN",          limit: 500, null: false
-    t.varchar "ComentariosExperienciaLabEN",   limit: 500, null: false
-    t.varchar "ComentariosCompetTecnEN",       limit: 500, null: false
-    t.varchar "ComentariosReferenciasEN",      limit: 500, null: false
-    t.varchar "ComentariosDocumentosEN",       limit: 500, null: false
-    t.varchar "ComentariosDatosAdicEN",        limit: 500, null: false
-    t.integer "CodCartaConfidencialidad",      limit: 4
-    t.integer "CodCartaConfidencialidadEN",    limit: 4
-  end
-
-  create_table "Configuracion_PersFirmasAccion", id: false, force: :cascade do |t|
-    t.integer "CodCompania", limit: 4,  null: false
-    t.varchar "LabelFirma",  limit: 30
-    t.integer "Orden",       limit: 1
-    t.integer "CodEmpleado", limit: 4
-  end
-
   create_table "Configuracion_PersRecl", id: false, force: :cascade do |t|
     t.integer "CodCompania", limit: 4, null: false
     t.integer "CodEmpleado", limit: 4, null: false
   end
 
   create_table "Configuracion_Personal", primary_key: "Codigo_Compania", force: :cascade do |t|
-    t.integer    "Forma_Codigo_Empleado",       limit: 1,                      null: false
-    t.integer    "Eliminar_Solicitud",          limit: 1
-    t.varchar    "Ruta_DB",                     limit: 100
-    t.varchar    "Servidor",                    limit: 100
-    t.varchar    "Nombre_DB",                   limit: 100
-    t.varchar    "Ruta_Fotos",                  limit: 100
-    t.integer    "Email_Accion",                limit: 1
-    t.integer    "Cod_CargoAutAcc",             limit: 4,          default: 0
-    t.integer    "Cod_EncNom",                  limit: 4,          default: 0
-    t.integer    "Email_SolAccion",             limit: 1
-    t.integer    "Alerta_EmpPrueba",            limit: 1
-    t.integer    "DiasEmpPrueba",               limit: 2
-    t.integer    "Alerta_EmpTemCont",           limit: 1
-    t.integer    "DiasEmpTemCont",              limit: 2
-    t.integer    "EmailTemCont",                limit: 1
-    t.integer    "PersonaEmailTemCont",         limit: 4
-    t.text_basic "MensTermCont",                limit: 2147483647
-    t.text_basic "MensEmpCump",                 limit: 2147483647
-    t.text_basic "MensCumpDia",                 limit: 2147483647
-    t.integer    "Desestimar_SolEmpVenc",       limit: 1
-    t.integer    "Desestimar_MesesDesp",        limit: 2
-    t.integer    "Cod_ClasifRRHH",              limit: 4
-    t.integer    "Cod_CompaniaReclut",          limit: 4
-    t.varchar    "URL_PagSolicEmp",             limit: 255
-    t.varchar    "URL_Autoservicio",            limit: 255
-    t.varchar    "URL_Reclutamiento",           limit: 255
-    t.integer    "PermitirNomEmpMay",           limit: 1
-    t.integer    "IniciarNomEmpApe",            limit: 1
-    t.integer    "NotificarSalidaEmp",          limit: 1
-    t.integer    "NotificarEntradaEmp",         limit: 1
-    t.integer    "NotificarEntSalEmpRedes",     limit: 1
-    t.varchar    "NotificarMensajeSalida",      limit: 255
-    t.varchar    "NotificarMensajeEntrada",     limit: 255
-    t.integer    "PermitirModDatosEmp",         limit: 1
-    t.integer    "CodCargo_EncRRHH",            limit: 4
-    t.integer    "CodCargo_AsisRRHH",           limit: 1
-    t.integer    "CodCargo_SecRRHH",            limit: 1
-    t.varchar    "URL_Evaluaciones",            limit: 255
-    t.string     "ImagenLogoAccion",            limit: 4000
-    t.string     "Logo",                        limit: 4000
-    t.integer    "MesesActivoSolicitudVacac",   limit: 1
-    t.integer    "AnoInicioSolicVacacAutoServ", limit: 4
-    t.datetime   "FechaInicioSolicVacac"
+    t.integer    "Forma_Codigo_Empleado",   limit: 1,                      null: false
+    t.integer    "Eliminar_Solicitud",      limit: 1
+    t.varchar    "Ruta_DB",                 limit: 100
+    t.varchar    "Servidor",                limit: 100
+    t.varchar    "Nombre_DB",               limit: 100
+    t.varchar    "Ruta_Fotos",              limit: 100
+    t.integer    "Email_Accion",            limit: 1
+    t.integer    "Cod_CargoAutAcc",         limit: 4,          default: 0
+    t.integer    "Cod_EncNom",              limit: 4,          default: 0
+    t.integer    "Email_SolAccion",         limit: 1
+    t.integer    "Alerta_EmpPrueba",        limit: 1
+    t.integer    "DiasEmpPrueba",           limit: 2
+    t.integer    "Alerta_EmpTemCont",       limit: 1
+    t.integer    "DiasEmpTemCont",          limit: 2
+    t.integer    "EmailTemCont",            limit: 1
+    t.integer    "PersonaEmailTemCont",     limit: 4
+    t.text_basic "MensTermCont",            limit: 2147483647
+    t.text_basic "MensEmpCump",             limit: 2147483647
+    t.text_basic "MensCumpDia",             limit: 2147483647
+    t.integer    "Desestimar_SolEmpVenc",   limit: 1
+    t.integer    "Desestimar_MesesDesp",    limit: 2
+    t.integer    "Cod_ClasifRRHH",          limit: 4
+    t.integer    "Cod_CompaniaReclut",      limit: 4
+    t.varchar    "URL_PagSolicEmp",         limit: 255
+    t.varchar    "URL_Autoservicio",        limit: 255
+    t.varchar    "URL_Reclutamiento",       limit: 255
+    t.integer    "PermitirNomEmpMay",       limit: 1
+    t.integer    "IniciarNomEmpApe",        limit: 1
+    t.integer    "NotificarSalidaEmp",      limit: 1
+    t.integer    "NotificarEntradaEmp",     limit: 1
+    t.integer    "NotificarEntSalEmpRedes", limit: 1
+    t.varchar    "NotificarMensajeSalida",  limit: 255
+    t.varchar    "NotificarMensajeEntrada", limit: 255
+    t.integer    "PermitirModDatosEmp",     limit: 1
+    t.integer    "CodCargo_EncRRHH",        limit: 4
+    t.integer    "CodCargo_AsisRRHH",       limit: 1
+    t.integer    "CodCargo_SecRRHH",        limit: 1
+    t.varchar    "URL_Evaluaciones",        limit: 255
+    t.string     "ImagenLogoAccion",        limit: 4000
+    t.string     "Logo",                    limit: 4000
   end
 
   create_table "Configuracion_RutasArchivos", id: false, force: :cascade do |t|
@@ -1229,8 +1032,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Constraint_EstCiv", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Desc_EstCiv",       limit: 50,  null: false
-    t.varchar "DescripcionIngles", limit: 100
+    t.varchar "Desc_EstCiv", limit: 50, null: false
   end
 
   create_table "Constraint_Estatus", id: false, force: :cascade do |t|
@@ -1239,36 +1041,31 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Constraint_Sexo", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Desc_Sexo",         limit: 50,  null: false
-    t.varchar "DescripcionIngles", limit: 100
+    t.varchar "Desc_Sexo", limit: 50, null: false
   end
 
   create_table "Constraint_TipoEmp", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Desc_TipoEmp",      limit: 50,  null: false
-    t.varchar "DescripcionIngles", limit: 100
+    t.varchar "Desc_TipoEmp", limit: 50, null: false
   end
 
   create_table "Control_InasistAutorizar", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar  "Concepto",         limit: 1,   null: false
-    t.integer  "ci_CodCompania",   limit: 4
-    t.integer  "Codigo_Empleado",  limit: 4,   null: false
-    t.integer  "Codigo_Accion",    limit: 4
-    t.integer  "Codigo_Motivo",    limit: 4,   null: false
+    t.varchar  "Concepto",        limit: 1,   null: false
+    t.integer  "ci_CodCompania",  limit: 4
+    t.integer  "Codigo_Empleado", limit: 4,   null: false
+    t.integer  "Codigo_Accion",   limit: 4
+    t.integer  "Codigo_Motivo",   limit: 4,   null: false
     t.datetime "Fecha_Desde"
-    t.varchar  "Hora_Desde",       limit: 12
+    t.varchar  "Hora_Desde",      limit: 12
     t.datetime "Fecha_Hasta"
-    t.varchar  "Hora_Hasta",       limit: 12
-    t.integer  "Dias",             limit: 4
-    t.integer  "Horas",            limit: 4
-    t.integer  "Minutos",          limit: 1
-    t.varchar  "Observacion",      limit: 255
-    t.integer  "Disfrute_Sueldo",  limit: 1
-    t.varchar  "Usuario",          limit: 30,  null: false
-    t.integer  "Autorizada",       limit: 1
-    t.integer  "Procesada",        limit: 1
-    t.datetime "Fecha_Reintegro"
-    t.char     "EstatusPerm",      limit: 1
-    t.datetime "FechaCancelacion"
+    t.varchar  "Hora_Hasta",      limit: 12
+    t.integer  "Dias",            limit: 4
+    t.integer  "Horas",           limit: 4
+    t.integer  "Minutos",         limit: 1
+    t.varchar  "Observacion",     limit: 255
+    t.integer  "Disfrute_Sueldo", limit: 1
+    t.varchar  "Usuario",         limit: 30,  null: false
+    t.integer  "Autorizada",      limit: 1
+    t.integer  "Procesada",       limit: 1
   end
 
   create_table "Control_Inasistencias", primary_key: "Codigo", force: :cascade do |t|
@@ -1333,12 +1130,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Cuentas", ["Numero_Cuenta"], name: "Personal_Nomina_AltCumb_dbo_Cuentas Numero_Cuenta"
 
-  create_table "CuentasImportar", id: false, force: :cascade do |t|
-    t.string "Codigo Cuenta",       limit: 255
-    t.string "Nombre Cuenta",       limit: 255
-    t.float  "Numero de la cuenta"
-  end
-
   create_table "CuentasImportarMercurySolaya", id: false, force: :cascade do |t|
     t.float  "grupo"
     t.float  "cuenta"
@@ -1386,27 +1177,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "CuentaRiesgo",  limit: 18, null: false
     t.varchar "CuentaISR",     limit: 18, null: false
     t.varchar "CuentaInfotep", limit: 18, null: false
-  end
-
-  create_table "Cuentas_ReporteTemp", id: false, force: :cascade do |t|
-    t.integer "Secuencia",        limit: 4,                            null: false
-    t.integer "CodCompania",      limit: 4,                            null: false
-    t.integer "CodEmpleado",      limit: 4,                            null: false
-    t.varchar "NombreEmpleado",   limit: 100
-    t.varchar "CuentaSys",        limit: 30
-    t.varchar "CuentaFormateada", limit: 30
-    t.decimal "ValorDebito",                  precision: 18, scale: 2
-    t.decimal "ValorCredito",                 precision: 18, scale: 2
-    t.integer "CodSubGrupo",      limit: 4,                            null: false
-    t.varchar "NombreNovedad",    limit: 100
-    t.varchar "CCDivision",       limit: 30
-    t.varchar "CCCentroCosto",    limit: 30
-    t.varchar "CCDepartamento",   limit: 30
-    t.varchar "Proyecto",         limit: 30
-    t.varchar "NormaReparto",     limit: 30
-    t.varchar "CodigoSocio",      limit: 30
-    t.integer "Orden",            limit: 4
-    t.integer "CodigoNomina",     limit: 4
   end
 
   create_table "Cuentas_SubGrupos", primary_key: "Cod_Cuenta", force: :cascade do |t|
@@ -1502,7 +1272,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.decimal  "TotalDescuento",             precision: 18, scale: 2
     t.decimal  "BalanceDesc",                precision: 18, scale: 2
     t.integer  "PeriodoDesc",    limit: 1
-    t.integer  "CodLote",        limit: 4
   end
 
   create_table "Descuentos_Nomina_Empleados", primary_key: "Codigo_nomina", force: :cascade do |t|
@@ -1515,8 +1284,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Descontado",       limit: 1,                          null: false
     t.money   "Balance",                    precision: 19, scale: 4
     t.varchar "deMoneda",         limit: 5
-    t.money   "dnValorMonedaExt",           precision: 19, scale: 4
-    t.money   "dnTasaCambio",               precision: 19, scale: 4
   end
 
   add_index "Descuentos_Nomina_Empleados", ["dne_CodCompania", "Codigo_nomina", "Codigo_empleado"], name: "IX_Descuentos_Nomina_Empleados"
@@ -1531,8 +1298,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Codigo_Descuento", limit: 4
     t.money   "Balance",                    precision: 19, scale: 4
     t.varchar "deMoneda",         limit: 5
-    t.money   "dnValorMonedaExt",           precision: 19, scale: 4
-    t.money   "dnTasaCambio",               precision: 19, scale: 4
   end
 
   add_index "Descuentos_Nomina_Empleados_Temp", ["dne_CodCompania", "Codigo_nomina", "Codigo_empleado"], name: "IX_Descuentos_Nomina_Empleados_Temp"
@@ -1553,15 +1318,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   add_index "Detalles_Bonificacion", ["Codigo_Bonificacion", "Codigo_Empleado"], name: "Personal_Nomina_AltCumb_dbo_Detalles_Bonificacion idx_Bonificacion_Empleados"
-
-  create_table "Detalles_BonificacionTemp", id: false, force: :cascade do |t|
-    t.integer "Codigo_Bonificacion", limit: 4,                          null: false
-    t.integer "dbe_CodCompania",     limit: 4
-    t.integer "Codigo_Empleado",     limit: 4,                          null: false
-    t.varchar "Tipo_Novedad",        limit: 1,                          null: false
-    t.integer "Codigo_Tipo_Novedad", limit: 4,                          null: false
-    t.money   "Valor",                         precision: 19, scale: 4, null: false
-  end
 
   create_table "Detalles_Planes_Seguro", id: false, force: :cascade do |t|
     t.integer "Codigo_Plan",              limit: 4,                           null: false
@@ -1620,29 +1376,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Documentos_Requisitos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",  limit: 100, null: false
-    t.integer "dCodCompania", limit: 4
-    t.varchar "AplicaA",      limit: 1
-  end
-
-  create_table "EmplAcceso", id: false, force: :cascade do |t|
-    t.float   "Codigo"
-    t.string  "Empleado",     limit: 255
-    t.string  "Nombre",       limit: 255
-    t.string  "Apellido1",    limit: 255
-    t.varchar "Apellido2",    limit: 50
-    t.varchar "Cargo",        limit: 50
-    t.varchar "Departamento", limit: 50
-  end
-
-  create_table "EmpleadoAccesosLuperon", id: false, force: :cascade do |t|
-    t.float  "Codigo"
-    t.string "Nombres",      limit: 255
-    t.string "Cargo",        limit: 255
-    t.string "Departamento", limit: 255
-    t.string "Nombre",       limit: 50
-    t.string "Apellido1",    limit: 50
-    t.string "Apellido2",    limit: 50
+    t.varchar "Descripcion", limit: 100, null: false
   end
 
   create_table "Empleado_Dependientes", primary_key: "ID", force: :cascade do |t|
@@ -1687,7 +1421,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Telefono_Emergencia",      limit: 13
     t.varchar  "Nombre_Doctor",            limit: 40
     t.varchar  "Telefono_Doctor",          limit: 13
-    t.varchar  "Direccion_Emergencia",     limit: 150
+    t.varchar  "Direccion_Emergencia",     limit: 60
     t.varchar  "Ciudad",                   limit: 30
     t.integer  "Numero_Solicitud",         limit: 4
     t.integer  "Nomina_Salario",           limit: 4,                            null: false
@@ -1740,11 +1474,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "TelefFlota",               limit: 15
     t.varchar  "TelefOficina",             limit: 15
     t.varchar  "ExtOficina",               limit: 6
-    t.integer  "CodPoliticaIncent",        limit: 4
-    t.integer  "RequiereAutHoras",         limit: 1
-    t.varchar  "CorreoComprobPago",        limit: 100
-    t.integer  "CodNivelBeneficios",       limit: 4
-    t.varchar  "Nombre2",                  limit: 50
   end
 
   add_index "Empleados", ["Cedula"], name: "Personal_Nomina_AltCumb_dbo_Empleados Cedula"
@@ -1857,16 +1586,12 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Empleados_AccesoAutoServ", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "Cod_Empleado",    limit: 4,               null: false
-    t.integer "Numero_Compania", limit: 4,               null: false
-    t.varchar "Usuario",         limit: 30,              null: false
-    t.varchar "Clave",           limit: 30,              null: false
-    t.integer "CambiarClave",    limit: 1,   default: 1, null: false
+    t.integer "Cod_Empleado",    limit: 4,              null: false
+    t.integer "Numero_Compania", limit: 4,              null: false
+    t.varchar "Usuario",         limit: 30,             null: false
+    t.varchar "Clave",           limit: 30,             null: false
+    t.integer "CambiarClave",    limit: 1,  default: 1, null: false
     t.varchar "ClaveDesencryp",  limit: 30
-    t.varchar "ClaveTemp",       limit: 100
-    t.varchar "IdiomaUsu",       limit: 5
-    t.integer "IdUsuSeg",        limit: 4
-    t.integer "IdDbSeguridad",   limit: 4
   end
 
   create_table "Empleados_ActivosPeriodo_Temp", id: false, force: :cascade do |t|
@@ -1877,24 +1602,19 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Empleados_Amonestaciones", primary_key: "Codigo", force: :cascade do |t|
-    t.integer  "Tipo_Amonestacion",  limit: 4,                            null: false
-    t.integer  "eam_CodCompania",    limit: 4
-    t.integer  "Codigo_Empleado",    limit: 4,                            null: false
-    t.datetime "Fecha",                                                   null: false
-    t.varchar  "Comentarios",        limit: 255,                          null: false
-    t.integer  "Orden",              limit: 4,                            null: false
-    t.varchar  "Usuario",            limit: 30,                           null: false
-    t.money    "FechaReg",                       precision: 19, scale: 4
-    t.varchar  "HoraIncidencia",     limit: 20
-    t.varchar  "ComentarioRRHH",     limit: 500
-    t.datetime "FechaLevantamiento"
-    t.varchar  "HoraLevantamiento",  limit: 20
+    t.integer  "Tipo_Amonestacion", limit: 4,                            null: false
+    t.integer  "eam_CodCompania",   limit: 4
+    t.integer  "Codigo_Empleado",   limit: 4,                            null: false
+    t.datetime "Fecha",                                                  null: false
+    t.varchar  "Comentarios",       limit: 255,                          null: false
+    t.integer  "Orden",             limit: 4,                            null: false
+    t.varchar  "Usuario",           limit: 30,                           null: false
+    t.money    "FechaReg",                      precision: 19, scale: 4
   end
 
   create_table "Empleados_AmonestacionesDocs", primary_key: "CodAmonestacion", force: :cascade do |t|
-    t.integer "Orden",       limit: 2,   null: false
-    t.varchar "Documento",   limit: 300, null: false
-    t.varchar "RutaArchivo", limit: 255
+    t.integer "Orden",     limit: 2,   null: false
+    t.varchar "Documento", limit: 300, null: false
   end
 
   create_table "Empleados_AmonestacionesTemp", primary_key: "Codigo", force: :cascade do |t|
@@ -1966,7 +1686,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Estado",             limit: 2
     t.integer  "CodInasistencia",    limit: 4
     t.decimal  "HorasDescLaboradas",             precision: 18, scale: 2
-    t.integer  "EsJustificada",      limit: 1
   end
 
   create_table "Empleados_AsistenciaTemp", primary_key: "Secuencia", force: :cascade do |t|
@@ -1990,7 +1709,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Estado",             limit: 2
     t.integer  "CodInasistencia",    limit: 4
     t.decimal  "HorasDescLaboradas",             precision: 18, scale: 2
-    t.integer  "EsJustificada",      limit: 1
   end
 
   create_table "Empleados_Beneficios", id: false, force: :cascade do |t|
@@ -2027,15 +1745,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Estatus_Curso",   limit: 1
   end
 
-  create_table "Empleados_DeduccAutomaticas", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",      limit: 4, null: false
-    t.integer "CodEmpleado",      limit: 4, null: false
-    t.integer "CodTipoDescuento", limit: 4, null: false
-    t.integer "PeriodoDescuento", limit: 1, null: false
-  end
-
-  add_index "Empleados_DeduccAutomaticas", ["CodCompania", "CodEmpleado", "CodTipoDescuento"], name: "IX_Empleados_DeduccAutomaticas"
-
   create_table "Empleados_DistCC", id: false, force: :cascade do |t|
     t.integer "Cod_Compania",  limit: 4, null: false
     t.integer "Cod_Empleado",  limit: 4, null: false
@@ -2044,23 +1753,11 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Empleados_Documentos", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer "Cod_Empleado",  limit: 4,   null: false
-    t.integer "Cod_Documento", limit: 4,   null: false
-    t.integer "Orden",         limit: 2,   null: false
+    t.integer "Cod_Empleado",  limit: 4, null: false
+    t.integer "Cod_Documento", limit: 4, null: false
+    t.integer "Orden",         limit: 2, null: false
     t.char    "EstatusDoc",    limit: 1
-    t.varchar "NombreDocu",    limit: 200
-    t.varchar "RutaImagenDoc", limit: 255
-    t.varchar "NombreArchivo", limit: 200
   end
-
-  create_table "Empleados_EmpAutorizan", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",       limit: 4, null: false
-    t.integer "CodEmpleado",       limit: 4, null: false
-    t.integer "CodEmpAutoriza",    limit: 4, null: false
-    t.integer "OrdenAutorizacion", limit: 4, null: false
-  end
-
-  add_index "Empleados_EmpAutorizan", ["CodCompania", "CodEmpleado"], name: "IX_Empleados_EmpAutorizan"
 
   create_table "Empleados_EquivComp", id: false, force: :cascade do |t|
     t.integer "Numero_Compania",       limit: 4, null: false
@@ -2070,19 +1767,16 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Empleados_Estudios", primary_key: "Codigo", force: :cascade do |t|
-    t.integer    "ees_CodCompania",   limit: 4
-    t.integer    "Codigo_Empleado",   limit: 4,                                   null: false
-    t.integer    "Estudio_Interno",   limit: 1
+    t.integer    "ees_CodCompania", limit: 4
+    t.integer    "Codigo_Empleado", limit: 4,                                   null: false
+    t.integer    "Estudio_Interno", limit: 1
     t.datetime   "Fecha_Desde"
     t.datetime   "Fecha_Hasta"
-    t.integer    "Horas",             limit: 4
-    t.money      "Costo_Curso",                          precision: 19, scale: 4
-    t.integer    "Codigo_Curso",      limit: 4,                                   null: false
-    t.text_basic "Comentarios",       limit: 2147483647
-    t.varchar    "Usuario",           limit: 30,                                  null: false
-    t.varchar    "ee_Institucion",    limit: 100
-    t.integer    "ee_CodInstitucion", limit: 4
-    t.integer    "IdProgramCurso",    limit: 4
+    t.integer    "Horas",           limit: 4
+    t.money      "Costo_Curso",                        precision: 19, scale: 4
+    t.integer    "Codigo_Curso",    limit: 4,                                   null: false
+    t.text_basic "Comentarios",     limit: 2147483647
+    t.varchar    "Usuario",         limit: 30,                                  null: false
   end
 
   create_table "Empleados_Experiencia", primary_key: "Codigo", force: :cascade do |t|
@@ -2113,19 +1807,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "Habla",           limit: 1
     t.varchar "Comprende",       limit: 1
   end
-
-  create_table "Empleados_IncentivoEvaluac", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",        limit: 4,                                        null: false
-    t.integer "CodEmpleado",        limit: 4,                                        null: false
-    t.decimal "PuntosDesde",                  precision: 12, scale: 2,               null: false
-    t.decimal "PuntosHasta",                  precision: 12, scale: 2,               null: false
-    t.char    "CrearOActualizaIng", limit: 1,                          default: "C", null: false
-    t.char    "FormaAplicar",       limit: 1,                                        null: false
-    t.integer "ReqAutorizacion",    limit: 1,                                        null: false
-    t.integer "CodTipoIngreso",     limit: 4,                                        null: false
-  end
-
-  add_index "Empleados_IncentivoEvaluac", ["CodCompania", "CodEmpleado"], name: "IX_Empleados_IncentivoEvaluac"
 
   create_table "Empleados_LabRefeImportados", id: false, force: :cascade do |t|
     t.float    "Numero_Compania"
@@ -2244,47 +1925,14 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Empleados_Objetivos", ["Numero_Compania", "Cod_Supervisor", "Ano", "Orden_Ano"], name: "IX_Empleados_Objetivos"
 
-  create_table "Empleados_ObjetivosActiv", primary_key: "Codigo", force: :cascade do |t|
-    t.integer  "CodCompania",        limit: 4,                            null: false
-    t.integer  "CodObjetivo",        limit: 4,                            null: false
-    t.varchar  "Actividad",          limit: 500,                          null: false
-    t.datetime "FechaInic",                                               null: false
-    t.datetime "FechaFin",                                                null: false
-    t.integer  "TiempoInvertido",    limit: 2,                            null: false
-    t.char     "UnidadTiempoInv",    limit: 2,                            null: false
-    t.decimal  "AvanceMetaObjetivo",             precision: 18, scale: 2, null: false
-    t.integer  "CodUsuario",         limit: 4,                            null: false
-    t.datetime "FechaRegistro",                                           null: false
-  end
-
-  add_index "Empleados_ObjetivosActiv", ["CodCompania", "CodObjetivo"], name: "IX_Empleados_ObjetivosActiv"
-  add_index "Empleados_ObjetivosActiv", ["Codigo"], name: "IX_Empleados_ObjetivosActiv_1"
-
-  create_table "Empleados_ObjetivosActivAdj", primary_key: "Codigo", force: :cascade do |t|
-    t.integer "CodCompania",    limit: 4,   null: false
-    t.integer "CodObjetivo",    limit: 4,   null: false
-    t.integer "CodActividad",   limit: 4,   null: false
-    t.varchar "RutaAdjunto",    limit: 500, null: false
-    t.varchar "ArchivoAdjunto", limit: 100, null: false
-  end
-
-  add_index "Empleados_ObjetivosActivAdj", ["CodCompania", "CodObjetivo", "CodActividad"], name: "IX_Empleados_ObjetivosActivAdj"
-
   create_table "Empleados_ObjetivosDet", primary_key: "Numero_Compania", force: :cascade do |t|
-    t.integer  "Codigo",          limit: 4,                            null: false
-    t.integer  "Cod_Empleado",    limit: 4,                            null: false
-    t.integer  "Cod_Objetivo",    limit: 4,                            null: false
-    t.varchar  "ObjetivoEmp",     limit: 250,                          null: false
-    t.decimal  "MetaEmp",                     precision: 12, scale: 2, null: false
-    t.decimal  "PrioridadEmp",                precision: 10, scale: 2, null: false
-    t.datetime "Fecha_Asig",                                           null: false
-    t.datetime "FechaInic"
-    t.datetime "FechaLimite"
-    t.decimal  "PuntosMax",                   precision: 18, scale: 2
-    t.integer  "CodClasifObjD",   limit: 4
-    t.integer  "CodUnidadMeta",   limit: 4
-    t.decimal  "AvanceMetaObj",               precision: 18, scale: 2
-    t.integer  "CodEvaluadorObj", limit: 4
+    t.integer  "Codigo",       limit: 4,                            null: false
+    t.integer  "Cod_Empleado", limit: 4,                            null: false
+    t.integer  "Cod_Objetivo", limit: 4,                            null: false
+    t.varchar  "ObjetivoEmp",  limit: 250,                          null: false
+    t.decimal  "MetaEmp",                  precision: 12, scale: 2, null: false
+    t.decimal  "PrioridadEmp",             precision: 10, scale: 2, null: false
+    t.datetime "Fecha_Asig",                                        null: false
   end
 
   add_index "Empleados_ObjetivosDet", ["Numero_Compania", "Cod_Empleado", "Cod_Objetivo", "ObjetivoEmp"], name: "IX_Empleados_ObjetivosDet"
@@ -2315,49 +1963,41 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "Empleados_PlanifHorario", ["CodCompania", "CodEmpleado", "Fecha", "Horario"], name: "IX_Empleados_PlanifHorario", unique: true
 
   create_table "Empleados_Procesados_Nomina", primary_key: "Codigo_Nomina", force: :cascade do |t|
-    t.integer "Tipo_Nomina",             limit: 4,                          null: false
-    t.integer "Ano_Nomina",              limit: 4,                          null: false
-    t.integer "Mes_Nomina",              limit: 1,                          null: false
-    t.integer "Periodo_Nomina",          limit: 1,                          null: false
-    t.integer "epn_CodCompania",         limit: 4,                          null: false
-    t.integer "Codigo_Empleado",         limit: 4,                          null: false
-    t.money   "Total_Ingresos",                    precision: 19, scale: 4
-    t.money   "Total_Descuentos",                  precision: 19, scale: 4
-    t.money   "Neto_Pagado",                       precision: 19, scale: 4
-    t.integer "Grupo_Emp",               limit: 4
-    t.integer "SubGrupo_Emp",            limit: 4
-    t.integer "Posicion_Emp",            limit: 4
-    t.integer "Orden_GS",                limit: 4
-    t.money   "Sal_Base",                          precision: 19, scale: 4
-    t.varchar "epMoneda",                limit: 5
-    t.money   "epValorMonedaExt",                  precision: 19, scale: 4
-    t.money   "epTasaCambio",                      precision: 19, scale: 4
-    t.money   "epTotalIngresosMonExt",             precision: 19, scale: 4
-    t.money   "epTotalDescuentosMonExt",           precision: 19, scale: 4
+    t.integer "Tipo_Nomina",      limit: 4,                          null: false
+    t.integer "Ano_Nomina",       limit: 4,                          null: false
+    t.integer "Mes_Nomina",       limit: 1,                          null: false
+    t.integer "Periodo_Nomina",   limit: 1,                          null: false
+    t.integer "epn_CodCompania",  limit: 4,                          null: false
+    t.integer "Codigo_Empleado",  limit: 4,                          null: false
+    t.money   "Total_Ingresos",             precision: 19, scale: 4
+    t.money   "Total_Descuentos",           precision: 19, scale: 4
+    t.money   "Neto_Pagado",                precision: 19, scale: 4
+    t.integer "Grupo_Emp",        limit: 4
+    t.integer "SubGrupo_Emp",     limit: 4
+    t.integer "Posicion_Emp",     limit: 4
+    t.integer "Orden_GS",         limit: 4
+    t.money   "Sal_Base",                   precision: 19, scale: 4
+    t.varchar "epMoneda",         limit: 5
   end
 
   add_index "Empleados_Procesados_Nomina", ["epn_CodCompania", "Ano_Nomina", "Mes_Nomina", "Periodo_Nomina", "Tipo_Nomina", "Codigo_Empleado"], name: "Personal_Nomina_AltCumb_dbo_Empleados_Procesados_Nomina idx_Tipo_Ano_Mes", unique: true
 
   create_table "Empleados_Procesados_Nomina_Temp", primary_key: "Codigo_Nomina", force: :cascade do |t|
-    t.integer "Tipo_Nomina",             limit: 4
-    t.integer "Ano_Nomina",              limit: 4
-    t.integer "Mes_Nomina",              limit: 1
-    t.integer "Periodo_Nomina",          limit: 1
-    t.integer "epn_CodCompania",         limit: 4,                          null: false
-    t.integer "Codigo_Empleado",         limit: 4,                          null: false
-    t.money   "Total_Ingresos",                    precision: 19, scale: 4
-    t.money   "Total_Descuentos",                  precision: 19, scale: 4
-    t.money   "Neto_Pagado",                       precision: 19, scale: 4
-    t.integer "Grupo_Emp",               limit: 4
-    t.integer "SubGrupo_Emp",            limit: 4
-    t.integer "Posicion_Emp",            limit: 4
-    t.integer "Orden_GS",                limit: 4
-    t.money   "Sal_Base",                          precision: 19, scale: 4
-    t.varchar "epMoneda",                limit: 5
-    t.money   "epValorMonedaExt",                  precision: 19, scale: 4
-    t.money   "epTasaCambio",                      precision: 19, scale: 4
-    t.money   "epTotalIngresosMonExt",             precision: 19, scale: 4
-    t.money   "epTotalDescuentosMonExt",           precision: 19, scale: 4
+    t.integer "Tipo_Nomina",      limit: 4
+    t.integer "Ano_Nomina",       limit: 4
+    t.integer "Mes_Nomina",       limit: 1
+    t.integer "Periodo_Nomina",   limit: 1
+    t.integer "epn_CodCompania",  limit: 4,                          null: false
+    t.integer "Codigo_Empleado",  limit: 4,                          null: false
+    t.money   "Total_Ingresos",             precision: 19, scale: 4
+    t.money   "Total_Descuentos",           precision: 19, scale: 4
+    t.money   "Neto_Pagado",                precision: 19, scale: 4
+    t.integer "Grupo_Emp",        limit: 4
+    t.integer "SubGrupo_Emp",     limit: 4
+    t.integer "Posicion_Emp",     limit: 4
+    t.integer "Orden_GS",         limit: 4
+    t.money   "Sal_Base",                   precision: 19, scale: 4
+    t.varchar "epMoneda",         limit: 5
   end
 
   add_index "Empleados_Procesados_Nomina_Temp", ["epn_CodCompania", "Ano_Nomina", "Mes_Nomina", "Periodo_Nomina", "Tipo_Nomina", "Codigo_Empleado"], name: "IX_Empleados_Procesados_Nomina_Temp", unique: true
@@ -2385,103 +2025,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "GrupoActual",        limit: 100
     t.varchar "SubGrupoActual",     limit: 100
     t.varchar "GrupoSubGrupoNuevo", limit: 200
-  end
-
-  create_table "EntrevistasLlenadoCabecera", id: false, force: :cascade do |t|
-    t.integer  "Codigo",                      limit: 4
-    t.integer  "CodFormulario",               limit: 4
-    t.integer  "CodCompania",                 limit: 4
-    t.varchar  "Formulario",                  limit: 100
-    t.integer  "CodEvaluador",                limit: 4
-    t.integer  "CodEvaluado",                 limit: 4
-    t.integer  "CodPosicionEvaluador",        limit: 4
-    t.integer  "CodPosicionEvaluado",         limit: 4
-    t.varchar  "AplicadoA",                   limit: 2
-    t.varchar  "PieComentariosEntrevistador", limit: 500
-    t.datetime "FechaEntrevista"
-    t.varchar  "PieComentariosRRHH",          limit: 500
-    t.varchar  "PieNotas",                    limit: 500
-    t.datetime "PieFechaEgreso"
-  end
-
-  create_table "EntrevistasLlenadoPreguntas", id: false, force: :cascade do |t|
-    t.integer "Codigo",              limit: 4
-    t.integer "CodCompania",         limit: 4
-    t.integer "CodFormulario",       limit: 4
-    t.integer "NoPregunta",          limit: 4
-    t.varchar "Pregunta",            limit: 500
-    t.varchar "ExplicacionPregunta", limit: 500
-  end
-
-  create_table "EntrevistasLlenadoRespuestas", id: false, force: :cascade do |t|
-    t.integer "Codigo",         limit: 4
-    t.integer "CodCompania",    limit: 4
-    t.integer "CodFormulario",  limit: 4
-    t.integer "CodPregunta",    limit: 4
-    t.integer "NoRespuesta",    limit: 4
-    t.varchar "Respuesta",      limit: 255
-    t.varchar "EscalaMedicion", limit: 500
-    t.decimal "Valor",                      precision: 10, scale: 2
-  end
-
-  create_table "EntrevistasModelos", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer  "Codigo",                          limit: 4,                             null: false
-    t.varchar  "NombreEntrevista",                limit: 500,                           null: false
-    t.varchar  "ExplicacionEntrevista",           limit: 1000,                          null: false
-    t.integer  "CodUsuario",                      limit: 4,                             null: false
-    t.datetime "FechaRegistro",                                                         null: false
-    t.char     "Estatus",                         limit: 1,                             null: false
-    t.varchar  "CabeceraTitulo",                  limit: 100
-    t.integer  "DesplegarEntrevistador",          limit: 1
-    t.integer  "DesplegarFechaIngreso",           limit: 1
-    t.integer  "DesplegarNombreEntrevistado",     limit: 1
-    t.integer  "DesplegarPosicionEntrevistado",   limit: 1
-    t.integer  "DesplegarDepartEntrevistado",     limit: 1
-    t.varchar  "CodigoFormulario",                limit: 20
-    t.integer  "PieDesplegarNombreEntrevistado",  limit: 1
-    t.integer  "PieDesplegarComentEntrevistador", limit: 1
-    t.integer  "PieDesplegarFechaEntrevista",     limit: 1
-    t.integer  "PieDesplegarFechaEgreso",         limit: 1
-    t.integer  "PieDesplegarFirmaEntrevistador",  limit: 1
-    t.integer  "PieDesplegarNombreRH",            limit: 1
-    t.integer  "PieDesplegarComentariosRH",       limit: 1
-    t.varchar  "PieNotas",                        limit: 255
-    t.integer  "TipoFormulario",                  limit: 4
-    t.varchar  "AplicarA",                        limit: 2
-    t.integer  "ReqCalificacion",                 limit: 1
-    t.decimal  "Calificacion",                                 precision: 10, scale: 2
-  end
-
-  create_table "EntrevistasModelosPreguntas", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo",              limit: 4,   null: false
-    t.integer "CodEntrevista",       limit: 4,   null: false
-    t.integer "NoPregunta",          limit: 4,   null: false
-    t.varchar "Pregunta",            limit: 500, null: false
-    t.varchar "ExplicacionPregunta", limit: 500, null: false
-    t.integer "FormaSeleccion",      limit: 1,   null: false
-    t.varchar "GrupoPregunta",       limit: 100
-    t.integer "RepuestaObligatoria", limit: 1
-  end
-
-  add_index "EntrevistasModelosPreguntas", ["CodCompania", "CodEntrevista", "NoPregunta"], name: "IX_EntrevistasPreguntas", unique: true
-
-  create_table "EntrevistasModelosRespuestas", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo",             limit: 4,                            null: false
-    t.integer "CodEntrevista",      limit: 4,                            null: false
-    t.integer "CodPregunta",        limit: 4,                            null: false
-    t.integer "NoRespuesta",        limit: 4,                            null: false
-    t.varchar "Respuesta",          limit: 255,                          null: false
-    t.varchar "EscalaMedicion",     limit: 500,                          null: false
-    t.integer "EsRespuestaEscrita", limit: 1,                            null: false
-    t.decimal "Valor",                          precision: 10, scale: 2
-  end
-
-  add_index "EntrevistasModelosRespuestas", ["CodCompania", "CodEntrevista", "CodPregunta", "NoRespuesta"], name: "IX_EntrevistasPregunRespuestas", unique: true
-
-  create_table "EntrevistasTipos", id: false, force: :cascade do |t|
-    t.integer "Codigo",      limit: 4
-    t.varchar "Descripcion", limit: 50
-    t.integer "CodCompania", limit: 4
   end
 
   create_table "Equipos", primary_key: "CodCompania", force: :cascade do |t|
@@ -2594,9 +2137,8 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Cod_CatEscala",  limit: 4
     t.integer "NoAplicaPunt",   limit: 1
     t.char    "CampoElegir",    limit: 1
-    t.varchar "Usuario",        limit: 30,                           null: false
+    t.varchar "Usuario",        limit: 30,  null: false
     t.integer "CodCompania",    limit: 4
-    t.decimal "PuntosMaximo",               precision: 18, scale: 2
   end
 
   create_table "Escalas_EvaluacionesCol", primary_key: "Cod_Categoria", force: :cascade do |t|
@@ -2655,33 +2197,26 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Evaluaciones", primary_key: "Codigo", force: :cascade do |t|
-    t.integer  "Cod_Compania",            limit: 4
-    t.integer  "Cod_TipoEval",            limit: 4,                             null: false
-    t.varchar  "Descripcion_Eval",        limit: 100,                           null: false
-    t.integer  "Cod_PeriodoEval",         limit: 4,                             null: false
+    t.integer  "Cod_Compania",         limit: 4
+    t.integer  "Cod_TipoEval",         limit: 4,                             null: false
+    t.varchar  "Descripcion_Eval",     limit: 100,                           null: false
+    t.integer  "Cod_PeriodoEval",      limit: 4,                             null: false
     t.datetime "Fecha_Reg"
-    t.varchar  "ComentarioEnc",           limit: 1000
-    t.varchar  "ComentarioPie",           limit: 1000
-    t.integer  "Cod_CatEscala",           limit: 4
-    t.varchar  "Usuario",                 limit: 30,                            null: false
+    t.varchar  "ComentarioEnc",        limit: 1000
+    t.varchar  "ComentarioPie",        limit: 1000
+    t.integer  "Cod_CatEscala",        limit: 4
+    t.varchar  "Usuario",              limit: 30,                            null: false
     t.float    "Porc_Objetivos"
     t.float    "Porc_Competencias"
-    t.integer  "FijarPuntosComp",         limit: 1
-    t.integer  "FijarMetasObj",           limit: 1
-    t.integer  "FijarPriorObj",           limit: 1
-    t.integer  "EvaluarDesempeno",        limit: 1
-    t.integer  "EvaluarObjetivos",        limit: 1
-    t.integer  "DesplegarPuntosCompe",    limit: 1
-    t.varchar  "InstruccionLlenado",      limit: 255
-    t.integer  "FormaTotalizarResult",    limit: 1
-    t.decimal  "MinutosLimite",                        precision: 18, scale: 2
-    t.integer  "AplicaIncentivo",         limit: 1
-    t.decimal  "PuntosObjetivos",                      precision: 18, scale: 2
-    t.decimal  "PuntosCompetencias",                   precision: 18, scale: 2
-    t.integer  "PromediarEvalEmpPeriodo", limit: 1
-    t.varchar  "ReporteEvaluaciones",     limit: 255
-    t.varchar  "AliasFormulario",         limit: 30
-    t.integer  "CalcCompXFactorMult",     limit: 1
+    t.integer  "FijarPuntosComp",      limit: 1
+    t.integer  "FijarMetasObj",        limit: 1
+    t.integer  "FijarPriorObj",        limit: 1
+    t.integer  "EvaluarDesempeno",     limit: 1
+    t.integer  "EvaluarObjetivos",     limit: 1
+    t.integer  "DesplegarPuntosCompe", limit: 1
+    t.varchar  "InstruccionLlenado",   limit: 255
+    t.integer  "FormaTotalizarResult", limit: 1
+    t.decimal  "MinutosLimite",                     precision: 18, scale: 2
   end
 
   create_table "Evaluaciones_Acciones", primary_key: "Codigo", force: :cascade do |t|
@@ -2737,8 +2272,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Evaluaciones_ClasifObjetivos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 100, null: false
-    t.integer "coCodCompania", limit: 4
+    t.varchar "Descripcion", limit: 100, null: false
   end
 
   create_table "Evaluaciones_CursosRecom", id: false, force: :cascade do |t|
@@ -2764,92 +2298,39 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Evaluaciones_Empleados", primary_key: "Cod_Asignacion", force: :cascade do |t|
-    t.integer    "eve_CodCompania",            limit: 4
-    t.integer    "Orden",                      limit: 4,                                               null: false
-    t.integer    "Cod_Evaluador",              limit: 4,                                               null: false
-    t.integer    "Cod_Evaluado",               limit: 4,                                               null: false
-    t.integer    "Evaluado",                   limit: 1,                                   default: 0
-    t.char       "TipoEvaluado",               limit: 1
+    t.integer    "eve_CodCompania",       limit: 4
+    t.integer    "Orden",                 limit: 4,                      null: false
+    t.integer    "Cod_Evaluador",         limit: 4,                      null: false
+    t.integer    "Cod_Evaluado",          limit: 4,                      null: false
+    t.integer    "Evaluado",              limit: 1,          default: 0
+    t.char       "TipoEvaluado",          limit: 1
     t.datetime   "Fecha_Evaluado"
     t.datetime   "Fecha_ProxEval"
-    t.text_basic "Observaciones",              limit: 2147483647
+    t.text_basic "Observaciones",         limit: 2147483647
     t.float      "Puntos_Objetivos"
     t.float      "Puntos_Compet"
     t.float      "Puntos_Final"
-    t.char       "TipoEvaluador",              limit: 1
-    t.integer    "Fecha_Asignado",             limit: 4
-    t.integer    "SecuenciaEval",              limit: 4
-    t.varchar    "Observacion_Evaluado",       limit: 1000
-    t.integer    "EvaluadoAcuerdoResult",      limit: 1
-    t.integer    "MantenerloCargo",            limit: 1
-    t.integer    "Reubicarlo",                 limit: 1
-    t.varchar    "ReubicarloDonde",            limit: 100
-    t.integer    "Promoverlo",                 limit: 1
-    t.varchar    "PromoverloDonde",            limit: 100
-    t.integer    "Premiarlo",                  limit: 1
-    t.varchar    "PremiarloComo",              limit: 100
-    t.integer    "Adistrarlo",                 limit: 1
-    t.varchar    "AdiestrarloEnQue",           limit: 100
-    t.integer    "EvalImpresa",                limit: 1
+    t.char       "TipoEvaluador",         limit: 1
+    t.integer    "Fecha_Asignado",        limit: 4
+    t.integer    "SecuenciaEval",         limit: 4
+    t.varchar    "Observacion_Evaluado",  limit: 1000
+    t.integer    "EvaluadoAcuerdoResult", limit: 1
+    t.integer    "MantenerloCargo",       limit: 1
+    t.integer    "Reubicarlo",            limit: 1
+    t.varchar    "ReubicarloDonde",       limit: 100
+    t.integer    "Promoverlo",            limit: 1
+    t.varchar    "PromoverloDonde",       limit: 100
+    t.integer    "Premiarlo",             limit: 1
+    t.varchar    "PremiarloComo",         limit: 100
+    t.integer    "Adistrarlo",            limit: 1
+    t.varchar    "AdiestrarloEnQue",      limit: 100
+    t.integer    "EvalImpresa",           limit: 1
     t.float      "Puntos_CompetCalc"
     t.float      "Puntos_ObjetCalc"
-    t.integer    "CodEntidad",                 limit: 4
-    t.decimal    "TotalPuntosForm",                               precision: 18, scale: 2
-    t.integer    "SupervisorAcuerdoResult",    limit: 1
-    t.decimal    "PromedioCompetEnBaseEscala",                    precision: 18, scale: 2
-    t.decimal    "LogroObjetivos",                                precision: 18, scale: 2
-    t.decimal    "SumatoriaCompeten",                             precision: 18, scale: 2
-    t.decimal    "PesoAsignado",                                  precision: 18, scale: 2
-    t.integer    "Cod_FormEvalE",              limit: 4
-    t.decimal    "SumatoriaPuntosEquiv",                          precision: 18, scale: 4
-    t.integer    "EsConsolidada",              limit: 1
-    t.decimal    "SumatoriaPuntosObj",                            precision: 18, scale: 2
+    t.integer    "CodEntidad",            limit: 4
   end
 
   add_index "Evaluaciones_Empleados", ["Cod_Asignacion"], name: "IX_Evaluaciones_Empleados"
-
-  create_table "Evaluaciones_EmpleadosTemp", primary_key: "Cod_Asignacion", force: :cascade do |t|
-    t.integer    "eve_CodCompania",            limit: 4
-    t.integer    "Orden",                      limit: 4,                                               null: false
-    t.integer    "Cod_Evaluador",              limit: 4,                                               null: false
-    t.integer    "Cod_Evaluado",               limit: 4,                                               null: false
-    t.integer    "Evaluado",                   limit: 1
-    t.char       "TipoEvaluado",               limit: 1
-    t.datetime   "Fecha_Evaluado"
-    t.datetime   "Fecha_ProxEval"
-    t.text_basic "Observaciones",              limit: 2147483647
-    t.float      "Puntos_Objetivos"
-    t.float      "Puntos_Compet"
-    t.float      "Puntos_Final"
-    t.char       "TipoEvaluador",              limit: 1
-    t.datetime   "Fecha_Asignado"
-    t.integer    "SecuenciaEval",              limit: 4
-    t.varchar    "Observacion_Evaluado",       limit: 1000
-    t.integer    "EvaluadoAcuerdoResult",      limit: 1
-    t.integer    "MantenerloCargo",            limit: 1
-    t.integer    "Reubicarlo",                 limit: 1
-    t.varchar    "ReubicarloDonde",            limit: 100
-    t.integer    "Promoverlo",                 limit: 1
-    t.varchar    "PromoverloDonde",            limit: 100
-    t.integer    "Premiarlo",                  limit: 1
-    t.varchar    "PremiarloComo",              limit: 100
-    t.integer    "Adistrarlo",                 limit: 1
-    t.varchar    "AdiestrarloEnQue",           limit: 100
-    t.integer    "EvalImpresa",                limit: 1
-    t.float      "Puntos_CompetCalc"
-    t.float      "Puntos_ObjetCalc"
-    t.integer    "CodEntidad",                 limit: 4
-    t.decimal    "PromedioCompetEnBaseEscala",                    precision: 18, scale: 2
-    t.decimal    "LogroObjetivos",                                precision: 18, scale: 2
-    t.decimal    "SumatoriaCompeten",                             precision: 18, scale: 2
-    t.decimal    "TotalPuntosForm",                               precision: 18, scale: 2
-    t.integer    "SupervisorAcuerdoResult",    limit: 1
-    t.decimal    "PesoAsignado",                                  precision: 18, scale: 2
-    t.integer    "EsConsolidada",              limit: 1,                                   default: 0
-    t.integer    "Cod_FormEvalE",              limit: 4
-    t.decimal    "SumatoriaPuntosEquiv",                          precision: 18, scale: 4
-    t.decimal    "SumatoriaPuntosObj",                            precision: 18, scale: 2
-  end
 
   create_table "Evaluaciones_Entidades", primary_key: "CodCompania", force: :cascade do |t|
     t.varchar  "CodEmpleado",      limit: 15, null: false
@@ -3007,35 +2488,16 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Evaluaciones_GradosFormTemp", ["Cod_Formulario", "Cod_Competencia"], name: "IX_Evaluaciones_GradosFormTemp"
 
-  create_table "Evaluaciones_GruposCompet", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",              limit: 4,   null: false
-    t.integer "Cod_FormEval",             limit: 4,   null: false
-    t.integer "CodClasificacionCompet",   limit: 4,   null: false
-    t.varchar "TituloGrupoCompet",        limit: 500, null: false
-    t.varchar "Comentarios1",             limit: 500, null: false
-    t.varchar "Comentarios2",             limit: 500, null: false
-    t.varchar "Comentarios3",             limit: 500, null: false
-    t.integer "CodEscalaEval",            limit: 4,   null: false
-    t.integer "IncluirExplicacionEscala", limit: 1,   null: false
-  end
-
-  add_index "Evaluaciones_GruposCompet", ["CodCompania", "Cod_FormEval", "CodClasificacionCompet"], name: "IX_Evaluaciones_GruposCompet"
-
   create_table "Evaluaciones_Lineas", primary_key: "Cod_FormEval", force: :cascade do |t|
-    t.integer "Cod_Competencia",          limit: 4,                          null: false
-    t.integer "Orden",                    limit: 2,                          null: false
-    t.integer "No_Pregunta",              limit: 4,                          null: false
-    t.char    "Tipo_Competencia",         limit: 1
-    t.integer "Cod_EscalaPunt",           limit: 4
-    t.integer "OrdenCompetencia",         limit: 2
-    t.decimal "MinutosLimComp",                     precision: 18, scale: 0
-    t.integer "DebeDigitarSol",           limit: 1
-    t.integer "SecuenciaLin",             limit: 4
-    t.integer "CodEscalaPuntosMax",       limit: 4
-    t.decimal "PuntuacionEquivalenteF",             precision: 18, scale: 2
-    t.decimal "FactorMultiplicarPuntosF",           precision: 18, scale: 4
-    t.integer "CodCategEscalaEval",       limit: 4
-    t.integer "CalcCompXFactorMult",      limit: 1
+    t.integer "Cod_Competencia",  limit: 4,                          null: false
+    t.integer "Orden",            limit: 2,                          null: false
+    t.integer "No_Pregunta",      limit: 4,                          null: false
+    t.char    "Tipo_Competencia", limit: 1
+    t.integer "Cod_EscalaPunt",   limit: 4
+    t.integer "OrdenCompetencia", limit: 2
+    t.decimal "MinutosLimComp",             precision: 18, scale: 0
+    t.integer "DebeDigitarSol",   limit: 1
+    t.integer "SecuenciaLin",     limit: 4
   end
 
   create_table "Evaluaciones_LineasSol", primary_key: "Secuencia", force: :cascade do |t|
@@ -3061,78 +2523,39 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Evaluaciones_ObjetivosDet", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "CodObjetivo",     limit: 20,                           null: false
-    t.varchar "Descripcion",     limit: 250,                          null: false
-    t.varchar "CodObjetPadre",   limit: 20,                           null: false
-    t.decimal "Meta",                        precision: 18, scale: 0, null: false
-    t.integer "Codigo_Usuario",  limit: 4
-    t.integer "CodEvaluadorObj", limit: 4
+    t.varchar "CodObjetivo",    limit: 20,                           null: false
+    t.varchar "Descripcion",    limit: 250,                          null: false
+    t.varchar "CodObjetPadre",  limit: 20,                           null: false
+    t.decimal "Meta",                       precision: 18, scale: 0, null: false
+    t.integer "Codigo_Usuario", limit: 4
   end
 
   create_table "Evaluaciones_RegCompet", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer "Cod_Asignacion",           limit: 4,                            null: false
-    t.integer "Cod_Empleado",             limit: 4,                            null: false
-    t.integer "Cod_Factor",               limit: 4,                            null: false
-    t.float   "Respuesta",                                                     null: false
-    t.varchar "Observacion",              limit: 255,                          null: false
+    t.integer "Cod_Asignacion", limit: 4,   null: false
+    t.integer "Cod_Empleado",   limit: 4,   null: false
+    t.integer "Cod_Factor",     limit: 4,   null: false
+    t.float   "Respuesta",                  null: false
+    t.varchar "Observacion",    limit: 255, null: false
     t.float   "Puntos_Compet"
-    t.integer "No_Pregunta",              limit: 2
-    t.integer "Orden",                    limit: 2
-    t.integer "Elegir",                   limit: 1
-    t.integer "SecuenEvalComp",           limit: 4
-    t.varchar "ObservacionSuperv",        limit: 255
-    t.decimal "PuntuacionEquivalente",                precision: 18, scale: 2
-    t.integer "Cod_FormEvalC",            limit: 4
-    t.decimal "FactorMultiplicarPuntosC",             precision: 18, scale: 4
-  end
-
-  create_table "Evaluaciones_RegCompetTemp", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer "Cod_Asignacion",           limit: 4,                            null: false
-    t.integer "Cod_Empleado",             limit: 4,                            null: false
-    t.integer "Cod_Factor",               limit: 4,                            null: false
-    t.float   "Respuesta",                                                     null: false
-    t.varchar "Observacion",              limit: 255,                          null: false
-    t.float   "Puntos_Compet"
-    t.integer "No_Pregunta",              limit: 2
-    t.integer "Orden",                    limit: 2
-    t.integer "Elegir",                   limit: 1
-    t.integer "SecuenEvalComp",           limit: 4
-    t.varchar "ObservacionSuperv",        limit: 255
-    t.integer "Orden2",                   limit: 1
-    t.integer "Cod_FormEvalC",            limit: 4
-    t.decimal "FactorMultiplicarPuntosC",             precision: 18, scale: 4
+    t.integer "No_Pregunta",    limit: 2
+    t.integer "Orden",          limit: 2
+    t.integer "Elegir",         limit: 1
+    t.integer "SecuenEvalComp", limit: 4
   end
 
   create_table "Evaluaciones_RegObj", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer "Cod_Asignacion",  limit: 4,   null: false
-    t.integer "Cod_Empleado",    limit: 4,   null: false
-    t.integer "Orden",           limit: 2,   null: false
-    t.varchar "Objetivo",        limit: 255, null: false
-    t.varchar "Meta",            limit: 255, null: false
-    t.float   "Cumplimiento",                null: false
-    t.float   "Peso",                        null: false
-    t.float   "Valor",                       null: false
-    t.float   "PesoValor",                   null: false
+    t.integer "Cod_Asignacion", limit: 4,   null: false
+    t.integer "Cod_Empleado",   limit: 4,   null: false
+    t.integer "Orden",          limit: 2,   null: false
+    t.varchar "Objetivo",       limit: 255, null: false
+    t.varchar "Meta",           limit: 255, null: false
+    t.float   "Cumplimiento",               null: false
+    t.float   "Peso",                       null: false
+    t.float   "Valor",                      null: false
+    t.float   "PesoValor",                  null: false
     t.float   "ValorMeta"
-    t.varchar "Observacion",     limit: 255, null: false
-    t.integer "SecuenEvalObj",   limit: 4
-    t.float   "ValorMaximoMeta"
-  end
-
-  create_table "Evaluaciones_RegObjTemp", primary_key: "Cod_Compania", force: :cascade do |t|
-    t.integer "Cod_Asignacion",  limit: 4,   null: false
-    t.integer "Cod_Empleado",    limit: 4,   null: false
-    t.integer "Orden",           limit: 2,   null: false
-    t.varchar "Objetivo",        limit: 255, null: false
-    t.varchar "Meta",            limit: 255, null: false
-    t.float   "Cumplimiento",                null: false
-    t.float   "Peso",                        null: false
-    t.float   "Valor",                       null: false
-    t.float   "PesoValor",                   null: false
-    t.float   "ValorMeta"
-    t.varchar "Observacion",     limit: 255, null: false
-    t.integer "SecuenEvalObj",   limit: 4
-    t.float   "ValorMaximoMeta"
+    t.varchar "Observacion",    limit: 255, null: false
+    t.integer "SecuenEvalObj",  limit: 4
   end
 
   create_table "Evaluaciones_RegRecom", primary_key: "Cod_Compania", force: :cascade do |t|
@@ -3145,22 +2568,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "SecuenEvalRecom",   limit: 4
     t.float   "ObservacionRecom"
     t.integer "TiempoLogroAccion", limit: 4
-  end
-
-  create_table "Evaluaciones_ResultPromedio", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer  "Secuencia",          limit: 4,                            null: false
-    t.integer  "CodEvaluado",        limit: 4,                            null: false
-    t.varchar  "TipoEvaluado",       limit: 1,                            null: false
-    t.varchar  "FormularioEval",     limit: 100,                          null: false
-    t.datetime "FechaInicEval",                                           null: false
-    t.datetime "FechaFinEval",                                            null: false
-    t.decimal  "PesoObjetivos",                  precision: 18, scale: 2, null: false
-    t.decimal  "PesoCompetencias",               precision: 18, scale: 2, null: false
-    t.decimal  "ResultObjetivos",                precision: 18, scale: 2, null: false
-    t.decimal  "ResultCompetencias",             precision: 18, scale: 2, null: false
-    t.decimal  "ResultPromedio",                 precision: 18, scale: 2, null: false
-    t.datetime "FechaRegistro",                                           null: false
-    t.integer  "CodUsuario",         limit: 4,                            null: false
   end
 
   create_table "Evaluaciones_SolicModEval", primary_key: "Codigo", force: :cascade do |t|
@@ -3184,11 +2591,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Evaluado",      limit: 1
     t.integer "Reclutamiento", limit: 1
     t.integer "Empleados",     limit: 1
-  end
-
-  create_table "Evaluaciones_UnidMedObjetivos", primary_key: "Codigo", force: :cascade do |t|
-    t.integer "CodCompania", limit: 4,  null: false
-    t.varchar "Descripcion", limit: 50, null: false
   end
 
   create_table "Exclusiones_Seguro", id: false, force: :cascade do |t|
@@ -3232,14 +2634,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.datetime "Fecha_Hasta",                 null: false
     t.float    "Dias"
     t.float    "Dias_Pendientes"
-  end
-
-  create_table "FirmasProcesos", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Id",          limit: 4,   null: false
-    t.varchar "Nombre",      limit: 60,  null: false
-    t.varchar "Cargo",       limit: 100, null: false
-    t.varchar "Proceso",     limit: 50,  null: false
-    t.varchar "TituloFirma", limit: 50
   end
 
   create_table "Form_DGT3_tmp", id: false, force: :cascade do |t|
@@ -3387,7 +2781,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "Campo_Referencia",  limit: 100
     t.integer "Campo_Validado",    limit: 1
     t.varchar "Nombre_Reporteg",   limit: 100
-    t.varchar "FormatoDespliegue", limit: 30
   end
 
   create_table "Generador_Tablas2", id: false, force: :cascade do |t|
@@ -3448,9 +2841,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Grupos_Descuentos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 50, null: false
-    t.integer "gdCodCompania", limit: 4
-    t.integer "OrdenGrupoNom", limit: 2
+    t.varchar "Descripcion", limit: 50, null: false
   end
 
   create_table "Grupos_Empleados", primary_key: "Codigo", force: :cascade do |t|
@@ -3625,10 +3016,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "Horas_ImportarWeb", ["CodCompania", "Cod_Empleado"], name: "IX_Horas_ImportarWeb"
 
   create_table "Horas_TrabActividades", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 100, null: false
-    t.varchar "Alias",         limit: 10
-    t.varchar "Cod_Proyecto",  limit: 15
-    t.integer "haCodCompania", limit: 4
+    t.varchar "Descripcion",  limit: 100, null: false
+    t.varchar "Alias",        limit: 10
+    t.varchar "Cod_Proyecto", limit: 15
   end
 
   create_table "Horas_TrabAreasLocalid", primary_key: "Codigo", force: :cascade do |t|
@@ -3641,10 +3031,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Horas_TrabCompanias", id: false, force: :cascade do |t|
-    t.integer "Codigo",        limit: 4,   null: false
-    t.varchar "Descripcion",   limit: 100, null: false
+    t.integer "Codigo",      limit: 4,   null: false
+    t.varchar "Descripcion", limit: 100, null: false
     t.float   "Horas"
-    t.integer "ctCodCompania", limit: 4
   end
 
   create_table "Horas_TrabDiarias", primary_key: "Codigo", force: :cascade do |t|
@@ -3849,9 +3238,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money   "Deduccion",                   precision: 19, scale: 4
     t.float   "Tasa_excedente",                                       null: false
     t.integer "Periodo_descuento", limit: 1
-    t.integer "CodCompania",       limit: 4
-    t.integer "CodMunicipio",      limit: 4
-    t.integer "CodProvincia",      limit: 4
   end
 
   create_table "ISR_SS_Modificados", primary_key: "Codigo_Empleado", force: :cascade do |t|
@@ -3860,17 +3246,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Mes_Nomina",      limit: 1
     t.money   "Valor_ISR",                 precision: 19, scale: 4
     t.money   "Valor_SS",                  precision: 19, scale: 4
-    t.money   "Valor_SSPatrono",           precision: 19, scale: 4
-  end
-
-  create_table "ISR_Subsidio", primary_key: "Id", force: :cascade do |t|
-    t.integer "Ano",             limit: 4
-    t.integer "CodCompania",     limit: 4,                          null: false
-    t.money   "Limite_Inferior",           precision: 19, scale: 4, null: false
-    t.money   "Limite_superior",           precision: 19, scale: 4, null: false
-    t.money   "Subsidio",                  precision: 19, scale: 4, null: false
-    t.integer "CodMunicipio",    limit: 4
-    t.integer "CodProvincia",    limit: 4
   end
 
   create_table "Idiomas", primary_key: "Codigo", force: :cascade do |t|
@@ -3879,14 +3254,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Idiomas", ["Descripcion"], name: "IX_Idiomas", unique: true
 
-  create_table "Incetivo", id: false, force: :cascade do |t|
-    t.float  "CODIGO"
-    t.string "NOMBRE",   limit: 255
-    t.string "SUCURSAL", limit: 255
-    t.float  "MONEDA"
-    t.float  "Cuenta"
-  end
-
   create_table "Ingresos_Importar", id: false, force: :cascade do |t|
     t.datetime "fec_labor"
     t.integer  "iim_CodCompania", limit: 4
@@ -3894,36 +3261,30 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money    "val_incentivo",               precision: 19, scale: 4
     t.integer  "Tipo_Ing",        limit: 4
     t.varchar  "CedulaEmp",       limit: 15
-    t.integer  "CodLote",         limit: 4
-    t.decimal  "CantIngreso",                 precision: 18, scale: 2
   end
 
   create_table "Ingresos_Nomina_Empleados", primary_key: "Codigo_nomina", force: :cascade do |t|
-    t.integer "id",               limit: 4,                          null: false
-    t.integer "ine_CodCompania",  limit: 4,                          null: false
-    t.integer "Codigo_Empleado",  limit: 4,                          null: false
-    t.integer "Tipo_ingreso",     limit: 4,                          null: false
-    t.integer "Codigo_ingreso",   limit: 4
-    t.money   "Valor",                      precision: 19, scale: 4, null: false
+    t.integer "id",              limit: 4,                          null: false
+    t.integer "ine_CodCompania", limit: 4,                          null: false
+    t.integer "Codigo_Empleado", limit: 4,                          null: false
+    t.integer "Tipo_ingreso",    limit: 4,                          null: false
+    t.integer "Codigo_ingreso",  limit: 4
+    t.money   "Valor",                     precision: 19, scale: 4, null: false
     t.float   "Cantidad"
-    t.varchar "inMoneda",         limit: 5
-    t.money   "inValorMonedaExt",           precision: 19, scale: 4
-    t.money   "inTasaCambio",               precision: 19, scale: 4
+    t.varchar "inMoneda",        limit: 5
   end
 
   add_index "Ingresos_Nomina_Empleados", ["ine_CodCompania", "Codigo_nomina", "Codigo_Empleado"], name: "IX_Ingresos_Nomina_Empleados"
 
   create_table "Ingresos_Nomina_Empleados_Temp", primary_key: "Codigo_nomina", force: :cascade do |t|
-    t.integer "id",               limit: 4,                          null: false
-    t.integer "ine_CodCompania",  limit: 4,                          null: false
-    t.integer "Codigo_empleado",  limit: 4
-    t.integer "Tipo_ingreso",     limit: 4
-    t.integer "Codigo_ingreso",   limit: 4
-    t.money   "Valor",                      precision: 19, scale: 4
+    t.integer "id",              limit: 4,                          null: false
+    t.integer "ine_CodCompania", limit: 4,                          null: false
+    t.integer "Codigo_empleado", limit: 4
+    t.integer "Tipo_ingreso",    limit: 4
+    t.integer "Codigo_ingreso",  limit: 4
+    t.money   "Valor",                     precision: 19, scale: 4
     t.float   "Cantidad"
-    t.varchar "inMoneda",         limit: 5
-    t.money   "inValorMonedaExt",           precision: 19, scale: 4
-    t.money   "inTasaCambio",               precision: 19, scale: 4
+    t.varchar "inMoneda",        limit: 5
   end
 
   add_index "Ingresos_Nomina_Empleados_Temp", ["ine_CodCompania", "Codigo_nomina", "Codigo_empleado"], name: "IX_Ingresos_Nomina_Empleados_Temp"
@@ -3964,9 +3325,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer  "PeriodoNomina", limit: 4
     t.integer  "MesNomina",     limit: 4
     t.money    "ISR_Liquidado",            precision: 19, scale: 4
-    t.integer  "lsCodCompania", limit: 4
-    t.decimal  "AporteInfotep",            precision: 18, scale: 2
-    t.integer  "tsCodCompania", limit: 4
   end
 
   create_table "Liquidacion", primary_key: "Codigo", force: :cascade do |t|
@@ -4019,14 +3377,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.datetime "FechaCalcISR"
     t.money    "IngresosExentosISR",             precision: 19, scale: 4
     t.money    "ISR_Compensado",                 precision: 19, scale: 4
-    t.money    "InfotepSujeto",                  precision: 19, scale: 4
-    t.money    "AporteInfotep",                  precision: 19, scale: 4
-    t.integer  "tsCodCompania",       limit: 4
-    t.money    "IngresosAcumVacac",              precision: 19, scale: 4
-    t.money    "IngresosAcumCesan",              precision: 19, scale: 4
-    t.money    "IngreososAcumPreav",             precision: 19, scale: 4
-    t.money    "IngresosAcumRegalia",            precision: 19, scale: 4
-    t.money    "IngresosAcumBonif",              precision: 19, scale: 4
   end
 
   add_index "Liquidacion", ["Cod_Compania", "Codigo_Empleado"], name: "IX_Liquidacion"
@@ -4040,85 +3390,10 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "CargoAutorizadoPor2", limit: 100, null: false
   end
 
-  create_table "Liquidacion_Firmas_Rep", id: false, force: :cascade do |t|
-    t.integer "Numero_Compania",     limit: 4,   null: false
-    t.varchar "CargoPreparadoPor",   limit: 100, null: false
-    t.varchar "CargoRevisadoPor",    limit: 100, null: false
-    t.varchar "CargoRecibidoPor",    limit: 100, null: false
-    t.varchar "CargoAutorizadoPor1", limit: 100, null: false
-    t.varchar "CargoAutorizadoPor2", limit: 100, null: false
-  end
-
   create_table "Liquidacion_Ingresos", id: false, force: :cascade do |t|
     t.integer "Cod_Liquidacion", limit: 4,                          null: false
     t.integer "Cod_TipoIngreso", limit: 4,                          null: false
     t.money   "Valor_Ingreso",             precision: 19, scale: 4, null: false
-  end
-
-  create_table "Liquidacion_Ingresos_Rep", id: false, force: :cascade do |t|
-    t.integer "Cod_Liquidacion", limit: 4,                          null: false
-    t.integer "Cod_TipoIngreso", limit: 4,                          null: false
-    t.money   "Valor_Ingreso",             precision: 19, scale: 4, null: false
-  end
-
-  create_table "Liquidacion_Rep", primary_key: "Codigo", force: :cascade do |t|
-    t.integer  "Cod_Compania",        limit: 4
-    t.integer  "Codigo_Empleado",     limit: 4
-    t.datetime "Fecha_Ingreso"
-    t.datetime "Fecha_Salida"
-    t.datetime "Fecha_Liquidacion"
-    t.money    "Salario_Diario",                 precision: 19, scale: 4
-    t.money    "Salario_Base",                   precision: 19, scale: 4
-    t.integer  "Desactivar_Empleado", limit: 1
-    t.integer  "Anos",                limit: 2
-    t.integer  "Meses",               limit: 1
-    t.integer  "Dias",                limit: 1
-    t.float    "Dias_Cesantia"
-    t.float    "Dias_Preaviso"
-    t.float    "Dias_Vacaciones"
-    t.float    "Dias_BVacaciones"
-    t.float    "Dias_Bonificacion"
-    t.float    "Meses_Regalia"
-    t.float    "Dias_SalPend"
-    t.money    "Valor_Cesantia",                 precision: 19, scale: 4
-    t.money    "Valor_Preaviso",                 precision: 19, scale: 4
-    t.money    "Valor_Vacaciones",               precision: 19, scale: 4
-    t.money    "Valor_BVacaciones",              precision: 19, scale: 4
-    t.money    "Valor_Regalia",                  precision: 19, scale: 4
-    t.money    "Valor_Bonificacion",             precision: 19, scale: 4
-    t.money    "Valor_SalPend",                  precision: 19, scale: 4
-    t.money    "Valor_OtrosIng",                 precision: 19, scale: 4
-    t.money    "Valor_DeudasPend",               precision: 19, scale: 4
-    t.money    "Valor_AFP",                      precision: 19, scale: 4
-    t.money    "Valor_ISR",                      precision: 19, scale: 4
-    t.money    "Neto_Pagado",                    precision: 19, scale: 4
-    t.money    "Salario_DiarioPreav",            precision: 19, scale: 4
-    t.money    "Salario_DiarioCes",              precision: 19, scale: 4
-    t.money    "Salario_DiarioVac",              precision: 19, scale: 4
-    t.money    "Salario_DiarioBVac",             precision: 19, scale: 4
-    t.money    "TotIng_Regalia",                 precision: 19, scale: 4
-    t.money    "Salario_DiarioBon",              precision: 19, scale: 4
-    t.money    "IncluirBonSalBase",              precision: 19, scale: 4
-    t.datetime "FecUltNom"
-    t.varchar  "TipoSalida",          limit: 20
-    t.varchar  "Usuario",             limit: 30
-    t.money    "Valor_ARS",                      precision: 19, scale: 4
-    t.money    "AFPSujeto",                      precision: 19, scale: 4
-    t.money    "ARSSujeto",                      precision: 19, scale: 4
-    t.money    "TotIngSujetoISR",                precision: 19, scale: 4
-    t.money    "IngSalSujISR",                   precision: 19, scale: 4
-    t.money    "IngOtrosSujISR",                 precision: 19, scale: 4
-    t.datetime "FechaCalcISR"
-    t.money    "IngresosExentosISR",             precision: 19, scale: 4
-    t.money    "ISR_Compensado",                 precision: 19, scale: 4
-    t.money    "InfotepSujeto",                  precision: 19, scale: 4
-    t.money    "AporteInfotep",                  precision: 19, scale: 4
-    t.integer  "tsCodCompania",       limit: 4
-    t.money    "IngresosAcumVacac",              precision: 19, scale: 4
-    t.money    "IngresosAcumCesan",              precision: 19, scale: 4
-    t.money    "IngreososAcumPreav",             precision: 19, scale: 4
-    t.money    "IngresosAcumRegalia",            precision: 19, scale: 4
-    t.money    "IngresosAcumBonif",              precision: 19, scale: 4
   end
 
   create_table "Liquidacion_Temp", id: false, force: :cascade do |t|
@@ -4152,27 +3427,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money    "IngUltAno",                            precision: 19, scale: 4
     t.money    "SalPromUltAno",                        precision: 19, scale: 4
     t.varchar  "Usuario",                   limit: 30
-    t.money    "InfotepSujeto",                        precision: 19, scale: 4
   end
 
   add_index "Liquidacion_Temp", ["Codigo_Empleado"], name: "Personal_Nomina_AltCumb_dbo_Liquidacion_Temp Codigo_Empleado"
-
-  create_table "MX_AportesPatronales_IMSS", id: false, force: :cascade do |t|
-    t.integer "Codigo",                limit: 4
-    t.integer "Ano",                   limit: 4
-    t.integer "CodCompania",           limit: 4
-    t.varchar "Descripcion",           limit: 100
-    t.decimal "PorcientoEmpresa",                  precision: 18, scale: 5
-    t.decimal "PorcientoEmpleado",                 precision: 18, scale: 5
-    t.integer "CodProvincia",          limit: 4
-    t.char    "FormaAplicar",          limit: 1
-    t.decimal "Valor",                             precision: 18, scale: 2
-    t.varchar "EnDineroOEspecie",      limit: 1
-    t.varchar "EstatusEmp",            limit: 1
-    t.varchar "TipoEmp",               limit: 1
-    t.decimal "SalarioDiarioMinDesde",             precision: 18, scale: 4
-    t.decimal "SalarioDiarioMinHasta",             precision: 18, scale: 4
-  end
 
   create_table "Maestra", id: false, force: :cascade do |t|
     t.string   "CODIGO",     limit: 255
@@ -4268,8 +3525,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Motivos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 50, null: false
-    t.integer "moCodCompania", limit: 4
+    t.varchar "Descripcion", limit: 50, null: false
   end
 
   add_index "Motivos", ["Descripcion"], name: "IX_Motivos", unique: true
@@ -4303,7 +3559,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Nacionalidad_Local",  limit: 1
     t.varchar "Pais_Nacionalidad",   limit: 100
     t.integer "SET_CodNacionalidad", limit: 4
-    t.varchar "SiglasPais",          limit: 5
   end
 
   add_index "Nacionalidades", ["Descripcion"], name: "IX_Nacionalidades", unique: true
@@ -4320,11 +3575,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Niveles", ["Descripcion", "Codigo_Compania"], name: "IX_Niveles", unique: true
 
-  create_table "Niveles_Beneficios", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo",      limit: 4,  null: false
-    t.varchar "Descripcion", limit: 50, null: false
-  end
-
   create_table "Nomina_Anexos", primary_key: "Secuencia", force: :cascade do |t|
     t.integer "CodNomina",   limit: 4,   null: false
     t.integer "CodCompania", limit: 4,   null: false
@@ -4335,38 +3585,12 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Nomina_Anexos", ["CodCompania", "CodNomina", "CodEmpleado"], name: "IX_Nomina_Anexos"
 
-  create_table "Nomina_ComproConsolidOtrosIng", id: false, force: :cascade do |t|
-    t.integer "CodCompania",        limit: 4,                           null: false
-    t.integer "CodEmpleado",        limit: 4,                           null: false
-    t.varchar "DescripcionNovedad", limit: 60,                          null: false
-    t.decimal "Cantidad",                      precision: 18, scale: 2, null: false
-    t.decimal "Valor",                         precision: 18, scale: 0, null: false
-  end
-
   create_table "Nomina_ComprobantesImp", primary_key: "Cod_Compania", force: :cascade do |t|
     t.integer "Cod_Empleado",           limit: 4,   null: false
     t.float   "Dias_Laborados"
     t.integer "Nomina_ComprobantesImp", limit: 4
     t.integer "orden",                  limit: 4
     t.varchar "NominasImprimir",        limit: 200
-  end
-
-  create_table "Nomina_CuotasSegSoc", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo_Nomina",         limit: 4,                          null: false
-    t.integer "CodEmpleado",           limit: 4,                          null: false
-    t.integer "CodDescuento",          limit: 4,                          null: false
-    t.integer "Orden",                 limit: 4,                          null: false
-    t.money   "ValorDescuentoEmp",               precision: 19, scale: 4, null: false
-    t.money   "ValorDescuentoPatrono",           precision: 19, scale: 4, null: false
-    t.money   "IngresosComputan",                precision: 19, scale: 4, null: false
-    t.money   "IngresosExcentos",                precision: 19, scale: 4, null: false
-    t.varchar "Origen",                limit: 2
-  end
-
-  create_table "Nomina_CuotasSegSoc_Column", id: false, force: :cascade do |t|
-    t.integer "CodCompania",     limit: 4, null: false
-    t.integer "CodDescuento",    limit: 4, null: false
-    t.integer "PosicionColumna", limit: 4, null: false
   end
 
   create_table "Nomina_DescMod", id: false, force: :cascade do |t|
@@ -4403,20 +3627,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Usuario",         limit: 50
   end
 
-  create_table "Nomina_EmpIngDescAcumu", id: false, force: :cascade do |t|
-    t.integer "CodCompania",   limit: 4, null: false
-    t.integer "CodEmpleado",   limit: 4, null: false
-    t.integer "CodNovedad",    limit: 4, null: false
-    t.varchar "TipoNovedad",   limit: 1, null: false
-    t.integer "ValorNovedad",  limit: 4, null: false
-    t.integer "TipoIngreso",   limit: 4, null: false
-    t.integer "TipoDescuento", limit: 4, null: false
-    t.integer "TipoHora",      limit: 4, null: false
-  end
-
-  add_index "Nomina_EmpIngDescAcumu", ["CodCompania", "CodEmpleado"], name: "IX_Nomina_EmpIngDescAcumu"
-  add_index "Nomina_EmpIngDescAcumu", ["TipoNovedad", "CodNovedad"], name: "IX_Nomina_EmpIngDescAcumu_1"
-
   create_table "Nomina_FechaCorte", primary_key: "Tipo_Nomina", force: :cascade do |t|
     t.integer  "Ano_Nomina",      limit: 4,  null: false
     t.integer  "Mes_Nomina",      limit: 1,  null: false
@@ -4428,15 +3638,12 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.datetime "Fecha_FinFijos"
     t.datetime "Fecha_InicHora"
     t.datetime "Fecha_FinHora"
-    t.datetime "Fecha_InicAsist"
-    t.datetime "Fecha_FinAsist"
   end
 
   create_table "Nomina_FormaPago", primary_key: "Codigo_Nomina", force: :cascade do |t|
     t.integer "Cod_Empleado", limit: 4, null: false
     t.char    "Forma_Pago",   limit: 1, null: false
     t.char    "Concepto",     limit: 1
-    t.varchar "fpMoneda",     limit: 5
   end
 
   create_table "Nomina_General", primary_key: "Codigo_Nomina", force: :cascade do |t|
@@ -4459,8 +3666,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer  "Transferida",         limit: 1,                           default: 0
     t.integer  "NoTransfMod",         limit: 4,                           default: 0
     t.integer  "NoAsientoCG",         limit: 4,                           default: 0
-    t.varchar  "noMoneda",            limit: 5
-    t.money    "noTasaCambio",                   precision: 19, scale: 4
   end
 
   add_index "Nomina_General", ["Fecha_Desde"], name: "Personal_Nomina_AltCumb_dbo_Nomina_General Fecha_Desde"
@@ -4498,31 +3703,28 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Nomina_IngDescComp", id: false, force: :cascade do |t|
-    t.integer "Numero_Compania",       limit: 4,                           null: false
-    t.integer "Ano",                   limit: 4,                           null: false
-    t.integer "Mes",                   limit: 1,                           null: false
-    t.integer "Cod_Empleado",          limit: 4,                           null: false
-    t.money   "Ing_CompISR",                      precision: 19, scale: 4
-    t.money   "Ing_CompAFP",                      precision: 19, scale: 4
-    t.money   "Ing_CompSalud",                    precision: 19, scale: 4
-    t.money   "Ing_CompRiesgo",                   precision: 19, scale: 4
-    t.money   "Desc_ISR",                         precision: 19, scale: 4
-    t.money   "Desc_AFP",                         precision: 19, scale: 4
-    t.money   "Desc_Salud",                       precision: 19, scale: 4
-    t.money   "Desc_Riesgo",                      precision: 19, scale: 4
-    t.money   "Desc_AFPCompa",                    precision: 19, scale: 4
-    t.money   "Desc_SaludCompa",                  precision: 19, scale: 4
-    t.money   "Desc_RiesgoCompa",                 precision: 19, scale: 4
-    t.integer "TieneHoras",            limit: 1
-    t.integer "TieneIngresos",         limit: 1
-    t.integer "TieneDesc",             limit: 1
-    t.money   "Desc_InfotepCompa",                precision: 19, scale: 4
-    t.money   "Ing_CompInfotep",                  precision: 19, scale: 4
-    t.varchar "CedulaEmp",             limit: 15
-    t.money   "Desc_SFSAdic",                     precision: 19, scale: 4
-    t.money   "ISRPorCompesar",                   precision: 19, scale: 4
-    t.money   "ISRCompesado",                     precision: 19, scale: 4
-    t.money   "ISRPagadoBonificacion",            precision: 19, scale: 4
+    t.integer "Numero_Compania",   limit: 4,                           null: false
+    t.integer "Ano",               limit: 4,                           null: false
+    t.integer "Mes",               limit: 1,                           null: false
+    t.integer "Cod_Empleado",      limit: 4,                           null: false
+    t.money   "Ing_CompISR",                  precision: 19, scale: 4
+    t.money   "Ing_CompAFP",                  precision: 19, scale: 4
+    t.money   "Ing_CompSalud",                precision: 19, scale: 4
+    t.money   "Ing_CompRiesgo",               precision: 19, scale: 4
+    t.money   "Desc_ISR",                     precision: 19, scale: 4
+    t.money   "Desc_AFP",                     precision: 19, scale: 4
+    t.money   "Desc_Salud",                   precision: 19, scale: 4
+    t.money   "Desc_Riesgo",                  precision: 19, scale: 4
+    t.money   "Desc_AFPCompa",                precision: 19, scale: 4
+    t.money   "Desc_SaludCompa",              precision: 19, scale: 4
+    t.money   "Desc_RiesgoCompa",             precision: 19, scale: 4
+    t.integer "TieneHoras",        limit: 1
+    t.integer "TieneIngresos",     limit: 1
+    t.integer "TieneDesc",         limit: 1
+    t.money   "Desc_InfotepCompa",            precision: 19, scale: 4
+    t.money   "Ing_CompInfotep",              precision: 19, scale: 4
+    t.varchar "CedulaEmp",         limit: 15
+    t.money   "Desc_SFSAdic",                 precision: 19, scale: 4
   end
 
   add_index "Nomina_IngDescComp", ["Numero_Compania", "Ano", "Mes", "Cod_Empleado"], name: "IX_Nomina_IngDescComp"
@@ -4583,10 +3785,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money   "Val_Infotep_Suj",            precision: 19, scale: 4
     t.money   "Val_Infotep_Comp",           precision: 19, scale: 4
     t.money   "Val_Infotep_Emp",            precision: 19, scale: 4
-    t.decimal "lsTasaCambio",               precision: 18, scale: 2
-    t.varchar "dlMoneda",         limit: 5
-    t.money   "dlTasaCambio",               precision: 19, scale: 4
-    t.money   "dlValorMonedaExt",           precision: 19, scale: 4
   end
 
   add_index "Nomina_LeySegSoc", ["nds_CodCompania", "Codigo_Nomina", "Cod_Empleado"], name: "IX_Nomina_LeySegSoc"
@@ -4612,17 +3810,12 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money   "Val_Infotep_Suj",            precision: 19, scale: 4
     t.money   "Val_Infotep_Comp",           precision: 19, scale: 4
     t.money   "Val_Infotep_Emp",            precision: 19, scale: 4
-    t.decimal "lsTasaCambio",               precision: 18, scale: 2
-    t.varchar "dlMoneda",         limit: 5
-    t.money   "dlTasaCambio",               precision: 19, scale: 4
-    t.money   "dlValorMonedaExt",           precision: 19, scale: 4
   end
 
   create_table "Nomina_PeriodosMes", id: false, force: :cascade do |t|
-    t.integer "Mes",            limit: 1
-    t.integer "Semanas",        limit: 1
-    t.integer "Bisemanas",      limit: 1
-    t.integer "npmCodCompania", limit: 4
+    t.integer "Mes",       limit: 1
+    t.integer "Semanas",   limit: 1
+    t.integer "Bisemanas", limit: 1
   end
 
   create_table "Nomina_Provisiones", primary_key: "Ano_Nomina", force: :cascade do |t|
@@ -4663,10 +3856,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money   "Valor_ISR",                 precision: 19, scale: 4
     t.money   "TotIngresos",               precision: 19, scale: 4
     t.money   "Valor_AFPAdic",             precision: 19, scale: 4
-    t.money   "SujetoAFP",                 precision: 19, scale: 4
-    t.money   "SujetoSFS",                 precision: 19, scale: 4
-    t.money   "SujetoSRL",                 precision: 19, scale: 4
-    t.money   "SujetoInfotep",             precision: 19, scale: 4
   end
 
   add_index "Nomina_Retenciones", ["Cod_Compania", "Codigo_Empleado", "Ano", "Mes", "Periodo"], name: "IX_Nomina_Retenciones"
@@ -4675,21 +3864,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Cod_Empleado",    limit: 4,                          null: false
     t.integer "nss_CodCompania", limit: 4
     t.money   "ValSegSocComp",             precision: 19, scale: 4
-    t.integer "CodDescuento",    limit: 4
-    t.money   "ValorSegSocEmp",            precision: 19, scale: 4
-    t.decimal "PorcientoEmp",              precision: 10, scale: 2
-    t.decimal "PorcientoComp",             precision: 10, scale: 2
-  end
-
-  create_table "Nomina_SueldoNavBonifAcum", primary_key: "Id", force: :cascade do |t|
-    t.integer "CodCompania",     limit: 4,                          null: false
-    t.integer "CodigoTrans",     limit: 4,                          null: false
-    t.varchar "Concepto",        limit: 2,                          null: false
-    t.integer "TipoNomina",      limit: 4,                          null: false
-    t.integer "CodEmpleado",     limit: 4,                          null: false
-    t.varchar "ConceptoIngreso", limit: 1,                          null: false
-    t.integer "CodTipoIngreso",  limit: 4,                          null: false
-    t.decimal "Valor",                     precision: 18, scale: 2, null: false
   end
 
   create_table "Nomina_Tasas", id: false, force: :cascade do |t|
@@ -4721,43 +3895,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer  "Transferida",         limit: 1,                           default: 0
     t.integer  "NoTransfMod",         limit: 4,                           default: 0
     t.integer  "NoAsientoCG",         limit: 4,                           default: 0
-    t.varchar  "noMoneda",            limit: 5
-    t.money    "noTasaCambio",                   precision: 19, scale: 4
   end
 
   add_index "Nomina_Temporal", ["Tipo_nomina", "Ano_Correspondiente", "Mes_correspondiente", "Periodo"], name: "Personal_Nomina_AltCumb_dbo_Nomina_Temporal idx_NomTempTipo", unique: true
-
-  create_table "Nomina_TransaccionesTemp", primary_key: "Id", force: :cascade do |t|
-    t.integer  "CodLote",           limit: 4,                            null: false
-    t.integer  "CodCompania",       limit: 4,                            null: false
-    t.integer  "Codigo_Nomina",     limit: 4,                            null: false
-    t.varchar  "DescripcionNomina", limit: 300,                          null: false
-    t.integer  "CodEmpleado",       limit: 4,                            null: false
-    t.integer  "CodTipoNov",        limit: 4,                            null: false
-    t.varchar  "DescNovedad",       limit: 100,                          null: false
-    t.decimal  "Valor",                         precision: 18, scale: 2, null: false
-    t.decimal  "Cantidad",                      precision: 18, scale: 2, null: false
-    t.varchar  "Concepto",          limit: 3,                            null: false
-    t.integer  "Computable_SS",     limit: 1,                            null: false
-    t.integer  "Orden",             limit: 2,                            null: false
-    t.varchar  "OrigenTrans",       limit: 3,                            null: false
-    t.integer  "CodUsuarioProcesa", limit: 4,                            null: false
-    t.varchar  "TipoTrans",         limit: 5
-    t.varchar  "CentroCosto1",      limit: 100
-    t.varchar  "CentroCosto2",      limit: 100
-    t.varchar  "CuentaCont",        limit: 100
-    t.varchar  "AliasCuenta",       limit: 100
-    t.integer  "SubGrupoEmp",       limit: 4
-    t.varchar  "Moneda",            limit: 10
-    t.decimal  "TasaCambio",                    precision: 12, scale: 2
-    t.decimal  "ValorMonExt",                   precision: 12, scale: 2
-    t.integer  "AnoNomina",         limit: 4
-    t.integer  "MesNomina",         limit: 1
-    t.integer  "PeriodoNomina",     limit: 1
-    t.datetime "FechaInic"
-    t.datetime "FechaFin"
-    t.integer  "OrdenConcepto",     limit: 2
-  end
 
   create_table "Nomina_Valor_Columnas", id: false, force: :cascade do |t|
     t.integer "Codigo_Nomina",   limit: 4
@@ -4779,16 +3919,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money   "ValColum15",                precision: 19, scale: 4
     t.money   "ValColum16",                precision: 19, scale: 4
     t.money   "ValColum17",                precision: 19, scale: 4
-  end
-
-  create_table "NotificacionesCorreo", primary_key: "Id", force: :cascade do |t|
-    t.integer  "CodCompania", limit: 4,   null: false
-    t.integer  "CodEmpleado", limit: 4,   null: false
-    t.varchar  "Titulo",      limit: 50
-    t.varchar  "Comentarios", limit: 100
-    t.varchar  "CorreoA",     limit: 100
-    t.varchar  "CCA",         limit: 100
-    t.datetime "FechaReg"
   end
 
   create_table "OJDT", primary_key: "CodCompania", force: :cascade do |t|
@@ -4818,83 +3948,63 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Opciones_Cliente", id: false, force: :cascade do |t|
-    t.integer  "Incentivo_K543",                      limit: 1
-    t.integer  "SumarSalarioNom",                     limit: 1
-    t.integer  "DesplegarNomFormaPago",               limit: 1
-    t.integer  "GuardarInterfaceReloj",               limit: 1
-    t.integer  "Cod_Compania",                        limit: 4
-    t.integer  "PrestacionesDeudas",                  limit: 1
-    t.integer  "PrestacionesSalPend",                 limit: 1
-    t.integer  "PrestacionesBonif",                   limit: 1
-    t.integer  "PrestacionesBonVac",                  limit: 1
-    t.integer  "PrestIncSalPendCalc",                 limit: 1
-    t.integer  "CodMotivoTardAutomat",                limit: 1
-    t.integer  "PagarHorasEmpLic",                    limit: 1
-    t.varchar  "UsuarioMercury",                      limit: 30
-    t.varchar  "ClaveEncripMercury",                  limit: 30
-    t.varchar  "RutaArchivoSapEncab",                 limit: 255
-    t.varchar  "RutaArchivoSapDetalle",               limit: 255
-    t.integer  "UsaServiceDesk",                      limit: 1
-    t.integer  "DBServiceDesk",                       limit: 1
-    t.varchar  "TablaUsuarios",                       limit: 100
-    t.varchar  "CodCompaniaCoop",                     limit: 20
-    t.integer  "CodGrupoUsuDefecto",                  limit: 4
-    t.integer  "InterfaceHorasSAP",                   limit: 1
-    t.varchar  "ServidorSAP",                         limit: 100
-    t.varchar  "DBSAP",                               limit: 100
-    t.integer  "ActivarLog",                          limit: 1
-    t.integer  "UsuarioSAActivo",                     limit: 1
-    t.integer  "BloquearWeb",                         limit: 1
+    t.integer  "Incentivo_K543",           limit: 1
+    t.integer  "SumarSalarioNom",          limit: 1
+    t.integer  "DesplegarNomFormaPago",    limit: 1
+    t.integer  "GuardarInterfaceReloj",    limit: 1
+    t.integer  "Cod_Compania",             limit: 4
+    t.integer  "PrestacionesDeudas",       limit: 1
+    t.integer  "PrestacionesSalPend",      limit: 1
+    t.integer  "PrestacionesBonif",        limit: 1
+    t.integer  "PrestacionesBonVac",       limit: 1
+    t.integer  "PrestIncSalPendCalc",      limit: 1
+    t.integer  "CodMotivoTardAutomat",     limit: 1
+    t.integer  "PagarHorasEmpLic",         limit: 1
+    t.varchar  "UsuarioMercury",           limit: 30
+    t.varchar  "ClaveEncripMercury",       limit: 30
+    t.varchar  "RutaArchivoSapEncab",      limit: 255
+    t.varchar  "RutaArchivoSapDetalle",    limit: 255
+    t.integer  "UsaServiceDesk",           limit: 1
+    t.integer  "DBServiceDesk",            limit: 1
+    t.varchar  "TablaUsuarios",            limit: 100
+    t.varchar  "CodCompaniaCoop",          limit: 20
+    t.integer  "CodGrupoUsuDefecto",       limit: 4
+    t.integer  "InterfaceHorasSAP",        limit: 1
+    t.varchar  "ServidorSAP",              limit: 100
+    t.varchar  "DBSAP",                    limit: 100
+    t.integer  "ActivarLog",               limit: 1
+    t.integer  "UsuarioSAActivo",          limit: 1
+    t.integer  "BloquearWeb",              limit: 1
     t.datetime "BloquearFecHasta"
-    t.varchar  "LabelSalarioBasComprob",              limit: 30
-    t.integer  "DesplegarCHorasComPago",              limit: 1
-    t.integer  "AsientoSAPBOAutomatico",              limit: 1
-    t.varchar  "UserSAPBO",                           limit: 30
-    t.varchar  "ClaveSAPBO",                          limit: 30
-    t.varchar  "CompaniaSAPBO",                       limit: 100
-    t.varchar  "VersionSQLSAPBO",                     limit: 30
-    t.varchar  "UsuarioAppSAPBO",                     limit: 30
-    t.varchar  "ClaveAppSAPBO",                       limit: 30
-    t.varchar  "VersionSAPBO",                        limit: 10
-    t.varchar  "TransCodeSAP",                        limit: 10
-    t.integer  "GenerarCKAutSAP",                     limit: 1
-    t.integer  "PermitirCrearLocalidades",            limit: 1
-    t.integer  "PermitirExcederHorasLoc",             limit: 1
-    t.string   "ImagenFondoCarnet",                   limit: 4000
-    t.integer  "MetodoImportarHorasSAPBO",            limit: 1
-    t.integer  "DesplegarDiasLabComprob",             limit: 4
-    t.integer  "HacerInterfaceQuickBook",             limit: 1
-    t.varchar  "ServerLicSAPBO",                      limit: 50
-    t.varchar  "DesplegarSalBaseOSalHora",            limit: 1,    default: "S"
-    t.varchar  "InterfaceWebOmfri",                   limit: 1,    default: "N"
-    t.varchar  "VerRH",                               limit: 20,   default: "3"
-    t.varchar  "VerNom",                              limit: 20,   default: "1"
-    t.varchar  "MonedaLocal",                         limit: 5
-    t.integer  "IncluirNombreEmpEnProyectoSAP",       limit: 1
-    t.varchar  "SiglasPais",                          limit: 5
-    t.varchar  "FormaGenerarCodigoAntEmp",            limit: 20
-    t.integer  "ControlarAsignIngresosPorBenefCargo", limit: 1
-    t.integer  "GenerarDescNegativoISRCompensado",    limit: 1
-    t.varchar  "ServidorDBFinanzas",                  limit: 100
-    t.varchar  "NombreDBFinanzas",                    limit: 100
-    t.varchar  "UsuarioDBFinanzas",                   limit: 100
-    t.varchar  "ClaveDBFinanzas",                     limit: 100
-    t.varchar  "CodCompaniaFinanzas",                 limit: 100
+    t.varchar  "LabelSalarioBasComprob",   limit: 30
+    t.integer  "DesplegarCHorasComPago",   limit: 1
+    t.integer  "AsientoSAPBOAutomatico",   limit: 1
+    t.varchar  "UserSAPBO",                limit: 30
+    t.varchar  "ClaveSAPBO",               limit: 30
+    t.varchar  "CompaniaSAPBO",            limit: 100
+    t.varchar  "VersionSQLSAPBO",          limit: 30
+    t.varchar  "UsuarioAppSAPBO",          limit: 30
+    t.varchar  "ClaveAppSAPBO",            limit: 30
+    t.varchar  "VersionSAPBO",             limit: 10
+    t.varchar  "TransCodeSAP",             limit: 10
+    t.integer  "GenerarCKAutSAP",          limit: 1
+    t.integer  "PermitirCrearLocalidades", limit: 1
+    t.integer  "PermitirExcederHorasLoc",  limit: 1
+    t.string   "ImagenFondoCarnet",        limit: 4000
+    t.integer  "MetodoImportarHorasSAPBO", limit: 1
+    t.integer  "DesplegarDiasLabComprob",  limit: 4
+    t.integer  "HacerInterfaceQuickBook",  limit: 1
+    t.varchar  "ServerLicSAPBO",           limit: 50
+    t.varchar  "DesplegarSalBaseOSalHora", limit: 1,    default: "S"
+    t.varchar  "InterfaceWebOmfri",        limit: 1,    default: "N"
+    t.varchar  "VerRH",                    limit: 20,   default: "3"
+    t.varchar  "VerNom",                   limit: 20,   default: "1"
+    t.varchar  "MonedaLocal",              limit: 5
   end
 
   create_table "Opciones_Web", id: false, force: :cascade do |t|
     t.integer "Codigo_RolAdm", limit: 4, null: false
     t.integer "Codigo_UsuAdm", limit: 4
-  end
-
-  create_table "OrdenCentrosCostosSAP", id: false, force: :cascade do |t|
-    t.integer "CodCompania",     limit: 4,  null: false
-    t.varchar "NombreCC1Sap",    limit: 50, null: false
-    t.varchar "NombreCC2Sap",    limit: 50
-    t.varchar "NombreCC3Sap1",   limit: 50
-    t.varchar "CampoCC1Mercury", limit: 50
-    t.varchar "CampoCC2Mercury", limit: 50
-    t.varchar "CampoCC3Mercury", limit: 50
   end
 
   create_table "Otros_Ingresos", primary_key: "Codigo_ingreso", force: :cascade do |t|
@@ -4954,7 +4064,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "LongitudCol",        limit: 200
     t.varchar "TipoCol",            limit: 300
     t.varchar "TooltipsIngles",     limit: 300
-    t.varchar "ItemDataCombos",     limit: 300
   end
 
   create_table "Pantallas_Nomina", primary_key: "ID_PANTALLA", force: :cascade do |t|
@@ -4979,22 +4088,13 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   create_table "Parametros", force: :cascade do |t|
     t.float    "Meses_desde"
-    t.float    "Meses_hasta",                                              null: false
+    t.float    "Meses_hasta",              null: false
     t.datetime "Fecha_desde"
     t.datetime "Fecha_hasta"
-    t.float    "Dias",                                                     null: false
-    t.integer  "Concepto",             limit: 4,                           null: false
-    t.integer  "Dias_Disfrute",        limit: 2
-    t.varchar  "MotivoParam",          limit: 30
-    t.integer  "paCodCompania",        limit: 4
-    t.integer  "AnosDesde",            limit: 2
-    t.integer  "AnosHasta",            limit: 2
-    t.decimal  "PrimaVacacional",                 precision: 12, scale: 2
-    t.decimal  "FactorIntegracion",               precision: 12, scale: 2
-    t.integer  "NivelLabor",           limit: 4
-    t.char     "FormaAplicarPagoDias", limit: 1
-    t.integer  "AplicarPorAno",        limit: 1
-    t.integer  "CalcDiasEnProporcion", limit: 1
+    t.float    "Dias",                     null: false
+    t.integer  "Concepto",      limit: 4,  null: false
+    t.integer  "Dias_Disfrute", limit: 2
+    t.varchar  "MotivoParam",   limit: 30
   end
 
   create_table "Parametros_Reclutamiento", primary_key: "Codigo", force: :cascade do |t|
@@ -5012,13 +4112,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Usuario",                limit: 30
   end
 
-  create_table "PermisosAdjuntos", primary_key: "Id", force: :cascade do |t|
-    t.integer "CodCompania",   limit: 4
-    t.integer "CodPermiso",    limit: 4
-    t.string  "NombreArchivo", limit: 100
-    t.string  "RutaArchivo",   limit: 255
-  end
-
   create_table "Planes_Seguro", primary_key: "Codigo_Seguro", force: :cascade do |t|
     t.integer "Codigo_Tipo",                 limit: 4,                           null: false
     t.varchar "Descripcion",                 limit: 50,                          null: false
@@ -5032,7 +4125,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.real    "Porciento_Compania_Personal"
     t.money   "Costo_Tarifa_Opcional",                  precision: 19, scale: 4
     t.real    "Porciento_Compania_Opcional"
-    t.integer "psCodCompania",               limit: 4
   end
 
   create_table "PlanifHorariosEncabRepTemp", id: false, force: :cascade do |t|
@@ -5085,42 +4177,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "CodHorario", limit: 4, null: false
   end
 
-  create_table "PoliticasIncentEvalObjComp", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",    limit: 4,                          null: false
-    t.integer "CodEmpleado",    limit: 4,                          null: false
-    t.char    "PorcientOValor", limit: 1,                          null: false
-    t.decimal "Valor",                    precision: 18, scale: 2, null: false
-    t.char    "AplicarA",       limit: 1,                          null: false
-    t.integer "CodObjetCompet", limit: 4,                          null: false
-    t.integer "CodTipoIng",     limit: 4,                          null: false
-    t.char    "GenerarIngreso", limit: 2
-  end
-
-  create_table "PoliticasIncentivos", primary_key: "Codigo", force: :cascade do |t|
-    t.integer "CodCompania", limit: 4,   null: false
-    t.varchar "Descripcion", limit: 100, null: false
-  end
-
-  create_table "PoliticasIncentivosDet", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",        limit: 4,                                        null: false
-    t.integer "CodPoliticaIncent",  limit: 4,                                        null: false
-    t.decimal "PuntosDesde",                  precision: 12, scale: 2,               null: false
-    t.decimal "PuntosHasta",                  precision: 12, scale: 2,               null: false
-    t.char    "CrearOActualizaIng", limit: 1,                          default: "C", null: false
-    t.char    "FormaAplicar",       limit: 1,                                        null: false
-    t.integer "ReqAutorizacion",    limit: 1,                                        null: false
-    t.integer "CodTipoIngreso",     limit: 4,                                        null: false
-  end
-
-  add_index "PoliticasIncentivosDet", ["CodCompania", "CodPoliticaIncent"], name: "IX_PoliticasIncentivosDet"
-
-  create_table "PoliticasYProcedAdjuntos", primary_key: "Id", force: :cascade do |t|
-    t.integer "CodCompania",   limit: 4
-    t.integer "CodPolitica",   limit: 4
-    t.string  "NombreArchivo", limit: 100
-    t.string  "RutaArchivo",   limit: 255
-  end
-
   create_table "PoliticasYProcedimientos", primary_key: "Codigo", force: :cascade do |t|
     t.integer    "CodCompania",     limit: 4,          null: false
     t.integer    "CodTipoPolitica", limit: 4,          null: false
@@ -5128,8 +4184,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer    "CodUsuario",      limit: 4,          null: false
     t.text_basic "Descripcion",     limit: 2147483647, null: false
     t.text_basic "DescripcionHTML", limit: 2147483647, null: false
-    t.varchar    "CodDocumento",    limit: 50
-    t.integer    "CodDepartamento", limit: 4
   end
 
   create_table "PoliticasYProcedimientosDetalles", primary_key: "CodPolitica", force: :cascade do |t|
@@ -5183,14 +4237,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "CodCargo",    limit: 4, null: false
   end
 
-  create_table "Politicas_Horarios_Colores", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania", limit: 4,  null: false
-    t.integer "CodUsuario",  limit: 4,  null: false
-    t.integer "CodHorario",  limit: 4,  null: false
-    t.varchar "Color",       limit: 60, null: false
-    t.integer "EsAdmRRHH",   limit: 1,  null: false
-  end
-
   create_table "Poliza_Accidentes", id: false, force: :cascade do |t|
     t.integer "Compania",        limit: 4,                            null: false
     t.varchar "Cedula",          limit: 50
@@ -5210,24 +4256,11 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "Poliza_Accidentes", ["Nombre_Empleado"], name: "Personal_Nomina_AltCumb_dbo_Poliza_Accidentes Nombre_Empleado"
 
   create_table "Posiciones", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",  limit: 50, null: false
-    t.integer "pCodCompania", limit: 4
+    t.varchar "Descripcion", limit: 50, null: false
   end
 
   add_index "Posiciones", ["Descripcion"], name: "IX_Posiciones", unique: true
   add_index "Posiciones", ["Descripcion"], name: "UQ__Posiciones__29572725", unique: true
-
-  create_table "PosicionesClasificacion_CargosAut", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "CodCargo",          limit: 4, null: false
-    t.integer "CodCargoAutoriza",  limit: 4, null: false
-    t.integer "OrdenAutorizacion", limit: 2, null: false
-  end
-
-  create_table "Posiciones_ClasifConceptosAut", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania", limit: 4, null: false
-    t.integer "CodCargo",    limit: 4, null: false
-    t.integer "CodConcepto", limit: 4, null: false
-  end
 
   create_table "Posiciones_Clasif_Descrip", primary_key: "Numero_Compania", force: :cascade do |t|
     t.integer "CodCargo",    limit: 4,   null: false
@@ -5236,32 +4269,29 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Posiciones_Clasificacion", primary_key: "Codigo", force: :cascade do |t|
-    t.integer    "Numero_compania",             limit: 4,                                   null: false
-    t.integer    "Codigo_Nivel",                limit: 4,                                   null: false
-    t.integer    "Codigo_Clasificacion",        limit: 4,                                   null: false
-    t.integer    "Codigo_Posicion",             limit: 4,                                   null: false
-    t.varchar    "Nombre_Cargo",                limit: 100,                                 null: false
-    t.text_basic "Descripcion",                 limit: 2147483647
-    t.money      "Salario_Desde",                                  precision: 19, scale: 4
-    t.money      "Salario_Hasta",                                  precision: 19, scale: 4
-    t.integer    "Plazas",                      limit: 4
-    t.integer    "Codigo_Clasif_Reporta",       limit: 4
-    t.integer    "Codigo_Posicion_Reporta",     limit: 4,                                   null: false
-    t.integer    "Codigo_Clasificacion_Cargo",  limit: 4,                                   null: false
-    t.varchar    "Supervisor",                  limit: 1,                                   null: false
-    t.text_basic "Descripcion_Det",             limit: 2147483647,                          null: false
-    t.char       "Estatus",                     limit: 1,                                   null: false
-    t.varchar    "Indice",                      limit: 20
-    t.integer    "Cod_CargoRep",                limit: 4
-    t.integer    "Cod_CargoRep2",               limit: 4
-    t.integer    "Puntuacion",                  limit: 2
-    t.varchar    "AliasCodigo",                 limit: 10
-    t.integer    "OrdenCargo",                  limit: 4
-    t.integer    "SET_CodOcupacion",            limit: 4
-    t.integer    "Cod_CargoAut",                limit: 4
-    t.integer    "CodPoliticaIncen",            limit: 4
-    t.integer    "ReqAutPagoHoras",             limit: 1
-    t.integer    "RequiereAutorizAutoServRRHH", limit: 1
+    t.integer    "Numero_compania",            limit: 4,                                   null: false
+    t.integer    "Codigo_Nivel",               limit: 4,                                   null: false
+    t.integer    "Codigo_Clasificacion",       limit: 4,                                   null: false
+    t.integer    "Codigo_Posicion",            limit: 4,                                   null: false
+    t.varchar    "Nombre_Cargo",               limit: 100,                                 null: false
+    t.text_basic "Descripcion",                limit: 2147483647
+    t.money      "Salario_Desde",                                 precision: 19, scale: 4
+    t.money      "Salario_Hasta",                                 precision: 19, scale: 4
+    t.integer    "Plazas",                     limit: 4
+    t.integer    "Codigo_Clasif_Reporta",      limit: 4
+    t.integer    "Codigo_Posicion_Reporta",    limit: 4,                                   null: false
+    t.integer    "Codigo_Clasificacion_Cargo", limit: 4,                                   null: false
+    t.varchar    "Supervisor",                 limit: 1,                                   null: false
+    t.text_basic "Descripcion_Det",            limit: 2147483647,                          null: false
+    t.char       "Estatus",                    limit: 1,                                   null: false
+    t.varchar    "Indice",                     limit: 20
+    t.integer    "Cod_CargoRep",               limit: 4
+    t.integer    "Cod_CargoRep2",              limit: 4
+    t.integer    "Puntuacion",                 limit: 2
+    t.varchar    "AliasCodigo",                limit: 10
+    t.integer    "OrdenCargo",                 limit: 4
+    t.integer    "SET_CodOcupacion",           limit: 4
+    t.integer    "Cod_CargoAut",               limit: 4
   end
 
   add_index "Posiciones_Clasificacion", ["Codigo"], name: "IX_Posiciones_Clasificacion_1", unique: true
@@ -5269,27 +4299,11 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "Posiciones_Clasificacion", ["Numero_compania"], name: "IX_Posiciones_Clasificacion"
 
   create_table "Posiciones_ClasificacionCursos", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "CodCurso",       limit: 4, null: false
-    t.integer "Orden",          limit: 4, null: false
-    t.integer "Recurrencia",    limit: 1, null: false
-    t.integer "Tiempo",         limit: 2, null: false
-    t.char    "Periodicidad",   limit: 1, null: false
-    t.integer "MesesEmpActivo", limit: 2
-  end
-
-  create_table "Posiciones_Clasificacion_DocReq", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",  limit: 4, null: false
-    t.integer "CodCargo",     limit: 4, null: false
-    t.integer "CodDocumento", limit: 4, null: false
-  end
-
-  add_index "Posiciones_Clasificacion_DocReq", ["CodCompania", "CodCargo", "CodDocumento"], name: "IX_Posiciones_Clasificacion_DocReq"
-
-  create_table "Posiciones_Clasificacion_FormEvalReq", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "CodCargo",         limit: 4,  null: false
-    t.integer "Orden",            limit: 4,  null: false
-    t.varchar "CodAliasFormEval", limit: 20, null: false
-    t.char    "Periodicidad",     limit: 1,  null: false
+    t.integer "CodCurso",     limit: 4, null: false
+    t.integer "Orden",        limit: 4, null: false
+    t.integer "Recurrencia",  limit: 1, null: false
+    t.integer "Tiempo",       limit: 2, null: false
+    t.char    "Periodicidad", limit: 1, null: false
   end
 
   create_table "Presu_PresupuestoDet", primary_key: "CodCompania", force: :cascade do |t|
@@ -5304,12 +4318,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.decimal "GastosSucu",                    precision: 18, scale: 2, null: false
   end
 
-  create_table "Presu_TipoNovedades", primary_key: "Codigo", force: :cascade do |t|
-    t.integer "CodCompania", limit: 4,                 null: false
-    t.varchar "Descripcion", limit: 100,               null: false
-    t.char    "Estatus",     limit: 1,   default: "A", null: false
-  end
-
   create_table "Presup_Presupuesto", primary_key: "CodCompania", force: :cascade do |t|
     t.integer  "Codigo",             limit: 4,                          null: false
     t.integer  "Ano",                limit: 4,                          null: false
@@ -5322,17 +4330,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.decimal  "PresupGastosDepart",           precision: 18, scale: 2, null: false
     t.decimal  "PresupIngSucu",                precision: 18, scale: 2, null: false
     t.decimal  "PresupGastosSucu",             precision: 18, scale: 2, null: false
-  end
-
-  create_table "Propinas_ConfVentas", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",     limit: 4,                          null: false
-    t.integer "Ano",             limit: 4,                          null: false
-    t.integer "Mes",             limit: 1,                          null: false
-    t.integer "Periodo",         limit: 1,                          null: false
-    t.integer "CodDepartamento", limit: 4,                          null: false
-    t.decimal "ValorVentas",               precision: 18, scale: 2, null: false
-    t.decimal "ValorMeta1",                precision: 18, scale: 2, null: false
-    t.decimal "ValorMeta2",                precision: 18, scale: 2, null: false
   end
 
   create_table "Propinas_Configuracion", id: false, force: :cascade do |t|
@@ -5362,18 +4359,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.float   "Puntuacion_Clasif"
   end
 
-  create_table "Propinas_ReglasEmp", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",    limit: 4,                          null: false
-    t.integer "CodEmpleado",    limit: 4,                          null: false
-    t.char    "FormaCalc",      limit: 1,                          null: false
-    t.decimal "Valor",                    precision: 18, scale: 2, null: false
-    t.char    "AplicarA",       limit: 2,                          null: false
-    t.integer "GenerarIngreso", limit: 1,                          null: false
-    t.integer "CodTipoIng",     limit: 4,                          null: false
-  end
-
-  add_index "Propinas_ReglasEmp", ["CodCompania", "CodEmpleado"], name: "IX_Propinas_ReglasEmp"
-
   create_table "Provincias", primary_key: "Codigo", force: :cascade do |t|
     t.varchar "Descripcion_Provincia", limit: 100, null: false
     t.integer "Orden_Provincia",       limit: 2
@@ -5381,15 +4366,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   add_index "Provincias", ["Descripcion_Provincia"], name: "IX_Provincias"
-
-  create_table "ProvinciasMexico", id: false, force: :cascade do |t|
-    t.float  "CVE_ENT"
-    t.string "NOM_ENT", limit: 255
-    t.float  "CVE_MUN"
-    t.string "NOM_MUN", limit: 255
-    t.float  "CVE_CAB"
-    t.string "NOM_CAB", limit: 255
-  end
 
   create_table "Psico_CategoriasPreg", primary_key: "Codigo", force: :cascade do |t|
     t.varchar "Descripcion_Categoria", limit: 500, null: false
@@ -5470,10 +4446,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "RequerimientoCompet", primary_key: "CodReq", force: :cascade do |t|
-    t.integer "CodCompet",              limit: 4
-    t.integer "CodGrado",               limit: 4
-    t.integer "Orden",                  limit: 4
-    t.varchar "DescripcionCompetencia", limit: 255
+    t.integer "CodCompet", limit: 4
+    t.integer "CodGrado",  limit: 4
+    t.integer "Orden",     limit: 4
   end
 
   create_table "Requerimiento_EvalAutor", primary_key: "Codigo", force: :cascade do |t|
@@ -5524,22 +4499,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "PalabraClave2",             limit: 50
     t.varchar  "PalabraClave3",             limit: 50
     t.integer  "AnosExperiencia",           limit: 1
-    t.varchar  "ComentariosCompletado",     limit: 255
-    t.varchar  "NombreCargReq",             limit: 100
-    t.varchar  "NombreAreaConoc1",          limit: 100
-    t.varchar  "NombreAreaConoc2",          limit: 100
-    t.integer  "Autorizado",                limit: 1
-    t.integer  "Publicado",                 limit: 1
   end
 
   add_index "Requerimiento_Personal", ["Cod_CompaniaSolic", "Clasificacion_Solicitante", "Solicitado_Por"], name: "IX_Requerimiento_Personal"
-
-  create_table "RequerimientosAplicantes", id: false, force: :cascade do |t|
-    t.integer "CodSolicitud",     limit: 4
-    t.integer "CodRequerimiento", limit: 4
-    t.varchar "Comentario",       limit: 500
-    t.integer "Codigo",           limit: 4
-  end
 
   create_table "Requerimientos_Aplicados", primary_key: "CodSolicitud", force: :cascade do |t|
     t.integer  "Usuario",    limit: 4
@@ -5580,10 +4542,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Requerimientos_PerCursos", primary_key: "Cod_Requerimiento", force: :cascade do |t|
-    t.integer "Cod_Curso",        limit: 4,   null: false
-    t.char    "Origen_Curso",     limit: 1,   null: false
-    t.integer "Orden",            limit: 2,   null: false
-    t.varchar "DescripcionCurso", limit: 100
+    t.integer "Cod_Curso",    limit: 4, null: false
+    t.char    "Origen_Curso", limit: 1, null: false
+    t.integer "Orden",        limit: 2, null: false
   end
 
   create_table "Requerimientos_PerHorarios", primary_key: "Cod_Requerimiento", force: :cascade do |t|
@@ -5592,11 +4553,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Requerimientos_PersonalBenef", id: false, force: :cascade do |t|
-    t.integer "CodReq",          limit: 4
-    t.integer "CodBenef",        limit: 4
-    t.decimal "Valor",                      precision: 18, scale: 2
-    t.integer "brCodCompania",   limit: 4
-    t.varchar "NombreBeneficio", limit: 60
+    t.integer "CodReq",   limit: 4
+    t.integer "CodBenef", limit: 4
+    t.decimal "Valor",              precision: 18, scale: 2
   end
 
   create_table "Requerimientos_PesoCrit", primary_key: "CodCompania", force: :cascade do |t|
@@ -5671,26 +4630,17 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Seguro_Inclucion_Exclucion", primary_key: "Codigo", force: :cascade do |t|
-    t.integer  "sie_CodCompania",          limit: 4
-    t.integer  "Codigo_Empleado",          limit: 4
-    t.integer  "Codigo_Tipo_Seguro",       limit: 4
-    t.integer  "Codigo_Plan_Seguro",       limit: 4
-    t.integer  "Codigo_Nomina",            limit: 4
-    t.integer  "Codigo_Tipo_Descuento",    limit: 4
-    t.integer  "Periodo_Descuento",        limit: 1
-    t.integer  "Tarifa_Familiar",          limit: 1
-    t.integer  "Tarifa_Personal",          limit: 1
-    t.integer  "Tarifa_Opcional",          limit: 1
-    t.integer  "Tarifa_Dependientes",      limit: 1
-    t.datetime "FechaRegistro"
-    t.decimal  "CostoSeguroPersonal",                precision: 18, scale: 2
-    t.decimal  "CostoSeguroFamiliar",                precision: 18, scale: 2
-    t.decimal  "CostoSeguroOpcional",                precision: 18, scale: 2
-    t.decimal  "CostoSeguroDepend",                  precision: 18, scale: 2
-    t.decimal  "CostoSeguroPersonalPatro",           precision: 18, scale: 2
-    t.decimal  "CostoSeguroFamiliarPatro",           precision: 18, scale: 2
-    t.decimal  "CostoSeguroOpcionalPatro",           precision: 18, scale: 2
-    t.decimal  "CostoSeguroDependPatro",             precision: 18, scale: 2
+    t.integer "sie_CodCompania",       limit: 4
+    t.integer "Codigo_Empleado",       limit: 4
+    t.integer "Codigo_Tipo_Seguro",    limit: 4
+    t.integer "Codigo_Plan_Seguro",    limit: 4
+    t.integer "Codigo_Nomina",         limit: 4
+    t.integer "Codigo_Tipo_Descuento", limit: 4
+    t.integer "Periodo_Descuento",     limit: 1
+    t.integer "Tarifa_Familiar",       limit: 1
+    t.integer "Tarifa_Personal",       limit: 1
+    t.integer "Tarifa_Opcional",       limit: 1
+    t.integer "Tarifa_Dependientes",   limit: 1
   end
 
   create_table "Seguro_Social", primary_key: "Codigo", force: :cascade do |t|
@@ -5794,7 +4744,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer  "Codigo_Escala", limit: 4, null: false
     t.float    "Calificacion",            null: false
     t.datetime "Fecha",                   null: false
-    t.integer  "CodEvaluacion", limit: 4
   end
 
   create_table "Solicitantes_Entrevista", primary_key: "Codigo", force: :cascade do |t|
@@ -5891,16 +4840,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.float   "RankingOtros",                    null: false
     t.integer "Coincide_Competencia",  limit: 1
     t.integer "Coincide_Cargo",        limit: 1
-    t.integer "Coincide_Horario",      limit: 1
-    t.integer "CodRequerimiento",      limit: 4
-  end
-
-  create_table "Solicitud_CoincidBusq2", primary_key: "Numero_Solicitud", force: :cascade do |t|
-    t.integer "CodCompania",      limit: 4,                          null: false
-    t.integer "CodPesoCriterio",  limit: 4,                          null: false
-    t.integer "Coincide",         limit: 1,                          null: false
-    t.decimal "Puntuacion",                 precision: 12, scale: 2, null: false
-    t.integer "CodRequerimiento", limit: 4,                          null: false
   end
 
   create_table "Solicitud_Contratacion", primary_key: "Secuencia", force: :cascade do |t|
@@ -5926,12 +4865,10 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Solicitud_ContratoForm", primary_key: "Secuencia", force: :cascade do |t|
-    t.varchar     "NombreContrato",  limit: 100,        null: false
-    t.integer     "Cod_Cargo",       limit: 4,          null: false
-    t.text_basic  "Contrato",        limit: 2147483647, null: false
-    t.integer     "CodCompania",     limit: 4
-    t.varchar_max "Cabecera_Pagina", limit: 2147483647
-    t.varchar_max "Pie_Pagina",      limit: 2147483647
+    t.varchar    "NombreContrato", limit: 100,        null: false
+    t.integer    "Cod_Cargo",      limit: 4,          null: false
+    t.text_basic "Contrato",       limit: 2147483647, null: false
+    t.integer    "CodCompania",    limit: 4
   end
 
   create_table "Solicitud_Contratos", id: false, force: :cascade do |t|
@@ -5941,18 +4878,8 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Solicitud_Cualidades", primary_key: "Numero_Solicitud", force: :cascade do |t|
-    t.integer "Codigo_Cualidad",   limit: 4,   null: false
-    t.integer "Grado",             limit: 1,   null: false
-    t.varchar "NombreCompetencia", limit: 100
-  end
-
-  create_table "Solicitud_Cualidades_Temp", id: false, force: :cascade do |t|
-    t.integer "Numero_Solicitud",  limit: 4
-    t.integer "Codigo_Cualidad",   limit: 4,   null: false
-    t.integer "Grado",             limit: 1,   null: false
-    t.varchar "NombreCompetencia", limit: 100
-    t.integer "CodUsuario",        limit: 4,   null: false
-    t.string  "TipoUsuario",       limit: 1,   null: false
+    t.integer "Codigo_Cualidad", limit: 4, null: false
+    t.integer "Grado",           limit: 1, null: false
   end
 
   create_table "Solicitud_Dependientes", id: false, force: :cascade do |t|
@@ -5982,20 +4909,9 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Solicitud_EmpDocum", primary_key: "Numero_Solicitud", force: :cascade do |t|
-    t.integer "Cod_Documento", limit: 4,   null: false
+    t.integer "Cod_Documento", limit: 4, null: false
     t.integer "Cod_Compania",  limit: 4
     t.integer "Orden",         limit: 2
-    t.varchar "NombreArchivo", limit: 255
-  end
-
-  create_table "Solicitud_EmpDocum_Temp", id: false, force: :cascade do |t|
-    t.integer "Numero_Solicitud", limit: 4,   null: false
-    t.integer "Cod_Documento",    limit: 4,   null: false
-    t.integer "Cod_Compania",     limit: 4
-    t.integer "Orden",            limit: 2
-    t.varchar "NombreArchivo",    limit: 255
-    t.integer "Cod_Usuario",      limit: 4
-    t.varchar "Tipo_Usuario",     limit: 1
   end
 
   create_table "Solicitud_Empleo", primary_key: "Numero_solicitud", force: :cascade do |t|
@@ -6072,97 +4988,11 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.float    "Peso"
     t.varchar  "NombreCargoAspira",             limit: 100
     t.varchar  "NombreOtroCargo",               limit: 100
-    t.varchar  "SolicNombreAreaConoc1",         limit: 100
-    t.varchar  "SolicNombreAreaConoc2",         limit: 100
-    t.varchar  "NumeroSegSocial1",              limit: 30
-    t.varchar  "NumeroSegSocial2",              limit: 30
   end
 
   add_index "Solicitud_Empleo", ["Apellido_Materno", "Apellido_Paterno", "Nombre"], name: "IX_Solicitud_Empleo_2"
   add_index "Solicitud_Empleo", ["Cedula"], name: "IX_Solicitud_Empleo_1"
   add_index "Solicitud_Empleo", ["Pasaporte"], name: "IX_Solicitud_Empleo"
-
-  create_table "Solicitud_Empleo_Temp", id: false, force: :cascade do |t|
-    t.integer  "Numero_solicitud",              limit: 4
-    t.integer  "Numero_Compania",               limit: 4,                                         null: false
-    t.varchar  "Nombre",                        limit: 30,                                        null: false
-    t.varchar  "Apellido_Paterno",              limit: 20,                                        null: false
-    t.varchar  "Apellido_Materno",              limit: 20
-    t.varchar  "Direccion",                     limit: 100,                                       null: false
-    t.varchar  "Telefono1",                     limit: 13
-    t.varchar  "Telefono2",                     limit: 13
-    t.varchar  "E_Mail",                        limit: 100
-    t.datetime "Fecha_nacimiento",                                                                null: false
-    t.varchar  "Lugar_Nacimiento",              limit: 50
-    t.integer  "Nacionalidad",                  limit: 4,                                         null: false
-    t.varchar  "Cedula",                        limit: 13
-    t.varchar  "Pasaporte",                     limit: 25
-    t.varchar  "Estado_Civil",                  limit: 1,                                         null: false
-    t.varchar  "Sexo",                          limit: 1,                                         null: false
-    t.integer  "Lengua_Materna",                limit: 4
-    t.money    "Salario_Aspira",                             precision: 19, scale: 4
-    t.varchar  "Dependientes",                  limit: 1,                                         null: false
-    t.varchar  "Nombre_Referencia1",            limit: 40
-    t.varchar  "Compania_Referencia1",          limit: 40
-    t.varchar  "Telefono_Referencia1",          limit: 13
-    t.varchar  "Ocupacion1",                    limit: 20
-    t.varchar  "Nombre_Referencia2",            limit: 40
-    t.varchar  "Compania_Referencia2",          limit: 40
-    t.varchar  "Telefono_Referencia2",          limit: 13
-    t.varchar  "Ocupacion2",                    limit: 20
-    t.varchar  "Nombre_Referencia3",            limit: 40
-    t.varchar  "Compania_Referencia3",          limit: 40
-    t.varchar  "Telefono_Referencia3",          limit: 13
-    t.varchar  "Ocupacion3",                    limit: 20
-    t.varchar  "Familiar_Empresa",              limit: 1
-    t.varchar  "Nombre_Familiar",               limit: 30
-    t.varchar  "Empleado_Nuestro",              limit: 1,                                         null: false
-    t.varchar  "Empleado_Anteriormente",        limit: 1,                                         null: false
-    t.varchar  "Empleado_Actualmente",          limit: 1,                                         null: false
-    t.varchar  "Disponible_Trabajar",           limit: 1,                                         null: false
-    t.integer  "Posicion_Aspira",               limit: 4
-    t.datetime "Fecha_Disponible"
-    t.varchar  "Emergencias_Tipo_Sangre",       limit: 10
-    t.varchar  "Emergencias_Reaccion_Alergica", limit: 30
-    t.varchar  "Emergencias_pariente",          limit: 30
-    t.varchar  "Emergencias_Direccion",         limit: 60
-    t.varchar  "Emergencias_Telefono",          limit: 13
-    t.varchar  "Emergencias_Nombre_medico",     limit: 30
-    t.varchar  "Emergencias_Telefono_Medico",   limit: 13
-    t.varchar  "Tipo_Licencia",                 limit: 20
-    t.integer  "Codigo_Grado_Academico",        limit: 4
-    t.datetime "Fecha_Solicitud"
-    t.varchar  "Estatus_Solicitud",             limit: 1,                                         null: false
-    t.integer  "Cod_Sector",                    limit: 4
-    t.varchar  "Usuario",                       limit: 30,                                        null: false
-    t.varchar  "NombreConyugue",                limit: 50
-    t.integer  "OtroCargoAspira",               limit: 4
-    t.varchar  "ParentescoFamiTrab",            limit: 20
-    t.datetime "Fecha_UltEval"
-    t.integer  "Estatura_Pies",                 limit: 1
-    t.integer  "Estatura_Pulg",                 limit: 1
-    t.integer  "Tiene_Vehic",                   limit: 1
-    t.integer  "Tiene_LicCond",                 limit: 1
-    t.varchar  "Email2",                        limit: 100
-    t.varchar  "Foto",                          limit: 255
-    t.integer  "Cod_AreaConoc1",                limit: 4
-    t.integer  "Cod_AreaConoc2",                limit: 4
-    t.varchar  "Comentarios",                   limit: 1000
-    t.datetime "Fecha_Vence"
-    t.integer  "Cod_Provincia",                 limit: 4
-    t.integer  "Cod_Municipio",                 limit: 4
-    t.datetime "Fecha_UltAct"
-    t.integer  "Descargada",                    limit: 1,                             default: 0
-    t.integer  "AnosExperiencia",               limit: 4,                             default: 0
-    t.float    "Peso"
-    t.varchar  "NombreCargoAspira",             limit: 100
-    t.varchar  "NombreOtroCargo",               limit: 100
-    t.varchar  "SolicNombreAreaConoc1",         limit: 100
-    t.varchar  "SolicNombreAreaConoc2",         limit: 100
-    t.varchar  "NumeroSegSocial1",              limit: 30
-    t.varchar  "NumeroSegSocial2",              limit: 30
-    t.varchar  "Tipo_Usuario",                  limit: 1,                                         null: false
-  end
 
   create_table "Solicitud_EstatusHist", primary_key: "Codigo", force: :cascade do |t|
     t.integer  "Numero_solicitud",  limit: 4
@@ -6196,22 +5026,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Comentarios",      limit: 1000
   end
 
-  create_table "Solicitud_Estudios_Temp", id: false, force: :cascade do |t|
-    t.integer  "ID",                  limit: 4,               null: false
-    t.integer  "Numero_Solicitud",    limit: 4,               null: false
-    t.datetime "Fecha_Desde"
-    t.datetime "Fecha_Hasta"
-    t.varchar  "Institucion",         limit: 100
-    t.varchar  "Ubicacion",           limit: 200
-    t.varchar  "Estudios_Realizados", limit: 100
-    t.varchar  "Nivel_Alcanzado",     limit: 100
-    t.integer  "Codigo_Curso",        limit: 4
-    t.integer  "Codigo_Estudios",     limit: 4,   default: 0
-    t.integer  "Codigo_Institucion",  limit: 4,   default: 0
-    t.integer  "Cod_Usuario",         limit: 4,               null: false
-    t.varchar  "Tipo_Usuario",        limit: 1,               null: false
-  end
-
   create_table "Solicitud_EvalRequeridas", primary_key: "CodCompania", force: :cascade do |t|
     t.integer "Codigo",      limit: 4, null: false
     t.integer "CodCargo",    limit: 4, null: false
@@ -6229,39 +5043,18 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Solicitud_Experiencia", id: false, force: :cascade do |t|
-    t.integer  "ID",                limit: 4,                            null: false
-    t.integer  "Numero_Solicitud",  limit: 4,                            null: false
-    t.varchar  "Nombre_Empleador",  limit: 50
-    t.varchar  "Ubicacion",         limit: 100
-    t.varchar  "Telefono",          limit: 13
-    t.varchar  "Puesto",            limit: 40
+    t.integer  "ID",               limit: 4,                            null: false
+    t.integer  "Numero_Solicitud", limit: 4,                            null: false
+    t.varchar  "Nombre_Empleador", limit: 50
+    t.varchar  "Ubicacion",        limit: 100
+    t.varchar  "Telefono",         limit: 13
+    t.varchar  "Puesto",           limit: 40
     t.datetime "Fecha_Desde"
     t.datetime "Fecha_Hasta"
-    t.varchar  "Funcion",           limit: 100
-    t.varchar  "Motivo_Retiro",     limit: 100
-    t.money    "Ultimo_Salario",                precision: 19, scale: 4
-    t.integer  "CodAreaConoc",      limit: 4
-    t.varchar  "eAreaConocimiento", limit: 100
-    t.varchar  "CodMoneda",         limit: 5
-  end
-
-  create_table "Solicitud_Experiencia_Temp", id: false, force: :cascade do |t|
-    t.integer  "ID",                limit: 4
-    t.integer  "Numero_Solicitud",  limit: 4,                            null: false
-    t.varchar  "Nombre_Empleador",  limit: 50
-    t.varchar  "Ubicacion",         limit: 100
-    t.varchar  "Telefono",          limit: 13
-    t.varchar  "Puesto",            limit: 60
-    t.datetime "Fecha_Desde"
-    t.datetime "Fecha_Hasta"
-    t.varchar  "Funcion",           limit: 100
-    t.varchar  "Motivo_Retiro",     limit: 100
-    t.money    "Ultimo_Salario",                precision: 19, scale: 4
-    t.integer  "CodAreaConoc",      limit: 4
-    t.varchar  "eAreaConocimiento", limit: 100
-    t.varchar  "CodMoneda",         limit: 5
-    t.integer  "CodUsuario",        limit: 4,                            null: false
-    t.string   "Tipo_usuario",      limit: 1
+    t.varchar  "Funcion",          limit: 100
+    t.varchar  "Motivo_Retiro",    limit: 100
+    t.money    "Ultimo_Salario",               precision: 19, scale: 4
+    t.integer  "CodAreaConoc",     limit: 4
   end
 
   create_table "Solicitud_Habilidades", id: false, force: :cascade do |t|
@@ -6276,31 +5069,12 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Id",               limit: 4
   end
 
-  create_table "Solicitud_HorarioDisp_Temp", id: false, force: :cascade do |t|
-    t.integer "Numero_Solicitud", limit: 4
-    t.varchar "Horario",          limit: 2, null: false
-    t.integer "Id",               limit: 4
-    t.integer "Cod_Usuario",      limit: 4, null: false
-    t.string  "Tipo_Usuario",     limit: 1, null: false
-  end
-
   create_table "Solicitud_Idiomas", primary_key: "Id", force: :cascade do |t|
     t.integer "Numero_Solicitud", limit: 4, null: false
     t.integer "Codigo_Idioma",    limit: 4, null: false
     t.varchar "Lee",              limit: 1
     t.varchar "Escribe",          limit: 1
     t.varchar "Habla",            limit: 1
-  end
-
-  create_table "Solicitud_Idiomas_Temp", id: false, force: :cascade do |t|
-    t.integer "Id",               limit: 4
-    t.integer "Numero_Solicitud", limit: 4, null: false
-    t.integer "Codigo_Idioma",    limit: 4, null: false
-    t.varchar "Lee",              limit: 1
-    t.varchar "Escribe",          limit: 1
-    t.varchar "Habla",            limit: 1
-    t.integer "CodUsuario",       limit: 4, null: false
-    t.string  "Tipo_Usuario",     limit: 1
   end
 
   create_table "Solicitud_Imagen", primary_key: "Imagen_Codigo", force: :cascade do |t|
@@ -6339,18 +5113,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "DescripcionCriterio", limit: 50,                         null: false
     t.varchar "Criterio",            limit: 50,                         null: false
     t.decimal "Peso",                           precision: 5, scale: 2, null: false
-    t.integer "CodCompania",         limit: 4
-  end
-
-  create_table "Solicitudes_Conceptos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 50, null: false
-    t.varchar "DescripcionEN", limit: 50
-  end
-
-  create_table "Solicitudes_NivelesIdiomas", primary_key: "CodigoNivel", force: :cascade do |t|
-    t.varchar "DescripcionES", limit: 30, null: false
-    t.varchar "DescripcionEN", limit: 30, null: false
-    t.integer "Orden",         limit: 4
   end
 
   create_table "Solicitudes_Otras", primary_key: "Secuencia", force: :cascade do |t|
@@ -6361,9 +5123,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Comentario",        limit: 500
     t.integer  "Autorizada",        limit: 1,   default: 0
     t.varchar  "ComentarioRetroal", limit: 500
-    t.integer  "ReqAutorizacion",   limit: 1
-    t.integer  "Concepto",          limit: 4
-    t.integer  "CodRegistro",       limit: 4
   end
 
   create_table "SubGruposEmpDistG", primary_key: "Compania", force: :cascade do |t|
@@ -6396,19 +5155,18 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "SubGrupos_Empleados", ["Codigo", "Codigo_Grupo"], name: "Personal_Nomina_dbo_SubGrupos_Empleados idx_Grupo_SubGrupo", unique: true
 
   create_table "Sucursales", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",          limit: 100, null: false
-    t.integer "Numero_Compania",      limit: 4
-    t.varchar "Direccion",            limit: 75
-    t.integer "Cod_Sector",           limit: 4
-    t.varchar "Telefono",             limit: 12
-    t.varchar "Fax",                  limit: 12
-    t.varchar "Registro_NacLab",      limit: 20
-    t.varchar "Usuario",              limit: 30
-    t.varchar "No_Sucursal",          limit: 20
-    t.integer "EsPrincipal",          limit: 1
-    t.varchar "CuentaBanco",          limit: 30
-    t.varchar "CodSucSuirPlus",       limit: 20
-    t.varchar "InicialesCodEmpleado", limit: 20
+    t.varchar "Descripcion",     limit: 100, null: false
+    t.integer "Numero_Compania", limit: 4
+    t.varchar "Direccion",       limit: 75
+    t.integer "Cod_Sector",      limit: 4
+    t.varchar "Telefono",        limit: 12
+    t.varchar "Fax",             limit: 12
+    t.varchar "Registro_NacLab", limit: 20
+    t.varchar "Usuario",         limit: 30
+    t.varchar "No_Sucursal",     limit: 20
+    t.integer "EsPrincipal",     limit: 1
+    t.varchar "CuentaBanco",     limit: 30
+    t.varchar "CodSucSuirPlus",  limit: 20
   end
 
   create_table "Sueldo_Navidad", primary_key: "Codigo", force: :cascade do |t|
@@ -6429,31 +5187,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
 
   add_index "Sueldo_Navidad", ["Compania", "Ano_Correspondiente"], name: "IX_Sueldo_Navidad"
 
-  create_table "Sueldo_NavidadTemp", primary_key: "Codigo", force: :cascade do |t|
-    t.integer  "Tipo_Nomina",         limit: 4
-    t.integer  "Compania",            limit: 4,                                       null: false
-    t.integer  "Ano_Correspondiente", limit: 2,                                       null: false
-    t.datetime "Fecha_Procesamiento",                                                 null: false
-    t.money    "Total_Regalia",                  precision: 19, scale: 4
-    t.money    "Total_Descuentos",               precision: 19, scale: 4
-    t.money    "Total_Neto",                     precision: 19, scale: 4,             null: false
-    t.integer  "Ano_Cont",            limit: 4
-    t.integer  "Periodo_Cont",        limit: 1
-    t.integer  "Transferida",         limit: 1,                           default: 0
-    t.integer  "NoTransfMod",         limit: 4,                           default: 0
-    t.integer  "NoAsientoCG",         limit: 4,                           default: 0
-    t.varchar  "Usuario",             limit: 30,                                      null: false
-  end
-
   create_table "Sueldo_Navidad_Detalles", primary_key: "Codigo_Regalia", force: :cascade do |t|
-    t.integer "snd_CodCompania",     limit: 4,                          null: false
-    t.integer "Codigo_Empleado",     limit: 4,                          null: false
-    t.varchar "Tipo_Novedad",        limit: 1,                          null: false
-    t.integer "Codigo_Tipo_Novedad", limit: 4,                          null: false
-    t.money   "Valor",                         precision: 19, scale: 4, null: false
-  end
-
-  create_table "Sueldo_Navidad_DetallesTemp", primary_key: "Codigo_Regalia", force: :cascade do |t|
     t.integer "snd_CodCompania",     limit: 4,                          null: false
     t.integer "Codigo_Empleado",     limit: 4,                          null: false
     t.varchar "Tipo_Novedad",        limit: 1,                          null: false
@@ -6476,27 +5210,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.money   "ISR_PendCompensar",           precision: 19, scale: 4
     t.money   "ISR_Compensado",              precision: 19, scale: 4
     t.varchar "snMoneda",          limit: 5
-    t.money   "snValorMonedaExt",            precision: 19, scale: 4
-    t.money   "snTasaCambio",                precision: 19, scale: 4
-  end
-
-  create_table "Sueldo_Navidad_EmpTemp", primary_key: "Codigo_Regalia", force: :cascade do |t|
-    t.integer "Codigo_Empleado",   limit: 4,                          null: false
-    t.integer "sne_CodCompania",   limit: 4,                          null: false
-    t.integer "Cod_Posicion",      limit: 4
-    t.money   "Salario_Base",                precision: 19, scale: 4, null: false
-    t.money   "Acumulado_Ano",               precision: 19, scale: 4, null: false
-    t.integer "Meses",             limit: 1
-    t.varchar "Estatus",           limit: 1,                          null: false
-    t.money   "Valor_Descuentos",            precision: 19, scale: 4
-    t.money   "Valor_Regalia",               precision: 19, scale: 4, null: false
-    t.money   "Regalia_Neta",                precision: 19, scale: 4
-    t.money   "Ingresos_ISR",                precision: 19, scale: 4
-    t.money   "ISR_PendCompensar",           precision: 19, scale: 4
-    t.money   "ISR_Compensado",              precision: 19, scale: 4
-    t.varchar "snMoneda",          limit: 5
-    t.money   "snValorMonedaExt",            precision: 19, scale: 4
-    t.money   "snTasaCambio",                precision: 19, scale: 4
   end
 
   create_table "Tablas", id: false, force: :cascade do |t|
@@ -6522,7 +5235,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Tipo_Descuentos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",         limit: 50,                          null: false
+    t.varchar "Descripcion",         limit: 50, null: false
     t.integer "Forma_descuento",     limit: 4
     t.integer "Orden_Nomina",        limit: 1
     t.integer "ReducIngImp",         limit: 1
@@ -6534,42 +5247,12 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "EsAporteVolAFP",      limit: 1
     t.integer "NoSumarizarCompPago", limit: 1
     t.varchar "AliasDescuento",      limit: 30
-    t.integer "tdCodCompania",       limit: 4
-    t.varchar "CodigoAlterno1",      limit: 20
-    t.varchar "AplicarDescA",        limit: 2
-    t.varchar "FormaAplicar",        limit: 5
-    t.decimal "PorcientoEmp",                   precision: 18, scale: 6
-    t.decimal "PorcientoPatrono",               precision: 18, scale: 6
-    t.varchar "FormaExcento",        limit: 3
-    t.money   "ValorExcento",                   precision: 19, scale: 4
-    t.varchar "DatoTablaEmpleado",   limit: 60
-    t.money   "ValorTope",                      precision: 19, scale: 4
-    t.varchar "FormaValorTope",      limit: 3
   end
 
   add_index "Tipo_Descuentos", ["Descripcion"], name: "IX_Tipo_Descuentos", unique: true
 
-  create_table "Tipo_DescuentosDescReducIng", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",          limit: 4, null: false
-    t.integer "CodTipoDescuento",     limit: 4, null: false
-    t.integer "CodTipoDescIngReduce", limit: 4, null: false
-  end
-
-  create_table "Tipo_DescuentosIngComputan", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo",             limit: 4,                          null: false
-    t.integer "CodTipoDescuento",   limit: 4,                          null: false
-    t.integer "CodTIngresoComputa", limit: 4,                          null: false
-    t.decimal "PorcientoEmp",                 precision: 18, scale: 6, null: false
-    t.decimal "PorcientoPatrono",             precision: 18, scale: 6, null: false
-    t.varchar "FormaExcento",       limit: 3,                          null: false
-    t.money   "ValorExcento",                 precision: 19, scale: 4, null: false
-    t.money   "ValorTope",                    precision: 19, scale: 4, null: false
-    t.varchar "Tipo",               limit: 1
-  end
-
   create_table "Tipo_Descuentos_Nomina", primary_key: "Codigo_tipo_descuento", force: :cascade do |t|
-    t.integer "Tipo_nomina",    limit: 4, null: false
-    t.integer "tdnCodCompania", limit: 4
+    t.integer "Tipo_nomina", limit: 4, null: false
   end
 
   create_table "Tipo_Evaluaciones", primary_key: "Codigo", force: :cascade do |t|
@@ -6578,12 +5261,11 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Tipo_360",               limit: 1
     t.char    "Evaluador",              limit: 1
     t.integer "teCodCompania",          limit: 4
-    t.integer "Secuencia",              limit: 4
   end
 
   create_table "Tipo_Horas", primary_key: "Codigo", force: :cascade do |t|
     t.float   "Porciento"
-    t.varchar "Descripcion",             limit: 50,                          null: false
+    t.varchar "Descripcion",             limit: 50, null: false
     t.integer "Orden_Nomina",            limit: 1
     t.integer "Incentivo_Extra",         limit: 4
     t.integer "Costo_Fijo",              limit: 1
@@ -6607,56 +5289,42 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "Computable_Infotep",      limit: 1
     t.varchar "AliasHora",               limit: 20
     t.integer "PagarSobreHNoct",         limit: 1
-    t.integer "thCodCompania",           limit: 4
-    t.varchar "FormaValorExcento",       limit: 1
-    t.decimal "ValorExcento",                       precision: 18, scale: 2
   end
 
   add_index "Tipo_Horas", ["Descripcion"], name: "IX_Tipo_Horas", unique: true
 
   create_table "Tipo_Horas_nomina", primary_key: "Codigo_tipo_horas", force: :cascade do |t|
-    t.integer "Tipo_nomina",    limit: 4, null: false
-    t.integer "thnCodCompania", limit: 4
+    t.integer "Tipo_nomina", limit: 4, null: false
   end
 
   create_table "Tipo_Ingresos", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",                limit: 50,                          null: false
-    t.integer "Computable_Prestaciones",    limit: 1
-    t.integer "Computable_SS",              limit: 1
-    t.integer "Computable_ISR",             limit: 1
-    t.integer "Computable_Regalia",         limit: 1
-    t.integer "Computable_Pension",         limit: 1
-    t.integer "Computable_Salud",           limit: 1
-    t.integer "Computable_Riesgo",          limit: 1
-    t.integer "Ingreso_Calculado",          limit: 1
-    t.integer "Computable_Ces",             limit: 1
-    t.integer "Computable_Preav",           limit: 1
-    t.integer "Computable_Vac",             limit: 1
-    t.integer "Computable_Bonif",           limit: 1
-    t.integer "Computable_BVac",            limit: 1
-    t.integer "Ingreso_Salario",            limit: 1
-    t.integer "Computable_Infotep",         limit: 1
-    t.char    "EstatusIng",                 limit: 1
-    t.varchar "AliasIngreso",               limit: 20
-    t.integer "Desplegar_Negativo",         limit: 1
-    t.integer "ValorUnitSalHora",           limit: 1
-    t.integer "PorcientoSalHora",           limit: 1
-    t.integer "tiCodCompania",              limit: 4
-    t.integer "AplicaIncentEvaluac",        limit: 1
-    t.integer "CodGrupoIng",                limit: 4
-    t.integer "OrdenIngNom",                limit: 1
-    t.varchar "FormaValorExcento",          limit: 1
-    t.decimal "ValorExcento",                          precision: 18, scale: 2
-    t.integer "EsSalarioDiarioIntegrado",   limit: 1
-    t.varchar "CodigoAlterno1",             limit: 20
-    t.varchar "DatoOtrosIngresosEmpleados", limit: 60
+    t.varchar "Descripcion",             limit: 50, null: false
+    t.integer "Computable_Prestaciones", limit: 1
+    t.integer "Computable_SS",           limit: 1
+    t.integer "Computable_ISR",          limit: 1
+    t.integer "Computable_Regalia",      limit: 1
+    t.integer "Computable_Pension",      limit: 1
+    t.integer "Computable_Salud",        limit: 1
+    t.integer "Computable_Riesgo",       limit: 1
+    t.integer "Ingreso_Calculado",       limit: 1
+    t.integer "Computable_Ces",          limit: 1
+    t.integer "Computable_Preav",        limit: 1
+    t.integer "Computable_Vac",          limit: 1
+    t.integer "Computable_Bonif",        limit: 1
+    t.integer "Computable_BVac",         limit: 1
+    t.integer "Ingreso_Salario",         limit: 1
+    t.integer "Computable_Infotep",      limit: 1
+    t.char    "EstatusIng",              limit: 1
+    t.varchar "AliasIngreso",            limit: 20
+    t.integer "Desplegar_Negativo",      limit: 1
+    t.integer "ValorUnitSalHora",        limit: 1
+    t.integer "PorcientoSalHora",        limit: 1
   end
 
   add_index "Tipo_Ingresos", ["Descripcion"], name: "IX_Tipo_Ingresos", unique: true
 
   create_table "Tipo_Ingresos_Nomina", primary_key: "Codigo_tipo_ingreso", force: :cascade do |t|
-    t.integer "Tipo_nomina",    limit: 4, null: false
-    t.integer "tinCodCompania", limit: 4
+    t.integer "Tipo_nomina", limit: 4, null: false
   end
 
   create_table "Tipo_Nominas_Empleado", primary_key: "tne_CodCompania", force: :cascade do |t|
@@ -6665,24 +5333,10 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Tipos_Accion", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 50, null: false
-    t.integer "taCodCompania", limit: 4
-    t.char    "taEstatus",     limit: 1
+    t.varchar "Descripcion", limit: 50, null: false
   end
 
   add_index "Tipos_Accion", ["Descripcion"], name: "IX_Tipos_accion", unique: true
-
-  create_table "Tipos_AccionPreguntas", primary_key: "CodCompania", force: :cascade do |t|
-    t.integer "Codigo",                limit: 4,   null: false
-    t.integer "CodTipoAccion",         limit: 4,   null: false
-    t.integer "Orden",                 limit: 4,   null: false
-    t.varchar "Pregunta",              limit: 500, null: false
-    t.varchar "Respuestas",            limit: 500, null: false
-    t.varchar "NombreEntrevista",      limit: 100
-    t.varchar "ComentariosEntrevista", limit: 500
-    t.varchar "ObservacionesPregunta", limit: 500
-    t.integer "CodModeloEntrevista",   limit: 4
-  end
 
   create_table "Tipos_Accion_Cartas", id: false, force: :cascade do |t|
     t.integer "Cod_TipoAccion", limit: 4,   null: false
@@ -6711,7 +5365,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "Accion_Amonestacion",      limit: 500
     t.integer "AplicExcedeHoraComida",    limit: 1
     t.integer "AplicEmpSinPonche",        limit: 1
-    t.integer "taCodCompania",            limit: 4
   end
 
   create_table "Tipos_AsignacionesEmp", primary_key: "Codigo", force: :cascade do |t|
@@ -6722,10 +5375,8 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "Tipos_AsignacionesEmp", ["Descripcion"], name: "IX_Tipos_AsignacionesEmp", unique: true
 
   create_table "Tipos_Beneficios", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",           limit: 100, null: false
-    t.integer "tbnCodCompania",        limit: 4
-    t.integer "CodIngresoRelacionado", limit: 4
-    t.char    "TipoIngreso",           limit: 1
+    t.varchar "Descripcion",    limit: 100, null: false
+    t.integer "tbnCodCompania", limit: 4
   end
 
   add_index "Tipos_Beneficios", ["Descripcion"], name: "IX_Tipos_Beneficios", unique: true
@@ -6758,63 +5409,37 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "DisponibleSolic", limit: 1
   end
 
-  create_table "Tipos_HorarioSolEmp_Temp", id: false, force: :cascade do |t|
-    t.integer "Codigo",          limit: 4
-    t.varchar "Descripcion",     limit: 50, null: false
-    t.integer "DisponibleSolic", limit: 1
-    t.integer "Codusuario",      limit: 4,  null: false
-    t.string  "TipoUsuario",     limit: 1,  null: false
-  end
-
   create_table "Tipos_Nomina", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",                limit: 50,                           null: false
-    t.integer "Compania",                   limit: 4,                            null: false
-    t.integer "Descontar_ISR",              limit: 1,                            null: false
-    t.integer "Descontar_SS",               limit: 1,                            null: false
-    t.integer "Descontar_AFP",              limit: 1
-    t.integer "Descontar_ARS",              limit: 1
-    t.integer "Descontar_Ries",             limit: 1
-    t.integer "Incluir_SB",                 limit: 1,                            null: false
-    t.integer "Periodo_descuento_ISR",      limit: 2
-    t.integer "Periodo_descuento_SS",       limit: 2
-    t.integer "Periodo_Descuento_AFP",      limit: 2
-    t.integer "Periodo_Descuento_ARS",      limit: 2
-    t.integer "Periodo_Descuento_Ries",     limit: 2
-    t.integer "Periodos",                   limit: 1
-    t.integer "Porciento_primer_periodo",   limit: 1
-    t.integer "Pago_Porcentaje",            limit: 1
-    t.integer "Nomina_Sobregiros",          limit: 1
-    t.integer "Nomina",                     limit: 4
-    t.integer "Dia_Pago",                   limit: 2
+    t.varchar "Descripcion",              limit: 50, null: false
+    t.integer "Compania",                 limit: 4,  null: false
+    t.integer "Descontar_ISR",            limit: 1,  null: false
+    t.integer "Descontar_SS",             limit: 1,  null: false
+    t.integer "Descontar_AFP",            limit: 1
+    t.integer "Descontar_ARS",            limit: 1
+    t.integer "Descontar_Ries",           limit: 1
+    t.integer "Incluir_SB",               limit: 1,  null: false
+    t.integer "Periodo_descuento_ISR",    limit: 2
+    t.integer "Periodo_descuento_SS",     limit: 2
+    t.integer "Periodo_Descuento_AFP",    limit: 2
+    t.integer "Periodo_Descuento_ARS",    limit: 2
+    t.integer "Periodo_Descuento_Ries",   limit: 2
+    t.integer "Periodos",                 limit: 1
+    t.integer "Porciento_primer_periodo", limit: 1
+    t.integer "Pago_Porcentaje",          limit: 1
+    t.integer "Nomina_Sobregiros",        limit: 1
+    t.integer "Nomina",                   limit: 4
+    t.integer "Dia_Pago",                 limit: 2
     t.real    "ISR_Empleador"
-    t.varchar "Cuenta_Pago",                limit: 30
-    t.varchar "Cuenta_Cheque",              limit: 30
-    t.integer "Banco_Pago",                 limit: 4
-    t.varchar "Cuenta_Contable",            limit: 70
-    t.integer "DesplegarDiasxHorTrab",      limit: 1
-    t.char    "AplicarTSSa",                limit: 1
-    t.varchar "CodBancoCont",               limit: 20
-    t.integer "IncluirColTotHoras",         limit: 1
-    t.integer "IncluirColMoneda",           limit: 1
-    t.varchar "tMoneda",                    limit: 5
-    t.integer "RequiereAutPostear",         limit: 1
-    t.integer "RequiereAutArchBanco",       limit: 1
-    t.integer "RequiereAutComprobantes",    limit: 1
-    t.integer "IncluirEmpNoFijos",          limit: 1
-    t.integer "IncluirEmpInactivos",        limit: 1
-    t.integer "DebeAutorizarProcesamiento", limit: 1
-    t.integer "DebeAutorizarCierre",        limit: 1
-    t.varchar "QuienAutorizaPagoBanco1",    limit: 100
-    t.varchar "QuienAutorizaPagoBanco2",    limit: 100
-    t.integer "IncluirAportesNomina",       limit: 1
-    t.integer "CalcularProvisiones",        limit: 1
-    t.integer "GenerarHorasNormales",       limit: 1
-    t.decimal "CantHorasNormales",                      precision: 18, scale: 2
-    t.integer "CodEmpAutoriza1",            limit: 4
-    t.integer "CodEmpAutoriza2",            limit: 4
-    t.integer "CodEmpAutoriza3",            limit: 4
-    t.varchar "AliasCuentaContable",        limit: 50
-    t.varchar "AliasCuentaCheque",          limit: 50
+    t.varchar "Cuenta_Pago",              limit: 30
+    t.varchar "Cuenta_Cheque",            limit: 30
+    t.integer "Banco_Pago",               limit: 4
+    t.varchar "Cuenta_Contable",          limit: 70
+    t.integer "DesplegarDiasxHorTrab",    limit: 1
+    t.char    "AplicarTSSa",              limit: 1
+    t.varchar "CodBancoCont",             limit: 20
+    t.integer "IncluirColTotHoras",       limit: 1
+    t.integer "IncluirColMoneda",         limit: 1
+    t.varchar "tMoneda",                  limit: 5
   end
 
   create_table "Tipos_Nomina_Columnas", id: false, force: :cascade do |t|
@@ -6823,16 +5448,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "Tipo_Novedad", limit: 30
     t.varchar "Desc_Novedad", limit: 50
   end
-
-  create_table "Tipos_Nomina_Deducciones", primary_key: "Secuencia", force: :cascade do |t|
-    t.integer "CodCompania",      limit: 4, null: false
-    t.integer "CodTipoNomina",    limit: 4, null: false
-    t.integer "CodTipoDescuento", limit: 4, null: false
-    t.integer "PeriodoDescuento", limit: 1, null: false
-    t.char    "AplicarEn",        limit: 1, null: false
-  end
-
-  add_index "Tipos_Nomina_Deducciones", ["CodCompania", "CodTipoNomina", "CodTipoDescuento", "AplicarEn"], name: "IX_Tipos_Nomina_Deducciones"
 
   create_table "Tipos_PoliticasProc", primary_key: "Codigo", force: :cascade do |t|
     t.integer "CodCompania", limit: 4,   null: false
@@ -6847,8 +5462,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_index "Tipos_Sangre", ["Descripcion"], name: "IX_Tipos_Sangre", unique: true
 
   create_table "Tipos_Seguros", primary_key: "Codigo", force: :cascade do |t|
-    t.varchar "Descripcion",   limit: 50, null: false
-    t.integer "tsCodCompania", limit: 4
+    t.varchar "Descripcion", limit: 50, null: false
   end
 
   add_index "Tipos_Seguros", ["Descripcion"], name: "IX_Tipos_Seguros", unique: true
@@ -6906,7 +5520,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar "Estatus",          limit: 1,              null: false
     t.integer "Usu_CambiarClave", limit: 1,  default: 1
     t.integer "CodEmpleado",      limit: 4
-    t.integer "CodUsuAdm",        limit: 4
   end
 
   create_table "Usuarios_Roles", primary_key: "Cod_Usuario", force: :cascade do |t|
@@ -6954,38 +5567,35 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.varchar  "Usuario",                 limit: 30
     t.integer  "Cod_Batch",               limit: 4
     t.money    "SalBase",                            precision: 19, scale: 4
-    t.money    "Salario_DiarioBVac",                 precision: 19, scale: 4
   end
 
   add_index "Vacaciones", ["vcn_CodCompania", "Codigo_Empleado"], name: "IX_Vacaciones"
 
   create_table "Vacaciones_Autorizar", primary_key: "Codigo", force: :cascade do |t|
     t.integer  "vcp_CodCompania",     limit: 4
-    t.integer  "Codigo_Empleado",     limit: 4,                                         null: false
+    t.integer  "Codigo_Empleado",     limit: 4,                null: false
     t.integer  "Anos",                limit: 2
     t.integer  "Meses",               limit: 1
     t.integer  "Dias",                limit: 1
     t.float    "Dias_Vacaciones"
     t.integer  "Codigo_Accion",       limit: 4
-    t.integer  "Ano_Correspondiente", limit: 2,                                         null: false
-    t.datetime "Fecha",                                                                 null: false
+    t.integer  "Ano_Correspondiente", limit: 2,                null: false
+    t.datetime "Fecha",                                        null: false
     t.datetime "Fecha_Vacaciones"
     t.float    "Dias_Pendientes"
     t.varchar  "Usuario",             limit: 30
     t.integer  "Generar_Accion",      limit: 1
     t.datetime "FechaFin"
-    t.char     "Estatus",             limit: 1,                           default: "P"
+    t.char     "Estatus",             limit: 1,  default: "P"
     t.float    "Dias_Feriados"
     t.float    "Dias_Tomar"
     t.float    "Dias_Disfrutados"
     t.integer  "No_Dias_Laborables",  limit: 4
     t.datetime "Fecha_Reintegra"
     t.datetime "Fecha_Cancelacion"
-    t.integer  "Aplica_Bono",         limit: 4,                           default: 0
+    t.integer  "Aplica_Bono",         limit: 4,  default: 0
     t.integer  "Autorizada",          limit: 1
     t.integer  "Procesada",           limit: 1
-    t.decimal  "DiasValorBonoVac",               precision: 18, scale: 2
-    t.integer  "PagoNominaProcesado", limit: 1
   end
 
   create_table "Vacaciones_AutorizarTemp", primary_key: "Codigo", force: :cascade do |t|
@@ -7026,20 +5636,17 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   end
 
   create_table "Vacaciones_Pago", id: false, force: :cascade do |t|
-    t.integer "Cod_Vacaciones",       limit: 4
-    t.integer "Cod_TipoNomina",       limit: 4
-    t.integer "Ano_Pago",             limit: 4
-    t.integer "Mes_Pago",             limit: 1
-    t.integer "Periodo_Pago",         limit: 1
-    t.integer "Dias_Avance",          limit: 2
-    t.money   "Valor_Avance",                   precision: 19, scale: 4
-    t.money   "Valor_Bono",                     precision: 19, scale: 4
-    t.integer "Pagada",               limit: 1
-    t.money   "ValorNoCompTSS",                 precision: 19, scale: 4
-    t.money   "ValorPagoExtProxPer",            precision: 19, scale: 4
-    t.money   "ValorSalarioVac",                precision: 19, scale: 4
-    t.money   "ValorIngresoPrimaVac",           precision: 19, scale: 4
-    t.decimal "Dias_BonoP",                     precision: 18, scale: 0
+    t.integer "Cod_Vacaciones",      limit: 4
+    t.integer "Cod_TipoNomina",      limit: 4
+    t.integer "Ano_Pago",            limit: 4
+    t.integer "Mes_Pago",            limit: 1
+    t.integer "Periodo_Pago",        limit: 1
+    t.integer "Dias_Avance",         limit: 2
+    t.money   "Valor_Avance",                  precision: 19, scale: 4
+    t.money   "Valor_Bono",                    precision: 19, scale: 4
+    t.integer "Pagada",              limit: 1
+    t.money   "ValorNoCompTSS",                precision: 19, scale: 4
+    t.money   "ValorPagoExtProxPer",           precision: 19, scale: 4
   end
 
   create_table "Vacaciones_Personal", primary_key: "Codigo", force: :cascade do |t|
@@ -7194,14 +5801,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "mon_CodUsuario",  limit: 4,  null: false
   end
 
-  create_table "copEsco", id: false, force: :cascade do |t|
-    t.float  "Codigo"
-    t.string "NOMBRE ", limit: 255
-    t.string "Cop",     limit: 255
-    t.float  "MONTO"
-    t.string "Cuenta ", limit: 255
-  end
-
   create_table "cuentasbanco", id: false, force: :cascade do |t|
     t.integer "numero", limit: 4
     t.varchar "cuenta", limit: 30
@@ -7216,28 +5815,16 @@ ActiveRecord::Schema.define(version: 20180314144959) do
     t.integer "version",  limit: 4,    default: 0, null: false
   end
 
-  create_table "excedentes", force: :cascade do |t|
-    t.integer  "Codigo_Empleado", limit: 4
-    t.string   "Nombre",          limit: 4000
-    t.float    "Monto"
-    t.string   "Eleccion",        limit: 4000
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-  end
-
   create_table "gn_CamposAgregados", primary_key: "Nombre_Tabla", force: :cascade do |t|
-    t.integer "Cod_Compania",        limit: 4,   null: false
-    t.varchar "Nombre_Campo",        limit: 50,  null: false
-    t.varchar "Descripcion_Campo",   limit: 100
-    t.integer "Long_Campo",          limit: 2
-    t.varchar "Tipo_Campo",          limit: 50
-    t.integer "Orden",               limit: 2
-    t.varchar "Valores",             limit: 200
-    t.varchar "FuenteDatos",         limit: 60
-    t.varchar "FuenteCampoDesc",     limit: 60
-    t.varchar "Descripcion_CampoEN", limit: 100
-    t.integer "DatoRequerido",       limit: 1
-    t.varchar "FuenteCampoCodigo",   limit: 100
+    t.integer "Cod_Compania",      limit: 4,   null: false
+    t.varchar "Nombre_Campo",      limit: 50,  null: false
+    t.varchar "Descripcion_Campo", limit: 100
+    t.integer "Long_Campo",        limit: 2
+    t.varchar "Tipo_Campo",        limit: 50
+    t.integer "Orden",             limit: 2
+    t.varchar "Valores",           limit: 200
+    t.varchar "FuenteDatos",       limit: 60
+    t.varchar "FuenteCampoDesc",   limit: 60
   end
 
   create_table "hd_Adjuntos", primary_key: "adj_Secuencia", force: :cascade do |t|
@@ -7346,6 +5933,7 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_foreign_key "Accion_Personal", "Acciones_Motivos", column: "Cod_MotivoAccion", primary_key: "Codigo", name: "FK_Accion_Personal_Acciones_Motivos"
   add_foreign_key "Accion_Personal", "Empleados", column: "Codigo_Empleado", primary_key: "Numero", name: "FK_Accion_Personal_Empleados"
   add_foreign_key "Accion_Personal", "Empleados", column: "ap_CodCompania", primary_key: "Numero_Compania", name: "FK_Accion_Personal_Empleados"
+  add_foreign_key "Accion_Personal", "Tipos_Accion", column: "Tipo_Accion", primary_key: "Codigo", name: "fk_Tipos_accionAccion_Personal (Accion_Personal -> Tipos_accion) Tipos_accion_Accion_Personal"
   add_foreign_key "Bonificacion", "Companias", column: "Compania", primary_key: "Codigo", name: "fk_CompaniasBonificacion (Bonificacion -> Companias) Companias_Bonificacion"
   add_foreign_key "Bonificacion_Emp", "Bonificacion", column: "Codigo_Bonificacion", primary_key: "Codigo", name: "fk_BonificacionBonificacion_Emp (Bonificacion_Emp -> Bonificacion) Bonificacion_Bonificacion_Emp"
   add_foreign_key "Bonificacion_Emp", "Empleados", column: "Codigo_Empleado", primary_key: "Numero", name: "FK_Bonificacion_Emp_Empleados"
@@ -7426,7 +6014,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_foreign_key "Escalas_Evaluaciones", "EscalasEval_Categorias", column: "Cod_CatEscala", primary_key: "Codigo", name: "FK_Escalas_Evaluaciones_EscalasEval_Categorias"
   add_foreign_key "Evaluaciones", "Periodo_Evaluaciones", column: "Cod_PeriodoEval", primary_key: "Codigo", name: "FK_Evaluaciones_Periodo_Evaluaciones"
   add_foreign_key "Evaluaciones", "Tipo_Evaluaciones", column: "Cod_TipoEval", primary_key: "Codigo", name: "fk_Tipo_EvaluacionesEvaluaciones (Evaluaciones -> Tipo_Evaluaciones) Tipo_Evaluaciones_Evaluaciones"
-  add_foreign_key "Evaluaciones_GruposCompet", "Evaluaciones", column: "Cod_FormEval", primary_key: "Codigo", name: "FK_Evaluaciones_GruposCompet_Evaluaciones"
   add_foreign_key "Evaluaciones_Lineas", "Competencias_Evaluaciones", column: "Cod_Competencia", primary_key: "Codigo", name: "FK_Evaluaciones_Lineas_Competencias_Evaluaciones"
   add_foreign_key "Evaluaciones_Lineas", "Evaluaciones", column: "Cod_FormEval", primary_key: "Codigo", name: "FK_Evaluaciones_Lineas_Evaluaciones"
   add_foreign_key "Evaluaciones_ObjetivosDet", "Evaluaciones_Objetivos", column: "Codigo", primary_key: "Codigo", name: "FK_Evaluaciones_ObjetivosDet_Evaluaciones_Objetivos"
@@ -7434,10 +6021,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_foreign_key "Evaluaciones_RegObj", "Evaluaciones_RegObj", column: "Cod_Compania", primary_key: "Cod_Compania", name: "FK_Evaluaciones_RegObj_Evaluaciones_RegObj"
   add_foreign_key "Evaluaciones_RegObj", "Evaluaciones_RegObj", column: "Cod_Empleado", primary_key: "Cod_Empleado", name: "FK_Evaluaciones_RegObj_Evaluaciones_RegObj"
   add_foreign_key "Evaluaciones_RegObj", "Evaluaciones_RegObj", column: "Orden", primary_key: "Orden", name: "FK_Evaluaciones_RegObj_Evaluaciones_RegObj"
-  add_foreign_key "Evaluaciones_RegObjTemp", "Evaluaciones_RegObjTemp", column: "Cod_Asignacion", primary_key: "Cod_Asignacion", name: "FK_Evaluaciones_RegObj_Evaluaciones_RegObjTemp"
-  add_foreign_key "Evaluaciones_RegObjTemp", "Evaluaciones_RegObjTemp", column: "Cod_Compania", primary_key: "Cod_Compania", name: "FK_Evaluaciones_RegObj_Evaluaciones_RegObjTemp"
-  add_foreign_key "Evaluaciones_RegObjTemp", "Evaluaciones_RegObjTemp", column: "Cod_Empleado", primary_key: "Cod_Empleado", name: "FK_Evaluaciones_RegObj_Evaluaciones_RegObjTemp"
-  add_foreign_key "Evaluaciones_RegObjTemp", "Evaluaciones_RegObjTemp", column: "Orden", primary_key: "Orden", name: "FK_Evaluaciones_RegObj_Evaluaciones_RegObjTemp"
   add_foreign_key "Exclusiones_Seguro", "Seguro_Inclucion_Exclucion", column: "Codigo_Seguro", primary_key: "Codigo", name: "fk_Seguro_Inclucion_ExclucionExclusiones_Seguro (Exclusiones_Seguro -> Seguro_Inclucion_Exclucion) Seguro_Inclucion_Exclucion_Ex"
   add_foreign_key "Fecha_Vacaciones_Empleados", "Vacaciones", column: "Codigo_Vacaciones", primary_key: "Codigo", name: "fk_VacacionesFecha_Vacaciones_Empleados (Fecha_Vacaciones_Empleados -> Vacaciones) Vacaciones_Fecha_Vacaciones_Empleados"
   add_foreign_key "Fecha_Vacaciones_Empleados_Personal", "Vacaciones_Personal", column: "Codigo_Vacaciones", primary_key: "Codigo", name: "fk_Vacaciones_PersonalFecha_Vacaciones_Empleados_Personal (Fecha_Vacaciones_Empleados_Personal -> Vacaciones_Personal) Vacacione"
@@ -7471,8 +6054,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_foreign_key "Pantallas_Roles_Personal", "Roles_Personal", column: "Codigo_Roll", primary_key: "Codigo", name: "fk_Roles_PersonalPantallas_Roles_Personal (Pantallas_Roles_Personal -> Roles_Personal) Roles_Personal_Pantallas_Roles_Personal"
   add_foreign_key "Parametros_Reclutamiento", "Companias", column: "Compania", primary_key: "Codigo", name: "FK_Parametros_Reclutamiento_Companias"
   add_foreign_key "Planes_Seguro", "Tipos_Seguros", column: "Codigo_Tipo", primary_key: "Codigo", name: "fk_Tipos_segurosPlanes_Seguro (Planes_Seguro -> Tipos_seguros) Tipos_seguros_Planes_Seguro"
-  add_foreign_key "PoliticasIncentivosDet", "PoliticasIncentivos", column: "CodCompania", primary_key: "CodCompania", name: "FK_PoliticasIncentivosDet_PoliticasIncentivos"
-  add_foreign_key "PoliticasIncentivosDet", "PoliticasIncentivos", column: "CodPoliticaIncent", primary_key: "Codigo", name: "FK_PoliticasIncentivosDet_PoliticasIncentivos"
   add_foreign_key "PoliticasYProcedimientos", "Tipos_PoliticasProc", column: "CodTipoPolitica", primary_key: "Codigo", name: "FK_PoliticasYProcedimientos_Tipos_PoliticasProc"
   add_foreign_key "PoliticasYProcedimientosDetalles", "PoliticasYProcedimientos", column: "CodPolitica", primary_key: "Codigo", name: "FK_PoliticasYProcedimientosDetalles_PoliticasYProcedimientos"
   add_foreign_key "Politicas_Horarios", "Companias", column: "Numero_Compania", primary_key: "Codigo", name: "fk_CompaniasPoliticas_Horarios (Politicas_Horarios -> Companias) Companias_Politicas_Horarios"
@@ -7520,7 +6101,6 @@ ActiveRecord::Schema.define(version: 20180314144959) do
   add_foreign_key "Sueldo_Navidad_Emp", "Sueldo_Navidad_Emp", column: "Codigo_Empleado", primary_key: "Codigo_Empleado", name: "FK_Sueldo_Navidad_Emp_Sueldo_Navidad_Emp"
   add_foreign_key "Sueldo_Navidad_Emp", "Sueldo_Navidad_Emp", column: "Codigo_Regalia", primary_key: "Codigo_Regalia", name: "FK_Sueldo_Navidad_Emp_Sueldo_Navidad_Emp"
   add_foreign_key "Sueldo_Navidad_Emp", "Sueldo_Navidad_Emp", column: "sne_CodCompania", primary_key: "sne_CodCompania", name: "FK_Sueldo_Navidad_Emp_Sueldo_Navidad_Emp"
-  add_foreign_key "Tipos_AccionPreguntas", "Tipos_Accion", column: "CodTipoAccion", primary_key: "Codigo", name: "FK_Tipos_AccionPreguntas_Tipos_Accion"
   add_foreign_key "Usuarios_Nomina", "Companias", column: "Codigo_Compania", primary_key: "Codigo", name: "fk_CompaniasUsuarios_Nomina (Usuarios_Nomina -> Companias) Companias_Usuarios_Nomina"
   add_foreign_key "Usuarios_Nomina", "Roles_Nomina", column: "Codigo_Roll", primary_key: "Codigo", name: "fk_Roles_NominaUsuarios_Nomina (Usuarios_Nomina -> Roles_Nomina) Roles_Nomina_Usuarios_Nomina"
   add_foreign_key "Usuarios_Personal", "Companias", column: "Codigo_Compania", primary_key: "Codigo", name: "fk_CompaniasUsuarios_Personal (Usuarios_Personal -> Companias) Companias_Usuarios_Personal"

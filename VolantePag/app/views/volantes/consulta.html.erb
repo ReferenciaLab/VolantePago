@@ -146,50 +146,11 @@
       <td colspan="2"></td>
       <td colspan="2"><strong>Total Neto:</strong> <%= number_to_currency(@Consulta.Neto_Pagado) %></td>
     </tr>
-    <tr>
-    <td colspan="2">Total excedente:
-    <%@Excedente.each do |e|%>
-      <%= number_to_currency(e.Monto)%>
-
-
-          <%if e.Monto > 999 and e.Eleccion.nil?%>
-              <%= form_for @ExcedenteUp, url: update_exc_path(@ExcedenteUp) do |f| %>
-
-                  <div class="control-group error">
-                    <div class="controls  ">
-                      <p></p>
-                      <%= f.select :Eleccion, options_for_select([['Seleccion', ""], 'Aplicar Deuda', 'Efectivo']), class: 'form-control size'%>
-                    </div>
-
-                    <div class="actions"><%= f.submit 'Enviar', :class=>'btn btn-success btn2' %></div>
-                  </div>
-              <% end %>
-
-          <%else%>
-              <p class="alerta2 alert alert-success" style="font-weight: bold">Su excedente sera aplicado a su deuda de prestamo o a sus ahorros </p>
-          <%end%>
-
-
-
-
-    <%end%>
-
-    </td>
-    </tr>
-
-
-
-
     </tfoot>
-
-
 
   </table>
 
-
-
-
-  </div>
+</div>
 
 
 
