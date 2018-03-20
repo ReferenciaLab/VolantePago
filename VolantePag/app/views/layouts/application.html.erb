@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VolantePag</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'logo.ico'%>
+</head>
+<body>
+
+<%= yield %>
+
+<footer id="pie">
+  <p>Referencia Laboratorio Clínico &copy; Derechos reservados 2017</p>
+</footer>
+
+</body>
+</html>

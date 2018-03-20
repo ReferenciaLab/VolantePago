@@ -1,0 +1,51 @@
+<header>
+  <%= image_tag 'logo.png'%>
+  <div class="perfil">
+    <p class="parrafo"><strong>Bienvenido :  </strong><%=current_user.correo%></p>
+    <span> <%=link_to 'Cerrar sesion',  logout_path, method: :delete,class: 'link' %></span>
+
+  </div>
+</header>
+
+<div class="container">
+
+
+
+  <br>
+  <h1 >Lista de Usuarios Activos: </h1>
+
+  <div class="menu">
+  <span style="align-content:  center">  <%=link_to 'Registrar nuevo usuario', new_usuario_path, :class => 'btn btn-info'%></span>
+
+  </div>
+  <table class="table table-bordered">
+    <thead>
+
+    <tr class="ttitulo">
+      <th>CODIGO EMPLEADO</th>
+      <th>CORREO</th>
+      <th>ACTIVO</th>
+      <th>TIPO DE USUARIO</th>
+      <th colspan="2" style="text-align: center">ACCIÓN</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <%@usuarios.each do |user|%>
+    <tr>
+      <td><%=user.codigo_empleado %></td>
+      <td><%= user.correo%></td>
+      <td><%= user.activo%></td>
+      <td><%= user.tipo%></td>
+      <td style="text-align: center"><%=link_to 'Editar',edit_path(user),:class => 'btn btn-warning' %></td>
+      <%if user.tipo !='admin' %>
+      <td style="text-align: center"><%=link_to 'Eliminar',   { action: :destroy, id: user.id }, method: :delete, data: { confirm: 'Esta seguro de eliminar este usuario?' },:class => 'btn btn-danger' %></td>
+      <%end%>
+
+    </tr>
+    </tbody>
+        <%end%>
+  </table>
+  <%= will_paginate @usuarios, renderer: BootstrapPagination::Rails, :class=>'paginacion' %>
+</div>

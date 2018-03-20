@@ -1,0 +1,195 @@
+<header>
+  <%= image_tag 'logo.png'%>
+
+  <div class="perfil">
+    <%if @Consulta.Codigo_Empleado.present?%>
+        <p class="parrafo"><strong>Bienvenido :  </strong><%=@Consulta.NombreEmp%></p>
+       <!-- <#%=link_to 'Editar Perfil',  editPerfil_path(@Consulta.Codigo_Empleado), class: 'linkk'%>-->
+        <%=link_to 'Cerrar sesion',  logout_path, method: :delete,class: 'link' %>
+    <%end%>
+  </div>
+
+</header>
+
+<br>
+<br>
+
+<div class="container">
+
+<div class="formulario  ">
+  <h6  style="margin-left: 85px"> <strong style="color: #B00100">Nota:</strong> Filtrar por todos los parametros</h6>
+
+  <%= form_tag empleado_path, method: :get do%>
+      <div class="form-group ">
+        <div class="col-md-4">
+          <div class="row">
+          <div class="col-md-4">
+
+        <%= select_tag :Mes_correspondiente, options_for_select([['Mes', ""], '1', '2','3', '4','5', '6','7', '8','9', '10','11', '12']), class: 'form-control size' %>
+            <%= submit_tag "Buscar", name: nil, class: 'btn btn-primary btn-md '  %>
+          </div>
+
+          <div class="col-md-4">
+            <%= select_tag :Periodo, options_for_select([['Periodo', ""], '1', '2']), class: 'form-control size' %>
+
+          </div >
+
+          <div class="col-md-4">
+            <%= select_tag :Ano_Correspondiente, options_for_select([['Año', ""], Time.now.year,  Time.now.year - 1, Time.now.year - 2]), class: 'form-control size' %>
+          </div>
+          </div>
+        </div>
+
+      </div>
+
+
+  <%end%>
+</div>
+
+  <%if flash[:notice]%>
+  <div class="alert alert-danger" style="float: right; margin-right: 500px">
+
+     <p><%= flash[:notice]%></p>
+
+  </div>
+  <%end%>
+
+  <div class="row ">
+    <div class="col-md-8">
+      <h1>Información:</h1>
+    </div>
+    <div class="col-md-4 impri">
+      <input type="button" class="btn btn-success" style="width: 100px; font-weight: bold;" value="Imprimir" onclick="window.print()">
+    </div>
+  </div>
+  <br>
+
+  <div class="row">
+    <div class="col-md-4">
+      <p><strong>Código: </strong> <%= @Consulta .Codigo_Empleado %> </p>
+      <p><strong>Nombres: </strong><%= @Consulta .NombreEmp%> </p>
+      <p><strong>Cedula/passporte: </strong> <%= @Consulta .Cedula %> </p>
+      <p><strong>Sueldo Bruto: </strong>  <%=  number_to_currency(@Consulta.Sal_Base)%></p>
+    </div>
+
+    <div class="col-md-4">
+
+      <p><strong>Sucursal: </strong></p>
+      <p><strong>Cargo:</strong>  <%= @Consulta .Nombre_Cargo %></p>
+      <p><strong>Depto: </strong><%= @Consulta .SubGrupoNom %>  </p>
+      <p><strong>Mes Correspondiente:</strong>  <%=@Consulta .Mes_correspondiente %></p>
+
+    </div>
+
+    <div class="col-md-4">
+      <p><strong>Cuenta Banco: </strong> <%= @Consulta .Cuenta_Bancaria%> </p>
+
+      <p><strong>Año Correspondiente: </strong><%= @Consulta.Ano_Correspondiente%></p>
+      <p><strong>Periodo Correspondiente: </strong><%= @Consulta.Periodo%></p>
+      <p><strong>Fecha desde: </strong><%= @Consulta.Fecha_Desde.to_formatted_s(:short) %> <strong> Hasta: </strong> <%=@Consulta.Fecha_Hasta.to_formatted_s(:short) %></p>
+
+
+    </div>
+  </div>
+
+  <br>
+
+  <table  class="table table-bordered">
+    <thead>
+
+    <tr class="ttitulo">
+      <th colspan="2" >Ingreso</th>
+      <th colspan="2">Descuento</th>
+    </tr>
+
+    <tr class="trConcepto">
+      <td>Concepto</td>
+      <td>Valor</td>
+      <td>Concepto</td>
+      <td>Valor</td>
+    </tr>
+
+    </thead>
+
+    <tbody>
+    <!--Aqui ira el array para traer los ingresos e ingresos respecto al concepto y monto-->
+    <% @Detalle.each do |d|%>
+
+    <tr>
+     <%if d.Concepto =='I'%>
+      <td><%=d.Desc_Nov %></td>
+      <td align="right"><%= number_to_currency(d.ValNov) %></td>
+          <td></td>
+          <td></td>
+
+
+    <%end%>
+      <%if d.Concepto == 'D'%>
+          <td></td>
+          <td></td>
+      <td><%=d.Desc_Nov %></td>
+      <td align="right"><%= number_to_currency(d.ValNov) %></td>
+   <%end%>
+    </tr>
+
+
+  <%end%>
+
+    </tbody>
+
+    <tfoot>
+    <tr class="trConcepto">
+      <td colspan="2" align="right"><strong> Total Ingresos : </strong> <%= number_to_currency(@Consulta.Total_Ingresos) %></td>
+      <td colspan="2" align="right"><strong>Total Descuentos : </strong> <%= number_to_currency(@Consulta.Total_Descuentos )%></td>
+    </tr>
+    <tr class="tpie">
+      <td colspan="2"></td>
+      <td colspan="2"><strong>Total Neto:</strong> <%= number_to_currency(@Consulta.Neto_Pagado) %></td>
+    </tr>
+    <tr>
+    <td colspan="2">Total excedente:
+    <%@Excedente.each do |e|%>
+      <%= number_to_currency(e.Monto)%>
+
+
+          <%if e.Monto > 999 and e.Eleccion.nil?%>
+              <%= form_for @ExcedenteUp, url: update_exc_path(@ExcedenteUp) do |f| %>
+
+                  <div class="control-group error">
+                    <div class="controls  ">
+                      <p></p>
+                      <%= f.select :Eleccion, options_for_select([['Seleccion', ""], 'Aplicar Deuda', 'Efectivo']), class: 'form-control size'%>
+                    </div>
+
+                    <div class="actions"><%= f.submit 'Enviar', :class=>'btn btn-success btn2' %></div>
+                  </div>
+              <% end %>
+
+          <%else%>
+              <p class="alerta2 alert alert-success" style="font-weight: bold">Su excedente sera aplicado a su deuda de prestamo o a sus ahorros </p>
+          <%end%>
+
+
+
+
+    <%end%>
+
+    </td>
+    </tr>
+
+
+
+
+    </tfoot>
+
+
+
+  </table>
+
+
+
+
+  </div>
+
+
+

@@ -1,0 +1,38 @@
+
+
+<header>
+  <%=link_to (image_tag 'logo.png') %>
+
+</header>
+<div class="container">
+  <div class="registro">
+
+    <h1 class="to">EDITAR PERFIL</h1>
+
+    <%= form_for  @user, :url => updatePerfil_path(@user) do |f| %>
+        <% if @user.errors.any? %>
+            <div id="errorExplanation">
+              <ul>
+                <% @user.errors.full_messages.each do |msg| %>
+                    <li  class="alert alert-danger" role="alert" ><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+        <div class="control-group error">
+          <div class="controls ">
+            <%= f.text_field :codigo_empleado, :placeholder => 'Codigo Empleado', :class=>"form-control inputt" ,:disabled =>true%>
+          </div>
+          <div class="controls">
+            <%= f.text_field :correo , :placeholder => 'Correo Electronico', :class=>"form-control inputt" %>
+          </div>
+          <div class="controls">
+            <%= f.password_field :password, :placeholder => 'Password',:class=>"form-control inputt" %>
+          </div>
+
+        </div>
+
+        <div class="actions"><%= f.submit 'Enviar', :class=>'btn btn-success btn2' %></div>
+    <% end %>
+  </div>
+</div>
