@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 
   get 'consulta/:Codigo_Empleado' => 'volantes#consulta', as: :empleado
   get 'error' => 'volantes#noEmpleado'
+  get 'editar/:id/usuario' => 'volantes#editar', as: :editarUser
+  patch 'editar/:id' => 'volantes#updateUser', as: :updateUser
+
 
   #Rutas para Manipular los Usuario
   get '/usuarios' => 'users#index'

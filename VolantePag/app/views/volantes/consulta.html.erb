@@ -4,6 +4,8 @@
   <div class="perfil">
     <%if @Consulta.Codigo_Empleado.present?%>
         <p class="parrafo"><strong>Bienvenido :  </strong><%=@Consulta.NombreEmp%></p>
+        <%=link_to 'Editar Perfil',  editarUser_path(@Usuario), class: 'linkk'%>
+
        <!-- <#%=link_to 'Editar Perfil',  editPerfil_path(@Consulta.Codigo_Empleado), class: 'linkk'%>-->
         <%=link_to 'Cerrar sesion',  logout_path, method: :delete,class: 'link' %>
     <%end%>
